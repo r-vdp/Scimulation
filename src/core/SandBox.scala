@@ -17,7 +17,7 @@ object SandBox extends App {
   printNeighbours(third)
 
   def printNeighbours(node: Node) {
-    println(node.getNeighbours map (e => e.toString()))
+    println(node.getNeighbours map (e => e.toString))
   }
 }
 
@@ -25,20 +25,23 @@ trait Node {
   private var edges: List[Edge] = Nil;
 
   def addEdge(edge: Edge) {
-    edges =
-      if (edge.contains(this)) {
-        edge :: edges
-      } else {
-        edges
-      }
+    if (canAdd(edge)) {
+      edges = edge :: edges
+      edge.other(this).addEdge(edge)
+    }
   }
 
-  def getNeighbours: List[(Node,  Node)] =
-    edges map (edge => (edge.left, edge.right))
+  def canAdd(edge: Edge): Boolean = {
+    edge.contains(this) && ! edges.contains(edge)
+  }
+
+  def getNeighbours: List[Node] =
+    edges map (edge => edge.other(this))
 }
 
-abstract class Edge(val left: Node, val right: Node) {
+abstract case class Edge(left: Node, right: Node) {
   def contains(node: Node) = left == node || right == node
+  def other(node: Node) = if (left == node) right else left
 }
 
 class BaseEdge(left: Node, right: Node) extends Edge(left, right)

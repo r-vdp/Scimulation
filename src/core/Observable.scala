@@ -18,6 +18,6 @@ trait Observable {
   }
 
   def fireChanged() {
-    listeners map (l => l.handleChange())
+    listeners foreach (l => l.handleChange())
   }
 }

@@ -58,10 +58,18 @@ class Graph[N <: Node, E <: Edge[N]] extends Observable {
     if (contains(node)) {
       map(node) foreach removeEdge
       assert(!contains(node))
+    } else {
+      throw new IllegalArgumentException(
+        "Node (" + node + ") does not exist in graph!")
     }
-    throw new IllegalArgumentException("Node (" + node + ") does not exist in "
-                                       + "graph!")
   }
+
+  def getNeighbours(node: N): Set[N] =
+    (
+      (
+        map(node) map {edge => edge.other(node)}
+      ) filter {o => o.isDefined}
+    ) map {o => o.get}
 
   override def toString = {
     for (node <- map.keys;

@@ -41,14 +41,19 @@ object SandBox extends App {
 
   assert(graph.contains(second))
   graph.removeNode(second)
-  println(graph)
+  println(graph + "\n")
 
-//  printNeighbours(root)
-//  printNeighbours(third)
-//
-//  def printNeighbours(node: Node) {
-//    println(node.getNeighbours map (e => e.toString))
-//  }
+  graph.addNodes(List(second, fifth))
+  graph.addEdges(List(
+    BaseEdge(second, root),
+    BaseEdge(second, fourth),
+    BaseEdge(third, second),
+    BaseEdge(root, fifth)
+  ))
+
+  println(graph + "\n")
+  println("Root neighbours: " + graph.getNeighbours(root))
+  println("Second neighbours: " + graph.getNeighbours(second))
 }
 
 class BaseEdge(left: BaseNode, right: BaseNode) extends Edge(left, right)

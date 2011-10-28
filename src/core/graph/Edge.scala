@@ -9,7 +9,9 @@ import scala.collection.Iterator
  * Time: 16:41
  */
 
-abstract case class Edge[V <: Vertex](left: V, right: V) extends Seq[V] {
+abstract case class Edge[V <: Vertex](left: V, right: V)
+  extends Seq[V] with Ordered[Edge[V]] {
+
   override val length = 2
   val weight: Double
 
@@ -30,7 +32,7 @@ abstract case class Edge[V <: Vertex](left: V, right: V) extends Seq[V] {
   }
 
   override def iterator = new Iterator[V] {
-    private var idx = 0;
+    private var idx = 0
 
     def hasNext = idx < 2
 
@@ -39,4 +41,7 @@ abstract case class Edge[V <: Vertex](left: V, right: V) extends Seq[V] {
       Edge.this(idx - 1)
     }
   }
+
+  def compare(that: Edge[V]) = this.weight compare that.weight
+
 }

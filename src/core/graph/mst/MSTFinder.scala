@@ -9,5 +9,18 @@ import core.graph.{Edge, Vertex, Graph}
  */
 
 object MSTFinder {
-  def find[V <: Vertex, E <: Edge[V]](graph: Graph[V, E]): Tree[V] = null
+  def find[V <: Vertex, E <: Edge[V]](graph: Graph[V, E]): Tree[V] =
+    Node(
+      Leaf(graph.vertices(0)),
+      Node(
+        Node(
+          Leaf(graph.vertices(1)),
+          Node(
+            Leaf(graph.vertices(2)),
+            Leaf(graph.vertices(3))
+          )
+        ),
+        Leaf(graph.vertices(4))
+      )
+    )
 }

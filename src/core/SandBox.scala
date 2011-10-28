@@ -10,8 +10,22 @@ import graph.{Edge, Vertex, Graph}
  */
 
 object SandBox extends App {
-  testGraph()
-  testTree()
+  //testGraph()
+  //testTree()
+  testTraversal()
+
+  def testTraversal() {
+    val graph = new Graph[BaseVertex, BaseEdge]
+    graph.addVertices(List(
+      BaseVertex("1"),
+      BaseVertex("2"),
+      BaseVertex("3"),
+      BaseVertex("4"),
+      BaseVertex("5")
+    ))
+    println(graph.vertices)
+    graph foreach println
+  }
 
   def testTree() {
     val tree: Tree[Int] =

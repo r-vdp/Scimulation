@@ -76,7 +76,7 @@ class Graph[V <: Vertex, E <: Edge[V]] extends Observable with Traversable[V] {
       Set.empty
     }
 
-  override def toString = {
+  override def toString() = {
     for (vertex <- map.keys;
          edge <- map(vertex)
     ) yield edge.toString()
@@ -91,6 +91,10 @@ class Graph[V <: Vertex, E <: Edge[V]] extends Observable with Traversable[V] {
                             (implicit traverser: GraphTraverser[V,E]) {
     traverser foreach f
   }
+
+  //todo remove, for testing only
+  @deprecated
+  def vertices = map.keys.toList
 }
 
 trait Vertex

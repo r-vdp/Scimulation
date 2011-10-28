@@ -7,12 +7,29 @@ package core
  */
 
 object SandBox extends App {
-//  val root = BaseNode("root")
-//  root.addEdge(BaseEdge(root, BaseNode("second")))
-//  val third = BaseNode("third")
-//  root.addEdge(BaseEdge(third, root))
-//  third.addEdge(BaseEdge(third, BaseNode("fourth")))
-//
+  val graph = new Graph[BaseNode, BaseEdge]
+
+  val root = BaseNode("root")
+  val second = BaseNode("second")
+  val third = BaseNode("third")
+  val fourth = BaseNode("fourth")
+  val nodes = List(root, second, third, fourth)
+
+  graph.addNodes(nodes)
+
+  assert(graph.size == nodes.size)
+
+  val edges = List(
+    BaseEdge(root, second),
+    BaseEdge(second, third),
+    BaseEdge(root, third),
+    BaseEdge(second, fourth),
+    BaseEdge(root, fourth),
+    BaseEdge(third, fourth)
+  )
+  graph.addEdges(edges)
+  println(graph.toString)
+
 //  printNeighbours(root)
 //  printNeighbours(third)
 //

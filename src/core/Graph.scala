@@ -14,12 +14,20 @@ class Graph[N <: Node, E <: Edge[N]] extends Observable {
     }
   }
 
+  def addNodes(nodes: Seq[N]) {
+    nodes foreach addNode
+  }
+
   def addEdge(edge: E) {
     if (isLegal(edge)) {
       edge foreach {
         node => map += (node -> (map(node) + edge))
       }
     }
+  }
+
+  def addEdges(edges: Seq[E]) {
+    edges foreach addEdge
   }
 
   def removeEdge(edge: E) {
@@ -44,6 +52,8 @@ class Graph[N <: Node, E <: Edge[N]] extends Observable {
     }
     throw new IllegalArgumentException
   }
+
+  def size = map.size
 
   /**
    * Can this edge be a part of this graph?

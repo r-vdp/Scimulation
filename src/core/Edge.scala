@@ -32,8 +32,8 @@ abstract case class Edge[N <: Node](left: N, right: N) extends Seq[N] {
     var hasNext = true
 
     def next() = hasNext match {
-      case true => left
-      case false => hasNext = false; right
+      case true => hasNext = false; left
+      case false => right
     }
   }
 }

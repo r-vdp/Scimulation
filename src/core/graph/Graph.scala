@@ -7,33 +7,33 @@ import core.Observable
  * Date: 27/10/11
  * Time: 10:32
  */
-class Graph[N <: Node, E <: Edge[N]] extends Observable with Traversable[N] {
-  private[graph] var map: Map[N, Set[E]] = Map.empty
+class Graph[V <: Vertex, E <: Edge[V]] extends Observable with Traversable[V] {
+  private[graph] var map: Map[V, Set[E]] = Map.empty
 
-  def size = map.size
+  override def size = map.size
 
   def contains = map.contains _
 
   /**
    * Can this edge be a part of this graph?
-   * True iff both the nodes referenced by edge are contained in this graph
+   * True iff both the vertices referenced by edge are contained in this graph
    */
   val isLegal = (_:E) forall contains
 
-  def addNode(node: N) {
-    if(!contains(node)) {
-      map += (node -> Set.empty)
+  def addVertex(vertex: V) {
+    if(!contains(vertex)) {
+      map += (vertex -> Set.empty)
     }
   }
 
-  def addNodes(nodes:Seq[N]) {
-    nodes foreach addNode
+  def addVertices(vertices:Seq[V]) {
+    vertices foreach addVertex
   }
 
   def addEdge(edge: E) {
     if (isLegal(edge)) {
       edge foreach {
-        node => map += (node -> (map(node) + edge))
+        vertex => map += (vertex -> (map(vertex) + edge))
       }
     }
   }
@@ -45,52 +45,52 @@ class Graph[N <: Node, E <: Edge[N]] extends Observable with Traversable[N] {
   def removeEdge(edge: E) {
     if (isLegal(edge)) {
       edge foreach {
-        node =>
-          val rest = map(node) filter (edge !=)
+        vertex =>
+          val rest = map(vertex) filter (edge !=)
           if (rest.isEmpty) {
-            map -= node
+            map -= vertex
           } else {
-            map += (node -> rest)
+            map += (vertex -> rest)
           }
       }
     }
   }
 
-  def removeNode(node: N) {
-    if (contains(node)) {
-      map(node) foreach removeEdge
-      assert(!contains(node))
+  def removeVertex(vertex: V) {
+    if (contains(vertex)) {
+      map(vertex) foreach removeEdge
+      assert(!contains(vertex))
     } else {
       throw new IllegalArgumentException(
-        "Node (" + node + ") does not exist in graph!")
+        "Vertex (" + vertex + ") does not exist in graph!")
     }
   }
 
   /**
    * Retrieve set of all neighbours
    */
-  def getNeighbours(node: N): Set[N] =
-    if (contains(node)) {
-      (map(node) withFilter {_.other(node).isDefined}) map (_.other(node).get)
+  def getNeighbours(vertex: V): Set[V] =
+    if (contains(vertex)) {
+      (map(vertex) withFilter {_.other(vertex).isDefined}) map (_.other(vertex).get)
     } else {
       Set.empty
     }
 
   override def toString = {
-    for (node <- map.keys;
-         edge <- map(node)
+    for (vertex <- map.keys;
+         edge <- map(vertex)
     ) yield edge.toString()
   } mkString "\n"
 
-  def foreach[U](f: (N) => U) {
+  def foreach[U](f: (V) => U) {
     foreachImpl(f)
   }
 
   implicit val traverser = new GraphTraverser(this)
-  private def foreachImpl[U](f: (N) => U)
-                            (implicit traverser: GraphTraverser[N]) {
+  private def foreachImpl[U](f: (V) => U)
+                            (implicit traverser: GraphTraverser[V,E]) {
     traverser foreach f
   }
 }
 
-trait Node
+trait Vertex

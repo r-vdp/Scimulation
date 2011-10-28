@@ -1,6 +1,7 @@
 package core
 
-import graph.Graph
+import graph.mst.{Node, Leaf, Tree}
+import graph.{Edge, Vertex, Graph}
 
 /**
  * Created by Ramses de Norre
@@ -9,61 +10,86 @@ import graph.Graph
  */
 
 object SandBox extends App {
-  val graph = new Graph[BaseNode, BaseEdge]
+  testGraph()
+  testTree()
 
-  val root = BaseNode("root")
-  val second = BaseNode("second")
-  val third = BaseNode("third")
-  val fourth = BaseNode("fourth")
-  val fifth = BaseNode("fifth")
-  val nodes = List(root, second, third, fourth, fifth)
+  def testTree() {
+    val tree: Tree[Int] =
+      Node(
+        Leaf(2),
+        Node(
+          Node(
+            Leaf(4),
+            Node(
+              Leaf(3),
+              Leaf(2)
+            )
+          ),
+          Leaf(50)
+        )
+      )
+    tree foreach println
+  }
 
-  graph.addNodes(nodes)
+  def testGraph() {
+    val graph = new Graph[BaseVertex, BaseEdge]
 
-  assert(graph.size == nodes.size)
+    val root = BaseVertex("root")
+    val second = BaseVertex("second")
+    val third = BaseVertex("third")
+    val fourth = BaseVertex("fourth")
+    val fifth = BaseVertex("fifth")
+    val vertices = List(root, second, third, fourth, fifth)
 
-  val edges = List(
-    BaseEdge(root, second),
-    BaseEdge(second, third),
-    BaseEdge(root, third),
-    BaseEdge(second, fourth),
-    BaseEdge(root, fourth),
-    BaseEdge(third, fourth),
-    BaseEdge(root, fifth)
-  )
-  graph.addEdges(edges)
-  println(graph + "\n")
+    graph.addVertices(vertices)
 
-  graph.removeEdge(BaseEdge(root, fourth))
-  println(graph + "\n")
+    assert(graph.size == vertices.size)
 
-  graph.removeEdge(BaseEdge(root, fifth))
-  assert(!graph.contains(fifth))
-  println(graph + "\n")
+    val edges = List(
+      BaseEdge(root, second),
+      BaseEdge(second, third),
+      BaseEdge(root, third),
+      BaseEdge(second, fourth),
+      BaseEdge(root, fourth),
+      BaseEdge(third, fourth),
+      BaseEdge(root, fifth)
+    )
+    graph.addEdges(edges)
+    println(graph + "\n")
 
-  assert(graph.contains(second))
-  graph.removeNode(second)
-  println(graph + "\n")
+    graph.removeEdge(BaseEdge(root, fourth))
+    println(graph + "\n")
 
-  graph.addNodes(List(second, fifth))
-  graph.addEdges(List(
-    BaseEdge(second, root),
-    BaseEdge(second, fourth),
-    BaseEdge(third, second),
-    BaseEdge(root, fifth)
-  ))
+    graph.removeEdge(BaseEdge(root, fifth))
+    assert(!graph.contains(fifth))
+    println(graph + "\n")
 
-  println(graph + "\n")
-  println("Root neighbours: " + graph.getNeighbours(root))
-  println("Second neighbours: " + graph.getNeighbours(second))
+    assert(graph.contains(second))
+    graph.removeVertex(second)
+    println(graph + "\n")
 
-  graph.getNeighbours(BaseNode("none"))
+    graph.addVertices(List(second, fifth))
+    graph.addEdges(List(
+      BaseEdge(second, root),
+      BaseEdge(second, fourth),
+      BaseEdge(third, second),
+      BaseEdge(root, fifth)
+    ))
+
+    println(graph + "\n")
+    println("Root neighbours: " + graph.getNeighbours(root))
+    println("Second neighbours: " + graph.getNeighbours(second))
+
+    graph.getNeighbours(BaseVertex("none"))
+  }
 }
 
-class BaseEdge(left: BaseNode, right: BaseNode) extends Edge(left, right)
+class BaseEdge(left: BaseVertex, right: BaseVertex) extends Edge(left, right) {
+  val weight = 1d
+}
 
 object BaseEdge {
-  def apply(left: BaseNode, right: BaseNode) = new BaseEdge(left, right)
+  def apply(left: BaseVertex, right: BaseVertex) = new BaseEdge(left, right)
 }
 
-case class BaseNode(name: String) extends Node
+case class BaseVertex(name: String) extends Vertex

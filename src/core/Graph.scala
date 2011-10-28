@@ -10,14 +10,14 @@ class Graph[N <: Node, E <: Edge[N]] extends Observable {
 
   def addNode(node: N) {
     if (!map.contains(node)) {
-      map += (node -> Nil)
+      map += (node -> Set.empty)
     }
   }
 
   def addEdge(edge: E) {
     if (isLegal(edge)) {
       edge foreach {
-        node => map += (node -> (map(node) += edge))
+        node => map += (node -> (map(node) + edge))
       }
     }
   }
@@ -27,9 +27,10 @@ class Graph[N <: Node, E <: Edge[N]] extends Observable {
       edge foreach {
         node =>
           val rest = map(node) filter (edge !=)
-          rest match {
-            case Nil => map -= node
-            case _ => map += (node -> rest)
+          if (rest.isEmpty) {
+            map -= node
+          } else {
+            map += (node -> rest)
           }
       }
     }
@@ -38,8 +39,10 @@ class Graph[N <: Node, E <: Edge[N]] extends Observable {
   def removeNode(node: N) {
     if (map.contains(node)) {
       map(node) foreach removeEdge
-
+      assert(map(node).isEmpty)
+      map -= node
     }
+    throw new IllegalArgumentException
   }
 
   /**

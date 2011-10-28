@@ -1,3 +1,9 @@
 .idea
 Scimulation.iml
 out
+*.class
+.cache
+.classpath
+.project
+.settings
+

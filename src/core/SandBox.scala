@@ -1,5 +1,7 @@
 package core
 
+import graph.Graph
+
 /**
  * Created by Ramses de Norre
  * Date: 24/10/11
@@ -54,6 +56,8 @@ object SandBox extends App {
   println(graph + "\n")
   println("Root neighbours: " + graph.getNeighbours(root))
   println("Second neighbours: " + graph.getNeighbours(second))
+
+  graph.getNeighbours(BaseNode("none"))
 }
 
 class BaseEdge(left: BaseNode, right: BaseNode) extends Edge(left, right)

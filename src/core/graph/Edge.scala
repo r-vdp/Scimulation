@@ -1,4 +1,4 @@
-package core
+package core.graph
 
 import scala.collection.Seq
 import scala.collection.Iterator

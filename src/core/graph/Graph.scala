@@ -1,30 +1,32 @@
-package core
+package core.graph
+
+import core.Observable
 
 /**
  * Created by Ramses de Norre
  * Date: 27/10/11
  * Time: 10:32
  */
-class Graph[N <: Node, E <: Edge[N]] extends Observable {
-  private var map: Map[N, Set[E]] = Map.empty
+class Graph[N <: Node, E <: Edge[N]] extends Observable with Traversable[N] {
+  private[graph] var map: Map[N, Set[E]] = Map.empty
 
   def size = map.size
 
-  def contains(node: N) = map.contains(node)
+  def contains = map.contains _
 
   /**
    * Can this edge be a part of this graph?
    * True iff both the nodes referenced by edge are contained in this graph
    */
-  def isLegal(edge: E) = edge forall contains
+  val isLegal = (_:E) forall contains
 
   def addNode(node: N) {
-    if (!contains(node)) {
+    if(!contains(node)) {
       map += (node -> Set.empty)
     }
   }
 
-  def addNodes(nodes: Seq[N]) {
+  def addNodes(nodes:Seq[N]) {
     nodes foreach addNode
   }
 
@@ -64,18 +66,31 @@ class Graph[N <: Node, E <: Edge[N]] extends Observable {
     }
   }
 
+  /**
+   * Retrieve set of all neighbours
+   */
   def getNeighbours(node: N): Set[N] =
-    (
-      (
-        map(node) map {edge => edge.other(node)}
-      ) filter {o => o.isDefined}
-    ) map {o => o.get}
+    if (contains(node)) {
+      (map(node) withFilter {_.other(node).isDefined}) map (_.other(node).get)
+    } else {
+      Set.empty
+    }
 
   override def toString = {
     for (node <- map.keys;
          edge <- map(node)
     ) yield edge.toString()
   } mkString "\n"
+
+  def foreach[U](f: (N) => U) {
+    foreachImpl(f)
+  }
+
+  implicit val traverser = new GraphTraverser(this)
+  private def foreachImpl[U](f: (N) => U)
+                            (implicit traverser: GraphTraverser[N]) {
+    traverser foreach f
+  }
 }
 
 trait Node

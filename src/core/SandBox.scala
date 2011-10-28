@@ -13,7 +13,8 @@ object SandBox extends App {
   val second = BaseNode("second")
   val third = BaseNode("third")
   val fourth = BaseNode("fourth")
-  val nodes = List(root, second, third, fourth)
+  val fifth = BaseNode("fifth")
+  val nodes = List(root, second, third, fourth, fifth)
 
   graph.addNodes(nodes)
 
@@ -25,10 +26,22 @@ object SandBox extends App {
     BaseEdge(root, third),
     BaseEdge(second, fourth),
     BaseEdge(root, fourth),
-    BaseEdge(third, fourth)
+    BaseEdge(third, fourth),
+    BaseEdge(root, fifth)
   )
   graph.addEdges(edges)
-  println(graph.toString)
+  println(graph + "\n")
+
+  graph.removeEdge(BaseEdge(root, fourth))
+  println(graph + "\n")
+
+  graph.removeEdge(BaseEdge(root, fifth))
+  assert(!graph.contains(fifth))
+  println(graph + "\n")
+
+  assert(graph.contains(second))
+  graph.removeNode(second)
+  println(graph)
 
 //  printNeighbours(root)
 //  printNeighbours(third)
@@ -44,10 +57,4 @@ object BaseEdge {
   def apply(left: BaseNode, right: BaseNode) = new BaseEdge(left, right)
 }
 
-class BaseNode(val name: String) extends Node {
-  override def toString = name
-}
-
-object BaseNode {
-  def apply(name: String): BaseNode = new BaseNode(name)
-}
+case class BaseNode(name: String) extends Node

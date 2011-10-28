@@ -29,11 +29,13 @@ abstract case class Edge[N <: Node](left: N, right: N) extends Seq[N] {
   }
 
   override def iterator = new Iterator[N] {
-    var hasNext = true
+    private var idx = 0;
 
-    def next() = hasNext match {
-      case true => hasNext = false; left
-      case false => right
+    def hasNext = idx < 2
+
+    def next() = {
+      idx += 1
+      Edge.this(idx - 1)
     }
   }
 }

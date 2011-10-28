@@ -8,8 +8,18 @@ package core
 class Graph[N <: Node, E <: Edge[N]] extends Observable {
   private var map: Map[N, Set[E]] = Map.empty
 
+  def size = map.size
+
+  def contains(node: N) = map.contains(node)
+
+  /**
+   * Can this edge be a part of this graph?
+   * True iff both the nodes referenced by edge are contained in this graph
+   */
+  def isLegal(edge: E) = edge forall contains
+
   def addNode(node: N) {
-    if (!map.contains(node)) {
+    if (!contains(node)) {
       map += (node -> Set.empty)
     }
   }
@@ -45,27 +55,19 @@ class Graph[N <: Node, E <: Edge[N]] extends Observable {
   }
 
   def removeNode(node: N) {
-    if (map.contains(node)) {
+    if (contains(node)) {
       map(node) foreach removeEdge
-      assert(map(node).isEmpty)
-      map -= node
+      assert(!contains(node))
     }
-    throw new IllegalArgumentException
+    throw new IllegalArgumentException("Node (" + node + ") does not exist in "
+                                       + "graph!")
   }
-
-  def size = map.size
-
-  /**
-   * Can this edge be a part of this graph?
-   * True iff both the nodes referenced by edge are contained in this graph
-   */
-  def isLegal(edge: E) = edge forall map.contains
 
   override def toString = {
     for (node <- map.keys;
          edge <- map(node)
-    ) yield (edge.left, edge.right).toString()
-  } mkString ", "
+    ) yield edge.toString()
+  } mkString "\n"
 }
 
 trait Node

@@ -1,45 +1,42 @@
 package engine
-import core.Node
 
-trait Transactions{
-  var list : List[Transaction]
-  
+import core.graph.{Edge, Graph, Vertex}
+
+trait Transactions {
+  def list: List[Transaction]
 }
 
-class Transaction(stakeholders :List[Node with Action]){
-  def areAble : Boolean = {
-    for(n<-stakeholders){
-      if(!n.isAble)
-        false
+class Transaction {
+  def areAble[V <: Vertex](stakeholders: List[V with Action[V]]): Boolean =
+    (true /: stakeholders) (_ && _.isAble)
+}
+
+trait Action[V <: Vertex] {
+  def isAble: Boolean
+
+  def execute(): V with Action[V];
+}
+
+class Engine[V <: Vertex, E <: Edge[V]](graph: Graph[V, E]) {
+
+  type AV = V with Action[V]
+
+  def run(f: List[V] => List[V], count: Int) {
+    var vertices = graph.toList
+    for (i <- 0 until count) {
+      vertices = f(vertices)
     }
-    true
   }
-}
 
-trait Action {
-  def isAble : Boolean
-  def execute():Node with Action;
-}
+  def roundBased(list: List[V]): List[V] = {
+    list
+  }
 
-class Engine(node:Node){
- 
- def run(f:List[Node] => List[Node],count :Int) ={
-   var list: List[Node] = node.traverse
-   for(i<- 0 until count){
-     list = f(list)
-   }
- }
+  def TurnBased(list: List[AV]): List[AV] = {
+    list.head.execute() :: TurnBased(list.tail)
+  }
 
- def roundBased(list : List[Node]) : List[Node] = {
-   list
- }
- 
- def TurnBased(list : List[Node with Action]) : List[Node with Action] = {
-   List(list.head.execute) ++ TurnBased(list.tail)
- }
-  
- def EventBased(list : List[Node]) : List[Node] = {
-   list
- }
- 
+  def EventBased(list: List[V]): List[V] = {
+    list
+  }
 }

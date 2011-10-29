@@ -1,6 +1,7 @@
 package core
 
 import graph.mst.{Node, Leaf, Tree}
+import graph.traversal.EdgeTraverser
 import graph.{Edge, Vertex, Graph}
 
 /**
@@ -16,24 +17,39 @@ object SandBox extends App {
 
   def testTraversal() {
     val graph = new Graph[BaseVertex, BaseEdge]
-    graph.addVertices(List(
-      BaseVertex("1"),
-      BaseVertex("2"),
-      BaseVertex("3"),
-      BaseVertex("4"),
-      BaseVertex("5")
-    ))
-    println(graph.vertices)
+
+    val root = BaseVertex("root")
+    val second = BaseVertex("second")
+    val third = BaseVertex("third")
+    val fourth = BaseVertex("fourth")
+    val fifth = BaseVertex("fifth")
+    val vertices = root :: second :: third :: fourth :: fifth :: Nil
+
+    graph.addVertices(vertices)
+
+    val edges = BaseEdge(root, second) ::
+                BaseEdge(second, third) ::
+                BaseEdge(root, third) ::
+                BaseEdge(second, fourth, 5) ::
+                BaseEdge(root, fourth) ::
+                BaseEdge(third, fourth) ::
+                BaseEdge(root, fifth) :: Nil
+
+    graph.addEdges(edges)
+
+    //println(graph.vertices)
+    graph foreach println
+    graph.traverser_=(new EdgeTraverser(graph))
     graph foreach println
   }
 
   def testTree() {
     val tree: Tree[Int] =
       Node(
-        Leaf(2),
+        Leaf(1), Leaf(2), Leaf(3),
         Node(
           Node(
-            Leaf(4),
+            Leaf(4), Leaf(5), Leaf(6), Node(Leaf(7), Leaf(8)),
             Node(
               Leaf(3),
               Leaf(2)
@@ -53,21 +69,20 @@ object SandBox extends App {
     val third = BaseVertex("third")
     val fourth = BaseVertex("fourth")
     val fifth = BaseVertex("fifth")
-    val vertices = List(root, second, third, fourth, fifth)
+    val vertices = root :: second :: third :: fourth :: fifth ::Nil
 
     graph.addVertices(vertices)
 
     assert(graph.size == vertices.size)
 
-    val edges = List(
-      BaseEdge(root, second),
-      BaseEdge(second, third),
-      BaseEdge(root, third),
-      BaseEdge(second, fourth),
-      BaseEdge(root, fourth),
-      BaseEdge(third, fourth),
-      BaseEdge(root, fifth)
-    )
+    val edges = BaseEdge(root, second) ::
+      BaseEdge(second, third) ::
+      BaseEdge(root, third) ::
+      BaseEdge(second, fourth) ::
+      BaseEdge(root, fourth) ::
+      BaseEdge(third, fourth) ::
+      BaseEdge(root, fifth) :: Nil
+
     graph.addEdges(edges)
     println(graph + "\n")
 
@@ -82,28 +97,27 @@ object SandBox extends App {
     graph.removeVertex(second)
     println(graph + "\n")
 
-    graph.addVertices(List(second, fifth))
-    graph.addEdges(List(
-      BaseEdge(second, root),
-      BaseEdge(second, fourth),
-      BaseEdge(third, second),
-      BaseEdge(root, fifth)
-    ))
+    graph.addVertices(second :: fifth :: Nil)
+    graph.addEdges(BaseEdge(second, root) ::
+      BaseEdge(second, fourth) ::
+      BaseEdge(third, second) ::
+      BaseEdge(root, fifth) :: Nil
+    )
 
     println(graph + "\n")
-    println("Root neighbours: " + graph.getNeighbours(root))
-    println("Second neighbours: " + graph.getNeighbours(second))
+    println("Root neighbours: " + graph.neighbours(root))
+    println("Second neighbours: " + graph.neighbours(second))
 
-    graph.getNeighbours(BaseVertex("none"))
+    graph.neighbours(BaseVertex("none"))
   }
 }
 
-class BaseEdge(left: BaseVertex, right: BaseVertex) extends Edge(left, right) {
-  val weight = 1d
-}
+class BaseEdge(left: BaseVertex, right: BaseVertex, val weight: Double = 1)
+  extends Edge(left, right)
 
 object BaseEdge {
-  def apply(left: BaseVertex, right: BaseVertex) = new BaseEdge(left, right)
+  def apply(left: BaseVertex, right: BaseVertex, weight: Double = 1) =
+    new BaseEdge(left, right, weight)
 }
 
 case class BaseVertex(name: String) extends Vertex

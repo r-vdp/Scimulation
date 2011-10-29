@@ -1,0 +1,26 @@
+package core.graph.traversal
+
+import core.graph.{Graph, Edge, Vertex}
+
+/**
+ * Created by Ramses de Norre
+ * Date: 29/10/11
+ * Time: 17:47
+ */
+@deprecated("Useless?", "0")
+class EdgeTraverser[V <: Vertex, E <: Edge[V]] (graph: Graph[V, E])
+  extends GraphTraverser[V, E](graph) {
+
+  def foreach[U](f: (V) => U) {
+    traverse(f)(graph.someVertex)
+  }
+
+  private def traverse[U](f: (V) => U)(v: V) {
+    f(v)
+    graph.neighbours(v) foreach traverse(f)
+  }
+
+  def test[U](f: (V) => U)(v: V) {
+    var list = (graph.neighbours(v) filter (v!=)).toList
+  }
+}

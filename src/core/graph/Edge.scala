@@ -31,17 +31,7 @@ abstract case class Edge[V <: Vertex](left: V, right: V)
     case _ => throw new IndexOutOfBoundsException
   }
 
-  override def iterator = new Iterator[V] {
-    private var idx = 0
-
-    def hasNext = idx < 2
-
-    def next() = {
-      idx += 1
-      Edge.this(idx - 1)
-    }
-  }
+  override def iterator = Iterator(left, right)
 
   def compare(that: Edge[V]) = this.weight compare that.weight
-
 }

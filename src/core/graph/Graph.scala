@@ -1,6 +1,7 @@
 package core.graph
 
 import core.Observable
+import traversal.{SimpleGraphTraverser, GraphTraverser}
 
 /**
  * Created by Ramses de Norre
@@ -32,8 +33,8 @@ class Graph[V <: Vertex, E <: Edge[V]] extends Observable with Traversable[V] {
 
   def addEdge(edge: E) {
     if (isLegal(edge)) {
-      edge foreach {
-        vertex => map += (vertex -> (map(vertex) + edge))
+      edge foreach { vertex =>
+        map += (vertex -> (map(vertex) + edge))
       }
     }
   }
@@ -44,13 +45,12 @@ class Graph[V <: Vertex, E <: Edge[V]] extends Observable with Traversable[V] {
 
   def removeEdge(edge: E) {
     if (isLegal(edge)) {
-      edge foreach {
-        vertex =>
-          val rest = map(vertex) filter (edge !=)
+      edge foreach { v =>
+          val rest = map(v) filter (edge !=)
           if (rest.isEmpty) {
-            map -= vertex
+            map -= v
           } else {
-            map += (vertex -> rest)
+            map += (v -> rest)
           }
       }
     }
@@ -69,14 +69,23 @@ class Graph[V <: Vertex, E <: Edge[V]] extends Observable with Traversable[V] {
   /**
    * Retrieve set of all neighbours
    */
-  def getNeighbours(vertex: V): Set[V] =
+  def neighbours(vertex: V): Set[V] =
     if (contains(vertex)) {
-      (map(vertex) withFilter {_.other(vertex).isDefined}) map (_.other(vertex).get)
+      ((map(vertex) map (_.other(vertex)))
+        withFilter (_.isDefined)) map (_.get)
     } else {
       Set.empty
     }
 
-  override def toString() = {
+  def adjacentVertices(vertex: V): Set[E] = map(vertex)
+
+  /**
+   * Retrieve some vertex that is part of this graph,
+   * used to be able to get an entrance point into the graph.
+   */
+  def someVertex = map.keys.head
+
+  override def toString = {
     for (vertex <- map.keys;
          edge <- map(vertex)
     ) yield edge.toString()
@@ -86,15 +95,21 @@ class Graph[V <: Vertex, E <: Edge[V]] extends Observable with Traversable[V] {
     foreachImpl(f)
   }
 
-  implicit val traverser = new GraphTraverser(this)
+  def foreach[U](f: (V) => U, traverser: GraphTraverser[V, E]) {
+    foreachImpl(f)(traverser)
+  }
+
+  def traverser_=(t: GraphTraverser[V, E]) {
+    traverser = t
+  }
+
+  private[this] implicit var traverser: GraphTraverser[V, E] =
+    new SimpleGraphTraverser(this)
+
   private def foreachImpl[U](f: (V) => U)
-                            (implicit traverser: GraphTraverser[V,E]) {
+                            (implicit traverser: GraphTraverser[V, E]) {
     traverser foreach f
   }
 
-  //todo remove, for testing only
-  @deprecated
-  def vertices = map.keys.toList
+  private[graph] def vertices = map.keys.toList
 }
-
-trait Vertex

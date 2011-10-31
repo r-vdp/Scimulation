@@ -1,4 +1,4 @@
-package core
+package core.graph
 
 /**
  * Created by Ramses de Norre

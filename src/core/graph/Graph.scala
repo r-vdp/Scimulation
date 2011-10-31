@@ -1,95 +1,75 @@
 package core.graph
 
-import core.Observable
-import traversal.{SimpleGraphTraverser, GraphTraverser}
+import traversal.GraphTraverser
 
 /**
+ * Abstract graph class.
  * Created by Ramses de Norre
- * Date: 27/10/11
- * Time: 10:32
+ * Date: 31/10/11
+ * Time: 13:11
  */
-class Graph[V <: Vertex, E <: Edge[V]] extends Observable with Traversable[V] {
-  private[graph] var map: Map[V, Set[E]] = Map.empty
-
-  override def size = map.size
-
-  def contains = map.contains _
+abstract class Graph[V <: Vertex, E <: Edge[V]]
+  extends Observable with Traversable[V] {
 
   /**
-   * Can this edge be a part of this graph?
-   * True iff both the vertices referenced by edge are contained in this graph
+   * The number of vertices in this graph
    */
-  val isLegal = (_:E) forall contains
+  override def size: Int
 
-  def addVertex(vertex: V) {
-    if(!contains(vertex)) {
-      map += (vertex -> Set.empty)
+  def contains(vertex: V): Boolean
+  def contains(edge: E): Boolean
+
+  /**
+   * True iff both the vertices referenced by edge are contained in this graph.
+   */
+  def isLegal(edge: E) = edge forall (this contains _)
+
+  def addVertex(vertex: V, fire: Boolean = true): Boolean
+
+  def addVertices(vertices: Seq[V]) {
+    // Scala seems to short-circuit evaluation of a boolean resulting from a
+    // fold, it is thus not possible to write this as a single foldl...
+    if ((vertices map (addVertex(_, false))) contains true) {
+      fireChanged()
     }
   }
 
-  def addVertices(vertices:Seq[V]) {
-    vertices foreach addVertex
-  }
-
-  def addEdge(edge: E) {
-    if (isLegal(edge)) {
-      edge foreach { vertex =>
-        map += (vertex -> (map(vertex) + edge))
-      }
-    }
-  }
+  def addEdge(edge: E, fire: Boolean = true): Boolean
 
   def addEdges(edges: Seq[E]) {
-    edges foreach addEdge
-  }
-
-  def removeEdge(edge: E) {
-    if (isLegal(edge)) {
-      edge foreach { v =>
-          val rest = map(v) filter (edge !=)
-          if (rest.isEmpty) {
-            map -= v
-          } else {
-            map += (v -> rest)
-          }
-      }
+    if ((edges map (addEdge(_, false))) contains true) {
+      fireChanged()
     }
   }
 
-  def removeVertex(vertex: V) {
-    if (contains(vertex)) {
-      map(vertex) foreach removeEdge
-      assert(!contains(vertex))
-    } else {
-      throw new IllegalArgumentException(
-        "Vertex (" + vertex + ") does not exist in graph!")
+  protected def fireIf(fire: Boolean) {
+    if (fire) {
+      fireChanged()
     }
   }
+
+  def removeEdge(edge: E)
+  def removeVertex(vertex: V)
 
   /**
-   * Retrieve set of all neighbours
+   * Retrieve a set of all vertices which are reachable from the given vertex.
    */
-  def neighbours(vertex: V): Set[V] =
-    if (contains(vertex)) {
-      ((map(vertex) map (_.other(vertex)))
-        withFilter (_.isDefined)) map (_.get)
-    } else {
-      Set.empty
-    }
+  def neighbours(vertex: V): Set[V]
 
-  def adjacentVertices(vertex: V): Set[E] = map(vertex)
+  /**
+   * The edges connecting the given vertex to its neighbours.
+   */
+  def neighbourEdges(vertex: V): Set[E]
+
+  protected[graph] def vertices: Set[V]
 
   /**
    * Retrieve some vertex that is part of this graph,
    * used to be able to get an entrance point into the graph.
    */
-  def someVertex = map.keys.head
+  def someVertex: V
 
-  override def toString = {
-    for (vertex <- map.keys;
-         edge <- map(vertex)
-    ) yield edge.toString()
-  } mkString "\n"
+  override def toString: String
 
   def foreach[U](f: (V) => U) {
     foreachImpl(f)
@@ -99,17 +79,26 @@ class Graph[V <: Vertex, E <: Edge[V]] extends Observable with Traversable[V] {
     foreachImpl(f)(traverser)
   }
 
-  def traverser_=(t: GraphTraverser[V, E]) {
-    traverser = t
-  }
+  /**
+   * The default traverser if none is specified.
+   */
+  protected implicit var traverser: GraphTraverser[V, E]
 
-  private[this] implicit var traverser: GraphTraverser[V, E] =
-    new SimpleGraphTraverser(this)
-
-  private def foreachImpl[U](f: (V) => U)
+  protected def foreachImpl[U](f: (V) => U)
                             (implicit traverser: GraphTraverser[V, E]) {
     traverser foreach f
   }
+}
 
-  private[graph] def vertices = map.keys.toList
+object Graph {
+  /**
+   * Helper function that returns a lambda which can be used to turn a map of
+   * vertex -> [edge] mappings into a string.
+   */
+  private[graph] def stringBuilder[V <: Vertex, E <: Edge[V]] = {
+    (_: Map[V, Set[E]]) map {
+      case (vertex, edges) =>
+        vertex + ": " + (edges mkString ", ")
+    } mkString "\n"
+  }
 }

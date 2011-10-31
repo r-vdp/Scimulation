@@ -1,6 +1,6 @@
 package engine
 
-import core.graph.{Edge, Graph, Vertex}
+import core.graph.{Edge, UndirectedGraph, Vertex}
 
 trait Transactions {
   def list: List[Transaction]
@@ -17,7 +17,7 @@ trait Action[V <: Vertex] {
   def execute(): V with Action[V];
 }
 
-class Engine[V <: Vertex, E <: Edge[V]](graph: Graph[V, E]) {
+class Engine[V <: Vertex, E <: Edge[V]](graph: UndirectedGraph[V, E]) {
 
   type AV = V with Action[V]
 

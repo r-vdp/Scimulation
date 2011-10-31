@@ -1,6 +1,6 @@
 package core.graph.mst
 
-import core.graph.{Edge, Vertex, Graph}
+import core.graph.{Edge, Vertex, UndirectedGraph}
 import scala.collection.mutable.PriorityQueue
 
 /**
@@ -23,11 +23,11 @@ private class MST[V <: Vertex, E <: Edge[V]] {
   var inTree: Set[V] = Set.empty
   val pq: PriorityQueue[E] = PriorityQueue.empty[E]
 
-  def apply(graph: Graph[V, E]): Iterable[V] = {
+  def apply(graph: UndirectedGraph[V, E]): Iterable[V] = {
     mkTree(findMST(graph))
   }
 
-  def findMST(graph: Graph[V, E]): Map[V, E] = {
+  def findMST(graph: UndirectedGraph[V, E]): Map[V, E] = {
     visit(graph, graph.someVertex)
     while (!pq.isEmpty) {
       val e = pq.dequeue()
@@ -41,9 +41,9 @@ private class MST[V <: Vertex, E <: Edge[V]] {
     mst
   }
 
-  def visit(graph: Graph[V, E], v: V) {
+  def visit(graph: UndirectedGraph[V, E], v: V) {
     inTree += v
-    graph.adjacentVertices(v) filter { e =>
+    graph.neighbourEdges(v) filter { e =>
       !inTree.contains(e.other(v).get)
     } foreach (pq += _)
   }
@@ -55,6 +55,6 @@ private class MST[V <: Vertex, E <: Edge[V]] {
 }
 
 object MST {
-  def apply[V <: Vertex, E <: Edge[V]] (graph: Graph[V, E]): Iterable[V] =
+  def apply[V <: Vertex, E <: Edge[V]] (graph: UndirectedGraph[V, E]): Iterable[V] =
     (new MST[V, E])(graph)
 }

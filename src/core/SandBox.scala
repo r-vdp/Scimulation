@@ -1,8 +1,7 @@
 package core
 
 import graph.mst.{Node, Leaf, Tree}
-import graph.traversal.EdgeTraverser
-import graph.{Edge, Vertex, Graph}
+import graph.{DirectedGraph, Edge, Vertex, UndirectedGraph}
 
 /**
  * Created by Ramses de Norre
@@ -11,12 +10,12 @@ import graph.{Edge, Vertex, Graph}
  */
 
 object SandBox extends App {
-  //testGraph()
+  testGraph()
   //testTree()
   testTraversal()
 
   def testTraversal() {
-    val graph = new Graph[BaseVertex, BaseEdge]
+    val graph = new UndirectedGraph[BaseVertex, BaseEdge]
 
     val root = BaseVertex("root")
     val second = BaseVertex("second")
@@ -26,6 +25,7 @@ object SandBox extends App {
     val vertices = root :: second :: third :: fourth :: fifth :: Nil
 
     graph.addVertices(vertices)
+    graph.addVertex(second)
 
     val edges = BaseEdge(root, second) ::
                 BaseEdge(second, third) ::
@@ -39,8 +39,8 @@ object SandBox extends App {
 
     //println(graph.vertices)
     graph foreach println
-    graph.traverser_=(new EdgeTraverser(graph))
-    graph foreach println
+    //graph.setTraverser(new EdgeTraverser(graph))
+    //graph foreach println
   }
 
   def testTree() {
@@ -62,7 +62,7 @@ object SandBox extends App {
   }
 
   def testGraph() {
-    val graph = new Graph[BaseVertex, BaseEdge]
+    val graph = new DirectedGraph[BaseVertex, BaseEdge]
 
     val root = BaseVertex("root")
     val second = BaseVertex("second")
@@ -90,7 +90,7 @@ object SandBox extends App {
     println(graph + "\n")
 
     graph.removeEdge(BaseEdge(root, fifth))
-    assert(!graph.contains(fifth))
+    assert(!graph.contains(BaseEdge(root, fifth)))
     println(graph + "\n")
 
     assert(graph.contains(second))
@@ -112,12 +112,15 @@ object SandBox extends App {
   }
 }
 
-class BaseEdge(left: BaseVertex, right: BaseVertex, val weight: Double = 1)
-  extends Edge(left, right)
+class BaseEdge(from: BaseVertex, to: BaseVertex, val weight: Double = 1)
+  extends Edge(from, to) {
+  protected def construct(from: BaseVertex, to: BaseVertex) =
+    BaseEdge(to, from)
+}
 
 object BaseEdge {
-  def apply(left: BaseVertex, right: BaseVertex, weight: Double = 1) =
-    new BaseEdge(left, right, weight)
+  def apply(from: BaseVertex, to: BaseVertex, weight: Double = 1) =
+    new BaseEdge(from, to, weight)
 }
 
 case class BaseVertex(name: String) extends Vertex

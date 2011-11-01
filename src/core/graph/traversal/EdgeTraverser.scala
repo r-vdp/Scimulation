@@ -1,6 +1,7 @@
 package core.graph.traversal
 
-import core.graph.{UndirectedGraph, Edge, Vertex}
+import core.graph.{DirectedGraph, Edge, Vertex}
+
 
 /**
  * Created by Ramses de Norre
@@ -8,7 +9,7 @@ import core.graph.{UndirectedGraph, Edge, Vertex}
  * Time: 17:47
  */
 @deprecated("Useless?", "0")
-class EdgeTraverser[V <: Vertex, E <: Edge[V]] (graph: UndirectedGraph[V, E])
+class EdgeTraverser[V <: Vertex, E <: Edge[V]] (graph: DirectedGraph[V, E])
   extends GraphTraverser[V, E](graph) {
 
   def foreach[U](f: (V) => U) {

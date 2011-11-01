@@ -22,7 +22,7 @@ abstract class Graph[V <: Vertex, E <: Edge[V]]
   /**
    * True iff both the vertices referenced by edge are contained in this graph.
    */
-  def isLegal(edge: E) = edge forall (this contains _)
+  def isLegal(edge: E) = edge forall (this contains)
 
   def addVertex(vertex: V, fire: Boolean = true): Boolean
 

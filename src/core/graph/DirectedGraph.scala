@@ -15,7 +15,8 @@ class DirectedGraph[V <: Vertex, E <: Edge[V]] extends Graph[V, E] {
   override def size = map.size
 
   def contains(vertex: V) = map contains vertex
-  def contains(edge: E) = map(edge.from) contains edge
+  def contains(edge: E) =
+    (map get edge.from) flatMap (es => Some(es contains edge)) getOrElse false
 
   def addVertex(vertex: V, fire: Boolean) = {
     if(!contains(vertex)) {
@@ -50,6 +51,7 @@ class DirectedGraph[V <: Vertex, E <: Edge[V]] extends Graph[V, E] {
       map foreach { case (v, es) =>
         map += (v -> (es filterNot (_.contains(vertex))))
       }
+      map -= vertex
     }
   }
 

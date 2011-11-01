@@ -1,7 +1,7 @@
 package core
 
+import graph._
 import graph.mst.{Node, Leaf, Tree}
-import graph.{DirectedGraph, Edge, Vertex, UndirectedGraph}
 
 /**
  * Created by Ramses de Norre
@@ -112,15 +112,13 @@ object SandBox extends App {
   }
 }
 
-class BaseEdge(from: BaseVertex, to: BaseVertex, val weight: Double = 1)
-  extends Edge(from, to) {
-  protected def construct(from: BaseVertex, to: BaseVertex) =
-    BaseEdge(to, from)
+class BaseEdge(from: BaseVertex, to: BaseVertex, weight: Double = 1)
+    extends Edge(from, to, weight) {
+  protected def construct(from: BaseVertex, to: BaseVertex, weight: Double) =
+    BaseEdge(from, to, weight)
 }
 
 object BaseEdge {
   def apply(from: BaseVertex, to: BaseVertex, weight: Double = 1) =
     new BaseEdge(from, to, weight)
 }
-
-case class BaseVertex(name: String) extends Vertex

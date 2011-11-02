@@ -9,8 +9,11 @@ import scala.collection.Iterator
  * Date: 24/10/11
  * Time: 16:41
  */
-abstract case class Edge[V <: Vertex](from: V, to: V, weight: Double)
-  extends Seq[V] with Ordered[Edge[V]] {
+abstract class Edge[V <: Vertex] extends Seq[V] with Ordered[Edge[V]] {
+
+  val from: V
+  val to: V
+  val weight: Double
 
   override val length = 2
 
@@ -48,4 +51,13 @@ abstract case class Edge[V <: Vertex](from: V, to: V, weight: Double)
 
   override def hashCode =
     from.hashCode + (31 * to.hashCode + (31 * weight.toString.hashCode))
+}
+
+/**
+ * An extractor to pattern match on general edges
+ */
+object Edge {
+  def unapply[V <: Vertex](edge: Edge[V]): Option[(V, V, Double)] = {
+    Some((edge.from, edge.to, edge.weight))
+  }
 }

@@ -112,13 +112,9 @@ object SandBox extends App {
   }
 }
 
-class BaseEdge(from: BaseVertex, to: BaseVertex, weight: Double = 1)
-    extends Edge(from, to, weight) {
+case class BaseEdge(from: BaseVertex, to: BaseVertex, weight: Double = 1)
+    extends Edge[BaseVertex] {
   protected def construct(from: BaseVertex, to: BaseVertex, weight: Double) =
     BaseEdge(from, to, weight)
 }
 
-object BaseEdge {
-  def apply(from: BaseVertex, to: BaseVertex, weight: Double = 1) =
-    new BaseEdge(from, to, weight)
-}

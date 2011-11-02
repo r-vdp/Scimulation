@@ -9,7 +9,7 @@ import core.graph.{DirectedGraph, Edge, Vertex}
  * Time: 17:47
  */
 @deprecated("Useless?", "0")
-class EdgeTraverser[V <: Vertex, E <: Edge[V]] (graph: DirectedGraph[V, E])
+class BreadthFirstTraverser[V <: Vertex, E <: Edge[V]] (graph: DirectedGraph[V, E])
   extends GraphTraverser[V, E](graph) {
 
   def foreach[U](f: (V) => U) {

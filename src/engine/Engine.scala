@@ -1,7 +1,7 @@
 package engine
 
 import core.graph.{Graph, Edge, Vertex}
-import java.util.PriorityQueue
+import scala.collection.mutable.PriorityQueue
 
 trait Time{
   val time:Integer
@@ -10,23 +10,19 @@ trait Time{
   
 }
 
-trait Event extends Transaction with Time{
+trait Event extends Transaction[Vertex] with Time{
   
 }
 
-trait Transactions[V <: Vertex] {
-  def list: List[Transaction];
+trait Transactions {
+  def list: List[Transaction[Vertex]];
   
   def doTransactions() = {
-    for (t <-list) {
-      if(t.areAble){
-        t.doTransaction
-      }
-    }
+    (list withFilter (_.areAble)) foreach (_.doTransaction)
   }
 }
 
-class Transaction(f: Seq[Vertex] => Seq[Vertex],stakeholders: List[Vertex with Action[Vertex]]) {
+class Transaction[V<:Vertex](f: Seq[V] => Seq[V],stakeholders: List[V with Action[V]]) {
   def areAble[V <: Vertex]: Boolean =
     (true /: stakeholders) (_ && _.isAble)
   
@@ -43,7 +39,7 @@ trait Action[V <: Vertex] {
 class Engine[V <: Vertex, E <: Edge[V]](graph: Graph[V, E]) {
 
   type AV = V with Action[V]
-  type TV = V with Transactions[V]
+  type TV = V with Transactions
   
   
   var time:Integer = 0
@@ -57,13 +53,10 @@ class Engine[V <: Vertex, E <: Edge[V]](graph: Graph[V, E]) {
     }
   }
 
-  // list nodes => node heeft queue transac, gaan die af,
   
   def roundBased(list: List[TV]): List[TV] = {
-     for(t<-list){
-       t.doTransactions
-     }
-     list
+		  list foreach (_.doTransactions)
+		  list
   }
 
   def turnBased(list: List[AV]): List[AV] = {
@@ -73,15 +66,15 @@ class Engine[V <: Vertex, E <: Edge[V]](graph: Graph[V, E]) {
   def eventBased(list: List[V]): List[V] = {
    
     
-    while(time == eventList.peek().getTime){
-      eventList.poll.doTransaction
+    while(time == eventList.head.getTime){
+         eventList.dequeue().doTransaction
     }
     
     list
   }
   
   def addEvent(event:Event)={
-	  eventList.add(event)
+	  eventList.+=(event)
   }
   
 }

@@ -4,13 +4,10 @@ import core.graph.{Graph, Edge, Vertex}
 import scala.collection.mutable.PriorityQueue
 
 trait Time{
-  val time:Integer
-  
-  def getTime : Integer = time
-  
+  val time:Int
 }
 
-trait Event extends Transaction[Vertex] with Time{
+trait Event extends Transaction[Vertex] with Time with Ordered[Event]{
   
 }
 
@@ -42,8 +39,8 @@ class Engine[V <: Vertex, E <: Edge[V]](graph: Graph[V, E]) {
   type TV = V with Transactions
   
   
-  var time:Integer = 0
-  var eventList:PriorityQueue[Event] = _;
+  var time:Int = 0
+  var eventList = PriorityQueue.empty[Event]
   
   
   def run(f: Seq[V] => Seq[V], count: Int) {
@@ -66,7 +63,7 @@ class Engine[V <: Vertex, E <: Edge[V]](graph: Graph[V, E]) {
   def eventBased(list: List[V]): List[V] = {
    
     
-    while(time == eventList.head.getTime){
+    while(time == eventList.head.time){
          eventList.dequeue().doTransaction
     }
     

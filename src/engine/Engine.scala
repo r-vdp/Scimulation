@@ -47,7 +47,7 @@ class Engine[V <: Vertex, E <: Edge[V]](graph: Graph[V, E]) {
   
   
   var time:Integer = 0
-  var eventList:PriorityQueue[Event];
+  var eventList:PriorityQueue[Event] = _;
   
   
   def run(f: Seq[V] => Seq[V], count: Int) {

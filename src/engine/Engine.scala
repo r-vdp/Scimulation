@@ -4,7 +4,7 @@ import core.graph.{Graph, Edge, Vertex}
 
 
 trait Transactions {
-  def list: List[Transaction]
+  def list: List[Transaction];
 }
 
 class Transaction {

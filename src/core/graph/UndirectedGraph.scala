@@ -1,6 +1,5 @@
 package core.graph
 
-import traversal.{SimpleGraphTraverser, GraphTraverser}
 
 /**
  * A class representing undirected graphs.
@@ -67,14 +66,9 @@ class UndirectedGraph[V <: Vertex, E <: Edge[V]] extends Graph[V, E] {
 
   protected[graph] def vertices = map.keySet
 
+  protected[graph] def edges = map.values.flatten.toSet
+
   def someVertex = map.keys.head
-
-  def setTraverser(t: GraphTraverser[V, E]) {
-    traverser = t
-  }
-
-  protected var traverser: GraphTraverser[V, E] =
-    new SimpleGraphTraverser(this)
 
   override def toString = Graph.stringBuilder(map)
 }

@@ -1,6 +1,7 @@
 package core.graph
 
 import org.scalatest.{Tag, BeforeAndAfterAll, FunSuite}
+import traversal.BreadthFirstTraverser
 
 /**
  * Created by Ramses de Norre
@@ -12,9 +13,9 @@ class GraphTest extends FunSuite with BeforeAndAfterAll {
   type G = Graph[BaseVertex, TestEdge]
 
   var g1: G = _
-  var g2: G = _
+  var g2: DirectedGraph[BaseVertex, TestEdge] = _
   var g3: G = _
-  var g4: G = _
+  var g4: UndirectedGraph[BaseVertex, TestEdge] = _
 
   var v1: BaseVertex = _
   var v2: BaseVertex = _
@@ -139,5 +140,13 @@ class GraphTest extends FunSuite with BeforeAndAfterAll {
     val vs = (for (v <- g) yield v).toList
 
     vertices foreach (v => assert(vs contains v))
+  }
+
+  test("BF traversal.") {
+    g2.addVertices(vertices)
+    g2.addEdges(edges)
+    g2.setTraverser(new BreadthFirstTraverser(g2))
+    val vs = (for (v <- g2) yield v).toSet
+    assert(sameElements(v1 :: v2 :: v3 :: Nil, vs))
   }
 }

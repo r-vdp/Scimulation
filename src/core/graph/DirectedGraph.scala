@@ -67,10 +67,9 @@ class DirectedGraph[V <: Vertex, E <: Edge[V]] extends Graph[V, E] {
 
   protected[graph] def vertices = map.keySet
 
-  def someVertex = map.keys.head
+  protected[graph] def edges = map.values.flatten.toSet
 
-  protected var traverser: GraphTraverser[V, E] =
-    new SimpleGraphTraverser(this)
+  def someVertex = map.keys.head
 
   override def toString = Graph.stringBuilder(map)
 }

@@ -1,5 +1,6 @@
 package core.graph
 
+import persistence.EdgeBuilder
 import scala.collection.Seq
 import scala.collection.Iterator
 
@@ -42,7 +43,7 @@ abstract class Edge[V <: Vertex] extends Seq[V] with Ordered[Edge[V]] {
   def compare(that: Edge[V]) = this.weight compare that.weight
 
   /**
-   * Override equals from Seq because we want weight to matter as well
+   * Override equals from Seq because we want weight to matter as well.
    */
   override def equals(that: Any) = that match {
     case Edge(`from`, `to`, `weight`) => true
@@ -51,13 +52,32 @@ abstract class Edge[V <: Vertex] extends Seq[V] with Ordered[Edge[V]] {
 
   override def hashCode =
     from.hashCode + (31 * to.hashCode + (31 * weight.toString.hashCode))
+
+  def toXML =
+    <edge>
+      <class>{getClass.getCanonicalName}</class>
+      <from>{from.id}</from>
+      <to>{to.id}</to>
+      <weight>{weight}</weight>
+    </edge>
 }
 
 /**
- * An extractor to pattern match on general edges
+ * An extractor to pattern match on general edges,
+ * the loose typing of unapply complies with type erasure.
  */
 object Edge {
-  def unapply[V <: Vertex](edge: Edge[V]): Option[(V, V, Double)] = {
+  def unapply(edge: Edge[_]): Option[(Any, Any, Double)] =
     Some((edge.from, edge.to, edge.weight))
+
+  def fromXML[V <: Vertex, E <: Edge[V]](vertices: Map[String, V])
+                                        (node: xml.Node): E = {
+    val builder = new EdgeBuilder
+    val edgeClass = (node \ "class").text
+    val from = (node \ "from").text
+    val to = (node \ "to").text
+    val weight = (node \ "weight").text.toDouble
+
+    builder.create[V, E](edgeClass, vertices(from), vertices(to), weight)
   }
 }

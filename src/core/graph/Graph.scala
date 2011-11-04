@@ -1,6 +1,9 @@
 package core.graph
 
-import traversal.GraphTraverser
+import persistence.{GraphBuilder, EdgeBuilder, VertexBuilder}
+import traversal.{SimpleGraphTraverser, GraphTraverser}
+import xml.NodeBuffer
+
 
 /**
  * Abstract graph class.
@@ -63,6 +66,8 @@ abstract class Graph[V <: Vertex, E <: Edge[V]]
 
   protected[graph] def vertices: Set[V]
 
+  protected[graph] def edges: Set[E]
+
   /**
    * Retrieve some vertex that is part of this graph,
    * used to be able to get an entrance point into the graph.
@@ -82,11 +87,40 @@ abstract class Graph[V <: Vertex, E <: Edge[V]]
   /**
    * The default traverser if none is specified.
    */
-  protected implicit var traverser: GraphTraverser[V, E]
+  protected implicit var traverser: GraphTraverser[V, E] =
+    new SimpleGraphTraverser(this)
+
+
+  def setTraverser(t: GraphTraverser[V, E]) {
+    traverser = t
+  }
 
   protected def foreachImpl[U](f: (V) => U)
                             (implicit traverser: GraphTraverser[V, E]) {
     traverser foreach f
+  }
+
+  def toXML =
+    <graph>
+      <vertices>
+        {verticesToXML}
+      </vertices>
+      <edges>
+        {edgesToXML}
+      </edges>
+      <class>{getClass.getCanonicalName}</class>
+    </graph>
+
+  def verticesToXML = {
+    val out = new NodeBuffer
+    vertices foreach {out += _.toXML}
+    out
+  }
+
+  def edgesToXML = {
+    val out = new NodeBuffer
+    edges foreach {out += _.toXML}
+    out
   }
 }
 
@@ -100,5 +134,14 @@ object Graph {
       case (vertex, edges) =>
         vertex + ": " + (edges mkString ", ")
     } mkString "\n"
+  }
+
+  def fromXML[V <: Vertex, E <: Edge[V]](graphClass: String,
+                                         vertices: Seq[V],
+                                         edges: Seq[E]): Graph[V, E] = {
+    val graph = (new GraphBuilder).create[V, E](graphClass)
+    graph.addVertices(vertices)
+    graph.addEdges(edges)
+    graph
   }
 }

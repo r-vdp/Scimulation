@@ -2,6 +2,7 @@ package core
 
 import graph._
 import graph.mst.{Node, Leaf, Tree}
+import persistence.GraphRepository
 
 /**
  * Created by Ramses de Norre
@@ -10,9 +11,18 @@ import graph.mst.{Node, Leaf, Tree}
  */
 
 object SandBox extends App {
+
+  /*
+  val v1 = BaseVertex("test",
+    Map.empty + ("naam" -> "waarde") + ("naam2" -> 2.0))
+  val v2 = BaseVertex("sec")
+
+  println(BaseEdge(v1, v2, 10).toXML)
+  */
+
   testGraph()
   //testTree()
-  testTraversal()
+  //testTraversal()
 
   def testTraversal() {
     val graph = new UndirectedGraph[BaseVertex, BaseEdge]
@@ -62,7 +72,7 @@ object SandBox extends App {
   }
 
   def testGraph() {
-    val graph = new DirectedGraph[BaseVertex, BaseEdge]
+    val graph = new UndirectedGraph[BaseVertex, BaseEdge]
 
     val root = BaseVertex("root")
     val second = BaseVertex("second")
@@ -109,6 +119,12 @@ object SandBox extends App {
     println("Second neighbours: " + graph.neighbours(second))
 
     graph.neighbours(BaseVertex("none"))
+
+    println(graph.toXML)
+    GraphRepository.persistGraph(graph, "/tmp/graph.xml")
+
+    val loadedGraph = GraphRepository.getGraph("/tmp/graph.xml")
+    println("\nloaded:\n" + loadedGraph)
   }
 }
 

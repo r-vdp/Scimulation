@@ -72,6 +72,43 @@ class EdgeTest extends FunSuite with BeforeAndAfterAll {
     assert(e3 === e2)
   }
 
+  test("Equals") {
+    assert(TestEdge(v1, v2, 13) == TestEdge(v1, v2, 13))
+    assert(TestEdge(v1, v2, 10) != TestEdge(v1, v2, 13))
+    assert(TestEdge(v2, v1, 13) != TestEdge(v1, v2, 13))
+    assert(TestEdge(v1, v2, 10) == new Edge[Vertex] {
+      val from = v1
+      val to = v2
+      val weight = 10d
+
+      protected def construct(from: Vertex, to: Vertex, weight: Double) = null
+    })
+    assert(TestEdge(v1, v2, 10) != new Edge[Vertex] {
+      val from = v2
+      val to = v2
+      val weight = 10d
+
+      protected def construct(from: Vertex, to: Vertex, weight: Double) = null
+    })
+
+    /*
+     * Beware! Definition of equals() in TestEdge2 breaks reflexivity
+     */
+    assert(TestEdge(v1, v2, 10) == TestEdge2(v1, v2, 10, 3))
+    assert(TestEdge2(v1, v2, 10, 3) != TestEdge(v1, v2, 10))
+  }
+
+  case class TestEdge2(from: BaseVertex, to: BaseVertex, weight: Double,
+                       extra: Int) extends Edge[BaseVertex] {
+    protected def construct(from: BaseVertex, to: BaseVertex,
+                            weight: Double) = null
+
+    override def equals(that: Any) = that match {
+      case TestEdge2(`from`, `to`, `weight`, `extra`) => true
+      case _ => false
+    }
+  }
+
   test("Reverse") {
     val er = e.reverse
     assert(er(0) === e(1))

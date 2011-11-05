@@ -6,7 +6,7 @@ package core.graph
  * Time: 16:41
  */
 class BaseVertex(id: String,
-                 override val params: Map[String, Any] = Map.empty)
+                 override var params: Map[String, Any] = Map.empty)
   extends Vertex(id) {
 
   def getName: Option[Any] = params.get("name")

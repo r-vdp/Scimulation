@@ -14,7 +14,7 @@ import xml.NodeBuffer
  */
 abstract class Vertex(val id: String) {
 
-  val params: Map[String, Any]
+  var params: Map[String, Any]
 
   override def equals(that: Any) = that match {
     case Vertex(`id`) => true

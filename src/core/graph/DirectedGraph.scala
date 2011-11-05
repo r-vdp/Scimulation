@@ -1,8 +1,5 @@
 package core.graph
 
-import traversal.{GraphTraverser, SimpleGraphTraverser}
-
-
 /**
  * A class representing directed graphs.
  * Created by Ramses de Norre

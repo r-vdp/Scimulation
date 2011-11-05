@@ -1,6 +1,6 @@
 package core.graph
 
-import persistence.{GraphBuilder, EdgeBuilder, VertexBuilder}
+import persistence.GraphBuilder
 import traversal.{SimpleGraphTraverser, GraphTraverser}
 import xml.NodeBuffer
 

@@ -87,6 +87,6 @@ class XMLTest extends FunSuite {
         <class>core.graph.UndirectedGraph</class>
       </graph>
 
-    println((xml \ "vertices") foreach {n => println("some: " + n)})
+    println((xml \ "vertices" \ "vertex") foreach {n => println("some: " + n)})
   }
 }

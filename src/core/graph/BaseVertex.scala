@@ -12,6 +12,8 @@ class BaseVertex(id: String,
   extends Vertex(id) {
 
   def getName: Option[Any] = params.get("name")
+
+  override def toString = "BaseVertex(" + id + ")"
 }
 
 object BaseVertex {

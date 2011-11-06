@@ -68,5 +68,6 @@ class DirectedGraph[V <: Vertex, E <: Edge[V]] extends Graph[V, E] {
 
   def someVertex = map.keys.head
 
-  override def toString = Graph.stringBuilder(map)
+  override def toString =
+    this.getClass.getCanonicalName + "\n" + Graph.stringBuilder(map)
 }

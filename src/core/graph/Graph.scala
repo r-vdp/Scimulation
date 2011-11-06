@@ -102,13 +102,13 @@ abstract class Graph[V <: Vertex, E <: Edge[V]]
 
   def toXML =
     <graph>
+      <class>{getClass.getCanonicalName}</class>
       <vertices>
         {verticesToXML}
       </vertices>
       <edges>
         {edgesToXML}
       </edges>
-      <class>{getClass.getCanonicalName}</class>
     </graph>
 
   def verticesToXML = {

@@ -1,7 +1,7 @@
 package core.graph.persistence
 
 import xml.XML
-import core.graph.{Edge, Vertex, Graph}
+import core.graph.{BaseVertex, Edge, Vertex, Graph}
 
 /**
  * Created by Ramses de Norre
@@ -17,10 +17,10 @@ object GraphRepository {
 
   def getGraph[V <: Vertex, E <: Edge[V]](file: String): Graph[V, E] = {
     val node = XML.loadFile(file)
-    val vertices: Map[String, V] =
-      getVertexMap((node \ "vertices") map Vertex.fromXML)
-    val edges: Seq[E] = (node \ "edges") map Edge.fromXML(vertices)
-    Graph.fromXML((node \ "class").text, vertices.values.toSeq, edges)
+    val vertices = (node \ "vertices" \ "vertex") map Vertex.fromXML[V]
+    val vertexMap: Map[String, V] = getVertexMap(vertices)
+    val edges = (node \ "edges" \ "edge") map Edge.fromXML[V, E](vertexMap)
+    Graph.fromXML[V, E]((node \ "class").text, vertices, edges)
   }
 
   private[this] def getVertexMap[V <: Vertex](vertices: Seq[V]) = {

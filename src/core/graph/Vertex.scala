@@ -2,6 +2,7 @@ package core.graph
 
 import persistence.VertexBuilder
 import xml.NodeBuffer
+import scala.collection.mutable.Map
 
 /**
  * Class representing abstract vertices in a graph.
@@ -14,7 +15,7 @@ import xml.NodeBuffer
  */
 abstract class Vertex(val id: String) {
 
-  val params: scala.collection.mutable.Map[String, Any]
+  val params: Map[String, Any]
 
   override def equals(that: Any) = that match {
     case Vertex(`id`) => true
@@ -33,7 +34,11 @@ abstract class Vertex(val id: String) {
   def paramXML = {
     val out = new NodeBuffer
     params foreach { case (key, value) =>
-      out += <attr> <name>{key}</name> <value>{value}</value> </attr>
+      out +=
+        <attr>
+          <name>{key}</name>
+          <value>{value}</value>
+        </attr>
     }
     out
   }

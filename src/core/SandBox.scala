@@ -20,7 +20,8 @@ object SandBox extends App {
   println(BaseEdge(v1, v2, 10).toXML)
   */
 
-  testGraph()
+  //testGraph()
+  loadGraph()
   //testTree()
   //testTraversal()
 
@@ -122,9 +123,13 @@ object SandBox extends App {
 
     println(graph.toXML)
     GraphRepository.persistGraph(graph, "/tmp/graph.xml")
+  }
 
-    val loadedGraph = GraphRepository.getGraph("/tmp/graph.xml")
+  def loadGraph() {
+    val loadedGraph =
+      GraphRepository.getGraph("/tmp/graph.xml")
     println("\nloaded:\n" + loadedGraph)
+    println("size: " + loadedGraph.size)
   }
 }
 

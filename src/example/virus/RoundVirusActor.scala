@@ -1,39 +1,24 @@
 package example.virus
 
 import scala.collection.mutable.Map
-
+import example.virus.Status._
 import core.graph.Vertex
 import engine.Action
-
-object Status extends Enumeration {
-  type Status = Value
-  val S, NI, I, R = Value
-}
-
-object Gender extends Enumeration {
-  type Gender = Value
-  val Male, Female = Value
-}
-
-import example.virus.Status._
+import engine.Multiverse
 
 // zouden graag with action[] eruit trekken zodat de TurnbasedVirusSimulation gebruiker een nieuw kind maakt die extend virusactor with Action
 // idem voor roundVirusactor, die dan grotendeels zou wegsmelten
 // hadden errors met overerving
 
-class VirusActor(id: String, map: Map[String, Any])
-  extends Vertex(id) with Action[VirusActor] {
+class RoundVirusActor(id: String, map: Map[String, Any])
+  extends Vertex(id) with Multiverse[RoundVirusActor] with Action[RoundVirusActor] with Ordered[RoundVirusActor]{
 
-  override def execute() {
-    if (getStatus == Status.S) {
-      infect()
-    } else if (getStatus == Status.I && getGender == Gender.Female) {
-      heal()
-    }
-  }
-
+  override def calcPrior = 0
+  
+  override def execute() {}
+  
   override var params: Map[String, Any] = map
-
+  
   def getStatus = params.get("status") getOrElse "unknown"
 
   def getGender = params.get("gender") getOrElse "unknown"
@@ -63,7 +48,7 @@ class VirusActor(id: String, map: Map[String, Any])
   }
 }
 
-object VirusActor {
+object RoundVirusActor {
   def apply(id: String, params: Map[String, Any]) =
-    new VirusActor(id, params)
+    new RoundVirusActor(id, params)
 }

@@ -11,7 +11,7 @@ object EventBasedVirusSimulation extends App {
   testEngine()
 
   def testEngine() {
-    val graph = new UndirectedGraph[VirusActor, VirusEdge]
+    val graph = new UndirectedGraph[VirusActor, VirusEdge[VirusActor]]
 
     var rootMap: Map[String, Any] = Map.empty
     rootMap += "status" -> Status.S
@@ -70,13 +70,11 @@ object EventBasedVirusSimulation extends App {
 }
 
 case class InfectEvent(t:Int,v:VirusActor) extends Event[VirusActor](t,v){
-	  override def isAble = true
 	  override def execute(){
 	    v.infect()
 	  }
 }
   case class HealEvent(t:Int,v:VirusActor) extends Event[VirusActor](t,v){
-	  override def isAble = true
 	  override def execute(){
 	    v.heal()
 	  }

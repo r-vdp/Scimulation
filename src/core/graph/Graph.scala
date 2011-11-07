@@ -18,7 +18,13 @@ abstract class Graph[V <: Vertex, E <: Edge[V]]
    * The number of vertices in this graph
    */
   override def size: Int
-
+  
+  
+  // deepcopy nodig voor roundbased simulation
+  def deepCopy : Graph[V,E]
+  
+  
+  
   def contains(vertex: V): Boolean
   def contains(edge: E): Boolean
 

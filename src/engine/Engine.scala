@@ -3,11 +3,10 @@ package engine
 import core.graph.{Graph, Edge, Vertex}
 import scala.collection.mutable.PriorityQueue
 
-trait Time {
-  val time: Int
+abstract class Event[V<:Vertex](t:Int,node:V) extends Action[V]  with Ordered[Event[V]]{
+	val time = t
+	def compare(t:Event[V])= if (t.time < this.time) -1 else if (this.time == t.time) 0 else 1
 }
-
-trait Event extends Transaction[Vertex] with Time with Ordered[Event]
 
 trait Transactions {
   def list: List[Transaction[Vertex]];
@@ -56,17 +55,18 @@ class RoundBasedEngine[V <: Vertex with Transactions, E <: Edge[V]]
 class EventBasedEngine[V <: Vertex, E <: Edge[V]]
     (graph: Graph[V, E],count:Int) extends Engine{
 
-  var eventList = PriorityQueue.empty[Event]
+  var eventList = PriorityQueue.empty[Event[V]]
 
   override def run() {
     for (time <- 0 until count) {
-      while(time == eventList.head.time) {
-        eventList.dequeue().doTransaction()
-    	}
+      println("The time is: "+time)
+      while(!eventList.isEmpty && time == eventList.head.time) {
+        eventList.dequeue().execute()
+        }
     }
   }
 
-  def addEvent(event: Event) {
+  def addEvent(event: Event[V]) {
 	  eventList += event
   }
 }

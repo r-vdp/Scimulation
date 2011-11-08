@@ -4,7 +4,6 @@ import persistence.GraphBuilder
 import traversal.{SimpleGraphTraverser, GraphTraverser}
 import xml.NodeBuffer
 
-
 /**
  * Abstract graph class.
  * Created by Ramses de Norre
@@ -18,6 +17,11 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
    * The number of vertices in this graph
    */
   override def size: Int
+
+  // deepcopy nodig voor roundbased simulation
+  def deepCopy: Graph[V,E]
+
+  implicit def set2Seq[A](set: Set[A]): Seq[A] = set.toSeq
 
   def contains(vertex: V): Boolean
   def contains(edge: E): Boolean

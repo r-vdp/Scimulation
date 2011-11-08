@@ -55,4 +55,11 @@ class DirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
 
   override def toString =
     this.getClass.getCanonicalName + "\n" + Graph.stringBuilder(map)
+
+  def deepCopy: DirectedGraph[V, E] = {
+    val graph = new DirectedGraph[V, E]
+    graph.addVertices(vertices)
+    graph.addEdges(edges)
+    graph
+  }
 }

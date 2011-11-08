@@ -1,46 +1,46 @@
 package example.virus
 
 import scala.collection.mutable.Map
-
 import core.graph._
 import engine.TurnBasedEngine
+import engine.RoundBasedEngine
 
-object TurnBasedVirusSimulation extends App {
+object RoundBasedVirusSimulation extends App {
 
   testEngine()
 
   def testEngine() {
-    val graph = new UndirectedGraph[VirusActor, VirusEdge[VirusActor]]
+    val graph = new UndirectedGraph[RoundVirusActor, VirusEdge[RoundVirusActor]]
 
     var rootMap: Map[String, Any] = Map.empty
     rootMap += "status" -> Status.S
     rootMap += "probability" -> 3
     rootMap += "gender" -> Gender.Male
-    val root = VirusActor("root", rootMap)
+    val root = RoundVirusActor("root", rootMap)
 
     var secondMap: Map[String, Any] = Map.empty
     secondMap += "status" -> Status.S
     secondMap += "probability" -> 6
     secondMap += "gender" -> Gender.Female
-    val second = VirusActor("second", secondMap)
+    val second = RoundVirusActor("second", secondMap)
 
     var thirdMap: Map[String, Any] = Map.empty
     thirdMap += "status" -> Status.NI
     thirdMap += "probability" -> 2
     thirdMap += "gender" -> Gender.Male
-    val third = VirusActor("third", thirdMap)
+    val third = RoundVirusActor("third", thirdMap)
 
     var fourthMap: Map[String, Any] = Map.empty
     fourthMap += "status" -> Status.S
     fourthMap += "probability" -> 7
     fourthMap += "gender" -> Gender.Female
-    val fourth = VirusActor("fourth", fourthMap)
+    val fourth = RoundVirusActor("fourth", fourthMap)
 
     var fifthMap: Map[String, Any] = Map.empty
     fifthMap += "status" -> Status.S
     fifthMap += "probability" -> 5
     rootMap += "gender" -> Gender.Male
-    val fifth = VirusActor("fifth", fifthMap)
+    val fifth = RoundVirusActor("fifth", fifthMap)
 
     val vertices = root :: second :: third :: fourth :: fifth :: Nil
 
@@ -57,7 +57,9 @@ object TurnBasedVirusSimulation extends App {
     graph.addEdges(edges)
     //println(graph + "\n")
 
-    val engine = new TurnBasedEngine(graph, 5)
+    //TODO
+    // ?error?
+    val engine = new RoundBasedEngine(graph, 5)
 
     engine.run()
   }

@@ -57,4 +57,11 @@ class UndirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
 
   override def toString =
     this.getClass.getCanonicalName + "\n" + Graph.stringBuilder(map)
+
+  def deepCopy: UndirectedGraph[V, E] = {
+    val graph = new UndirectedGraph[V, E]
+    graph.addVertices(vertices)
+    graph.addEdges(edges)
+    graph
+  }
 }

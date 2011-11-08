@@ -11,7 +11,7 @@ import xml.NodeBuffer
  * Date: 31/10/11
  * Time: 13:11
  */
-abstract class Graph[V <: Vertex, E <: Edge[V]]
+abstract class Graph[V <: Vertex[V], E <: Edge[V]]
   extends Observable with Traversable[V] {
 
   /**
@@ -27,32 +27,54 @@ abstract class Graph[V <: Vertex, E <: Edge[V]]
    */
   def isLegal(edge: E) = edge forall (this contains)
 
-  def addVertex(vertex: V, fire: Boolean = true): Boolean
+  def addVertex(vertex: V) {
+    if (!contains(vertex)) {
+      addVertexImpl(vertex)
+      fireChanged()
+    }
+  }
+
+  protected def addVertexImpl(vertex: V)
 
   def addVertices(vertices: Seq[V]) {
-    // Scala seems to short-circuit evaluation of a boolean resulting from a
-    // fold, it is thus not possible to write this as a single foldl...
-    if ((vertices map (addVertex(_, false))) contains true) {
+    if (!(vertices withFilter (!contains(_)) map addVertexImpl).isEmpty) {
       fireChanged()
     }
   }
 
-  def addEdge(edge: E, fire: Boolean = true): Boolean
+  def addEdge(edge: E) {
+    if (isLegal(edge)) {
+      addEdgeImpl(edge)
+      fireChanged()
+    }
+  }
+
+  protected def addEdgeImpl(edge: E)
 
   def addEdges(edges: Seq[E]) {
-    if ((edges map (addEdge(_, false))) contains true) {
+    if (!((edges withFilter isLegal) map addEdgeImpl).isEmpty) {
       fireChanged()
     }
   }
 
-  protected def fireIf(fire: Boolean) {
-    if (fire) {
+  def removeEdge(edge: E) {
+    if (contains(edge)) {
+      removeEdgeImpl(edge)
       fireChanged()
     }
   }
 
-  def removeEdge(edge: E)
-  def removeVertex(vertex: V)
+  protected def removeEdgeImpl(edge: E)
+
+  def removeVertex(vertex: V) {
+    if (contains(vertex)) {
+      removeVertexImpl(vertex)
+      assert(!contains(vertex))
+      fireChanged()
+    }
+  }
+
+  protected def removeVertexImpl(vertex: V)
 
   /**
    * Retrieve a set of all vertices which are reachable from the given vertex.
@@ -129,14 +151,14 @@ object Graph {
    * Helper function that returns a lambda which can be used to turn a map of
    * vertex -> [edge] mappings into a string.
    */
-  private[graph] def stringBuilder[V <: Vertex, E <: Edge[V]] = {
+  private[graph] def stringBuilder[V <: Vertex[V], E <: Edge[V]] = {
     (_: Map[V, Set[E]]) map {
       case (vertex, edges) =>
         vertex + ": " + (edges mkString ", ")
     } mkString "\n"
   }
 
-  def fromXML[V <: Vertex, E <: Edge[V]](graphClass: String,
+  def fromXML[V <: Vertex[V], E <: Edge[V]](graphClass: String,
                                          vertices: Seq[V],
                                          edges: Seq[E]): Graph[V, E] = {
     val graph = (new GraphBuilder).create[V, E](graphClass)

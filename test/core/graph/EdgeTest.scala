@@ -25,9 +25,9 @@ class EdgeTest extends FunSuite with BeforeAndAfterAll {
   }
 
   test("Test other()") {
-    assert(e.other(v1) === Some(v2))
-    assert(e.other(v2) === Some(v1))
-    assert(e.other(BaseVertex("none")) === None)
+    assert((e other v1) === Some(v2))
+    assert((e other v2) === Some(v1))
+    assert((e other BaseVertex("none")) === None)
   }
 
   test("Test apply()") {
@@ -73,22 +73,24 @@ class EdgeTest extends FunSuite with BeforeAndAfterAll {
   }
 
   test("Equals") {
+    type V = BaseVertex
+
     assert(TestEdge(v1, v2, 13) == TestEdge(v1, v2, 13))
     assert(TestEdge(v1, v2, 10) != TestEdge(v1, v2, 13))
     assert(TestEdge(v2, v1, 13) != TestEdge(v1, v2, 13))
-    assert(TestEdge(v1, v2, 10) == new Edge[Vertex] {
+    assert(TestEdge(v1, v2, 10) == new Edge[V] {
       val from = v1
       val to = v2
       val weight = 10d
 
-      protected def construct(from: Vertex, to: Vertex, weight: Double) = null
+      protected def construct(from: V, to: V, weight: Double) = null
     })
-    assert(TestEdge(v1, v2, 10) != new Edge[Vertex] {
+    assert(TestEdge(v1, v2, 10) != new Edge[V] {
       val from = v2
       val to = v2
       val weight = 10d
 
-      protected def construct(from: Vertex, to: Vertex, weight: Double) = null
+      protected def construct(from: V, to: V, weight: Double) = null
     })
 
     /*

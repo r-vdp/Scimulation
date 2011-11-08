@@ -9,7 +9,7 @@ import scala.collection.mutable.Map
  * Time: 21:08
  */
 class VertexBuilder extends GenericBuilder {
-  def create[V <: Vertex]
+  def create[V <: Vertex[V]]
       (vertexClass: String, id: String, params: Map[String, Any]): V = {
     New[V](vertexClass)(id, params)
   }

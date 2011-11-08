@@ -6,7 +6,7 @@ package core.graph
  * Date: 31/10/11
  * Time: 13:43
  */
-class DirectedGraph[V <: Vertex, E <: Edge[V]] extends Graph[V, E] {
+class DirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
   private[this] var map: Map[V, Set[E]] = Map.empty
 
   override def size = map.size
@@ -15,41 +15,26 @@ class DirectedGraph[V <: Vertex, E <: Edge[V]] extends Graph[V, E] {
   def contains(edge: E) =
     (map get edge.from) flatMap (es => Some(es contains edge)) getOrElse false
 
-  def addVertex(vertex: V, fire: Boolean) = {
-    if(!contains(vertex)) {
-      map += (vertex -> Set.empty)
-      fireIf(fire)
-      true
-    } else {
-      false
-    }
+  protected def addVertexImpl(vertex: V) {
+    map += (vertex -> Set.empty)
   }
 
-  def addEdge(edge: E, fire: Boolean)= {
-    if (isLegal(edge)) {
-      map += (edge.from -> (map(edge.from) + edge))
-      fireIf(fire)
-      true
-    } else {
-      false
-    }
+  protected def addEdgeImpl(edge: E) {
+    map += (edge.from -> (map(edge.from) + edge))
+    edge.from addNeighbour edge.to
   }
 
-  def removeEdge(edge: E) {
-    if (contains(edge)) {
-      val from = edge.from
-      map += (from -> (map(from) filter (edge !=)))
-    }
+  protected def removeEdgeImpl(edge: E) {
+    val from = edge.from
+    map += (from -> (map(from) filter (edge !=)))
   }
 
-  def removeVertex(vertex: V) {
-    if (contains(vertex)) {
-      map(vertex) foreach removeEdge
-      map foreach { case (v, es) =>
-        map += (v -> (es filterNot (_.contains(vertex))))
-      }
-      map -= vertex
+  protected def removeVertexImpl(vertex: V) {
+    map(vertex) foreach removeEdge
+    map foreach { case (v, es) =>
+      map += (v -> (es filterNot (_.contains(vertex))))
     }
+    map -= vertex
   }
 
   def neighbours(vertex: V) = {

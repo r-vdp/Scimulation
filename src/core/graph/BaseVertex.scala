@@ -7,13 +7,15 @@ import scala.collection.mutable.Map
  * Date: 24/10/11
  * Time: 16:41
  */
-class BaseVertex(id: String,
-                 override val params: Map[String, Any] = Map.empty)
-  extends Vertex(id) {
+class BaseVertex(inId: String, inMap: Map[String, Any] = Map.empty)
+  extends Vertex[BaseVertex] {
+
+  override lazy val id = inId
+  override lazy val params = inMap
 
   def getName: Option[Any] = params.get("name")
 
-  override def toString = "BaseVertex(" + id + ")"
+  override val toString = "BaseVertex(" + id + ")"
 }
 
 object BaseVertex {

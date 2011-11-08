@@ -1,14 +1,14 @@
 package core.graph
 
-import org.scalatest.{Tag, BeforeAndAfterAll, FunSuite}
 import traversal.BreadthFirstTraverser
+import org.scalatest.{BeforeAndAfterEach, Tag, FunSuite}
 
 /**
  * Created by Ramses de Norre
  * Date: 01/11/11
  * Time: 12:56
  */
-class GraphTest extends FunSuite with BeforeAndAfterAll {
+class GraphTest extends FunSuite with BeforeAndAfterEach {
 
   type G = Graph[BaseVertex, TestEdge]
 
@@ -30,7 +30,7 @@ class GraphTest extends FunSuite with BeforeAndAfterAll {
   var vertices: Seq[BaseVertex] = _
   var edges: Seq[TestEdge] = _
 
-  override protected def beforeAll() {
+  override protected def beforeEach() {
     g1 = new DirectedGraph[BaseVertex, TestEdge]
     g2 = new DirectedGraph[BaseVertex, TestEdge]
     g3 = new UndirectedGraph[BaseVertex, TestEdge]
@@ -56,13 +56,18 @@ class GraphTest extends FunSuite with BeforeAndAfterAll {
     graphs foreach f
   }
 
-  def testG(testName: String, testTags: Tag *)
+  def testG(testName: String, testTags: Tag*)
            (testFun: => G => Unit) {
     super.test(testName, testTags: _*) {
       doG {
         testFun
       }
     }
+  }
+
+  def ignoreG(testName: String, graphs: => Seq[G], testTags: Tag*)
+             (testFun: => G => Unit) {
+    super.ignore(testName, testTags: _*) {}
   }
 
   def testG(testName: String, graphs: => Seq[G], testTags: Tag*)
@@ -120,6 +125,11 @@ class GraphTest extends FunSuite with BeforeAndAfterAll {
     assert(sameElements(v1 :: v3 :: Nil, g neighbours v2))
     assert(sameElements(v2 :: Nil, g neighbours v3))
     assert(sameElements(v1 :: Nil, g neighbours v4))
+
+    assert(sameElements(v2 :: v4 :: Nil, v1.neighbours))
+    assert(sameElements(v1 :: v3 :: Nil, v2.neighbours))
+    assert(sameElements(v2 :: Nil, v3.neighbours))
+    assert(sameElements(v1 :: Nil, v4.neighbours))
   }
 
   testG("neighbours, directed", g1 :: g2 :: Nil) { g =>
@@ -130,10 +140,29 @@ class GraphTest extends FunSuite with BeforeAndAfterAll {
     assert(sameElements(v1 :: v3 :: Nil, g neighbours v2))
     assert(sameElements(Nil, g neighbours v3))
     assert(sameElements(v1 :: Nil, g neighbours v4))
+
+    assert(sameElements(v2 :: Nil, v1.neighbours))
+    assert(sameElements(v1 :: v3 :: Nil, v2.neighbours))
+    assert(sameElements(Nil, v3.neighbours))
+    assert(sameElements(v1 :: Nil, v4.neighbours))
   }
 
-  def sameElements[A](first: Seq[A], sec: Set[A]) =
-    (first.size == sec.size) && (first forall (sec contains))
+  testG("vertex neighbours") { g=>
+    assert(sameElements(g neighbours v1, v1.neighbours))
+    assert(sameElements(g neighbours v2, v2.neighbours))
+    assert(sameElements(g neighbours v3, v3.neighbours))
+    assert(sameElements(g neighbours v4, v4.neighbours))
+  }
+
+  def sameElements[A](first: Seq[A], sec: Seq[A]) =
+    if ((first.size == sec.size) && (first forall (sec contains))) {
+      true
+    } else {
+      println("first: " + first +"\nsecond: " + sec)
+      false
+    }
+
+  implicit def set2Seq[A](set: Set[A]): Seq[A] = set.toSeq
 
   testG("traversable") { g =>
     g.addVertices(vertices)
@@ -146,7 +175,7 @@ class GraphTest extends FunSuite with BeforeAndAfterAll {
     g2.addVertices(vertices)
     g2.addEdges(edges)
     g2.setTraverser(new BreadthFirstTraverser(g2))
-    val vs = (for (v <- g2) yield v).toSet
+    val vs = (for (v <- g2) yield v).toSeq
     assert(sameElements(v1 :: v2 :: v3 :: Nil, vs))
   }
 }

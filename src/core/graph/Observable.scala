@@ -7,7 +7,7 @@ package core.graph
  */
 
 trait Observable {
-  private var listeners: List[ChangeListener] = Nil
+  private[this] var listeners: List[ChangeListener] = Nil
 
   def addChangeListener(listener: ChangeListener) {
     listeners = listener :: listeners

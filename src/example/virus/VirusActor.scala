@@ -2,8 +2,8 @@ package example.virus
 
 import scala.collection.mutable.Map
 
-import core.graph.Vertex
 import engine.Action
+import core.graph.{Vertex}
 
 object Status extends Enumeration {
   type Status = Value
@@ -17,8 +17,11 @@ object Gender extends Enumeration {
 
 import example.virus.Status._
 
-class VirusActor(id: String, map: Map[String, Any])
-  extends Vertex(id) with Action[VirusActor] {
+class VirusActor(inId: String, inMap: Map[String, Any])
+  extends Vertex[VirusActor] with Action[VirusActor] {
+
+  override lazy val id = inId
+  override lazy val params = inMap
 
   override def isAble: Boolean = true
 
@@ -29,8 +32,6 @@ class VirusActor(id: String, map: Map[String, Any])
       heal()
     }
   }
-
-  override val params: Map[String, Any] = map
 
   def getStatus = params.get("status") getOrElse "unknown"
 

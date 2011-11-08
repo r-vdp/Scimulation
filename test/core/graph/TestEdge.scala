@@ -11,4 +11,3 @@ case class TestEdge(from: BaseVertex, to: BaseVertex, weight: Double = 1)
   protected def construct(from: BaseVertex, to: BaseVertex, weight: Double) =
     TestEdge(from, to, weight)
 }
-

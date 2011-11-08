@@ -6,7 +6,7 @@ package core.graph
  * Date: 27/10/11
  * Time: 10:32
  */
-class UndirectedGraph[V <: Vertex, E <: Edge[V]] extends Graph[V, E] {
+class UndirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
   private[this] var map: Map[V, Set[E]] = Map.empty
 
   override def size = map.size
@@ -16,38 +16,24 @@ class UndirectedGraph[V <: Vertex, E <: Edge[V]] extends Graph[V, E] {
     map.get(_) flatMap (es => Some(es contains edge)) getOrElse false
   }
 
-  def addVertex(vertex: V, fire: Boolean = true) = {
-    if(!contains(vertex)) {
-      map += (vertex -> Set.empty)
-      fireIf(fire)
-      true
-    } else {
-      false
+  protected def addVertexImpl(vertex: V) {
+    map += (vertex -> Set.empty)
+  }
+
+  protected def addEdgeImpl(edge: E) {
+    edge foreach { vertex =>
+      map += (vertex -> (map(vertex) + edge))
+      vertex addNeighbour (edge other vertex).get
     }
   }
 
-  def addEdge(edge: E, fire: Boolean = true) = {
-    if (isLegal(edge)) {
-      edge foreach { vertex => map += (vertex -> (map(vertex) + edge))}
-      fireIf(fire)
-      true
-    } else {
-      false
-    }
+  protected def removeEdgeImpl(edge: E) {
+    edge foreach { v => map += (v -> (map(v) filter (edge !=)))}
   }
 
-  def removeEdge(edge: E) {
-    if (contains(edge)) {
-      edge foreach { v => map += (v -> (map(v) filter (edge !=)))}
-    }
-  }
-
-  def removeVertex(vertex: V) {
-    if (contains(vertex)) {
-      map(vertex) foreach removeEdge
-      map -= vertex
-      assert(!contains(vertex))
-    }
+  protected def removeVertexImpl(vertex: V) {
+    map(vertex) foreach removeEdge
+    map -= vertex
   }
 
   /**
@@ -55,7 +41,7 @@ class UndirectedGraph[V <: Vertex, E <: Edge[V]] extends Graph[V, E] {
    */
   def neighbours(vertex: V) =
     if (contains(vertex)) {
-      ((map(vertex) map (_.other(vertex)))
+      ((map(vertex) map (_ other vertex))
         withFilter (_.isDefined)) map (_.get)
     } else {
       Set.empty

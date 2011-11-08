@@ -10,7 +10,7 @@ import scala.collection.Iterator
  * Date: 24/10/11
  * Time: 16:41
  */
-abstract class Edge[V <: Vertex] extends Seq[V] with Ordered[Edge[V]] {
+abstract class Edge[V <: Vertex[V]] extends Seq[V] with Ordered[Edge[V]] {
 
   val from: V
   val to: V
@@ -70,7 +70,7 @@ object Edge {
   def unapply(edge: Edge[_]): Option[(Any, Any, Double)] =
     Some((edge.from, edge.to, edge.weight))
 
-  def fromXML[V <: Vertex, E <: Edge[V]](vertices: Map[String, V])
+  def fromXML[V <: Vertex[V], E <: Edge[V]](vertices: Map[String, V])
                                         (node: xml.Node): E = {
     val builder = new EdgeBuilder
     val edgeClass = (node \ "class").text

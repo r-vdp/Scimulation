@@ -8,6 +8,6 @@ import core.graph.{Edge, Graph, Vertex}
  * Time: 17:21
  */
 
-abstract class GraphTraverser[V <: Vertex, E <: Edge[V]]
+abstract class GraphTraverser[V <: Vertex[V], E <: Edge[V]]
   (protected  val graph: Graph[V, E])
     extends Traversable[V]

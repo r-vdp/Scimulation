@@ -8,7 +8,7 @@ import scala.collection.mutable.PriorityQueue
  * Date: 28/10/11
  * Time: 16:34
  */
-private class MST[V <: Vertex, E <: Edge[V]] {
+private class MST[V <: Vertex[V], E <: Edge[V]] {
 
   /**
    * Make the priorityqueue sort in descending order by reversing the
@@ -44,7 +44,7 @@ private class MST[V <: Vertex, E <: Edge[V]] {
   def visit(graph: UndirectedGraph[V, E], v: V) {
     inTree += v
     graph.neighbourEdges(v) filter { e =>
-      !inTree.contains(e.other(v).get)
+      !(inTree contains (e other v).get)
     } foreach (pq += _)
   }
 
@@ -55,6 +55,7 @@ private class MST[V <: Vertex, E <: Edge[V]] {
 }
 
 object MST {
-  def apply[V <: Vertex, E <: Edge[V]] (graph: UndirectedGraph[V, E]): Iterable[V] =
+  def apply[V <: Vertex[V], E <: Edge[V]]
+  (graph: UndirectedGraph[V, E]): Iterable[V] =
     (new MST[V, E])(graph)
 }

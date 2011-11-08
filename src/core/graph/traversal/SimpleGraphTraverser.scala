@@ -8,7 +8,7 @@ import core.graph.{Graph, Edge, Vertex}
  * Time: 16:07
  */
 
-private[graph] class SimpleGraphTraverser[V <: Vertex, E <: Edge[V]]
+private[graph] class SimpleGraphTraverser[V <: Vertex[V], E <: Edge[V]]
   (graph: Graph[V, E])
     extends GraphTraverser[V, E](graph) {
 

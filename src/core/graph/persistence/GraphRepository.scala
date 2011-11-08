@@ -10,20 +10,20 @@ import core.graph.{BaseVertex, Edge, Vertex, Graph}
  */
 object GraphRepository {
 
-  def persistGraph[V <: Vertex, E <: Edge[V]]
+  def persistGraph[V <: Vertex[V], E <: Edge[V]]
       (graph: Graph[V, E], file: String) {
     XML.save(file, graph.toXML, "UTF-8", true, null)
   }
 
-  def getGraph[V <: Vertex, E <: Edge[V]](file: String): Graph[V, E] = {
+  def getGraph[V <: Vertex[V], E <: Edge[V]](file: String): Graph[V, E] = {
     val node = XML.loadFile(file)
     val vertices = (node \ "vertices" \ "vertex") map Vertex.fromXML[V]
-    val vertexMap: Map[String, V] = getVertexMap(vertices)
+    val vertexMap: Map[String, V] = getVertexMap[V](vertices)
     val edges = (node \ "edges" \ "edge") map Edge.fromXML[V, E](vertexMap)
     Graph.fromXML[V, E]((node \ "class").text, vertices, edges)
   }
 
-  private[this] def getVertexMap[V <: Vertex](vertices: Seq[V]) = {
+  private[this] def getVertexMap[V <: Vertex[V]](vertices: Seq[V]) = {
     var map = Map.empty[String, V]
     vertices foreach {v => map += (v.id -> v)}
     map

@@ -25,7 +25,7 @@ class XMLTest extends FunSuite {
     assert((attr \ "value").text === "val1")
   }
 
-  test("parse file"){
+  ignore("parse file"){
     val xml =
       <graph>
         <vertices>

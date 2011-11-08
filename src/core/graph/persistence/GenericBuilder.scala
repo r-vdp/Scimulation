@@ -21,9 +21,7 @@ class GenericBuilder {
   def New[T <: AnyRef](className: String)(args: WithType*)
                       (implicit classLoader: ClassLoader): T = {
     val clazz: Class[T] = className
-    val argTypes = (args map {
-      _.clazz
-    }).toArray
+    val argTypes = (args map (_.clazz)).toArray
     val candidates = clazz.getConstructors filter {
       cons => matchingTypes(cons.getParameterTypes, argTypes)
     }

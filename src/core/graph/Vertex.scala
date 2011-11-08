@@ -5,17 +5,22 @@ import xml.NodeBuffer
 import scala.collection.mutable.Map
 
 /**
- * Class representing abstract vertices in a graph.
+ * Trait representing abstract vertices in a graph.
  * Make sure to properly override equals and hashcode,
  * corrupt implementations will cause the Graph class to malfunction.
+ *
+ * The type parameter V should be the subclass type itself,
+ * it is needed to be able to reference a subclass type in the methods
+ * dealing with neighbours.
  *
  * Created by Ramses de Norre
  * Date: 27/10/11
  * Time: 10:32
  */
-abstract class Vertex(val id: String) {
+trait Vertex[V <: Vertex[V]] { self: V =>
 
-  val params: Map[String, Any]
+  lazy val id: String = {new UninitializedError; null}
+  lazy val params: Map[String, Any] = {new UninitializedError; null}
 
   override def equals(that: Any) = that match {
     case Vertex(`id`) => true
@@ -23,6 +28,18 @@ abstract class Vertex(val id: String) {
   }
 
   override val hashCode = id.hashCode
+
+  private[this] var neighbourSet: Set[V] = Set.empty
+
+  def addNeighbour(vertices: V*) {
+    neighbourSet ++= vertices
+  }
+
+  def removeNeighbour(vertices: V*) {
+    neighbourSet = neighbourSet filterNot (neighbours contains)
+  }
+
+  def neighbours: Seq[V] = Nil ++ neighbourSet
 
   def toXML =
     <vertex>
@@ -45,9 +62,9 @@ abstract class Vertex(val id: String) {
 }
 
 object Vertex {
-  def unapply(v: Vertex) = Some(v.id)
+  def unapply(v: Vertex[_]) = Some(v.id)
 
-  def fromXML[V <: Vertex](node: xml.Node): V = {
+  def fromXML[V <: Vertex[V]](node: xml.Node): V = {
     val builder = new VertexBuilder
     val vertexClass = (node \ "class").text
     val id = (node \ "id").text

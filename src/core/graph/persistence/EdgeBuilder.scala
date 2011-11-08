@@ -8,7 +8,7 @@ import core.graph.{Vertex, Edge}
  * Time: 22:49
  */
 class EdgeBuilder extends GenericBuilder {
-  def create[V <: Vertex, E <: Edge[V]]
+  def create[V <: Vertex[V], E <: Edge[V]]
       (edgeClass: String, from: V, to: V, weight: Double): E = {
     New[E](edgeClass)(from, to, weight)
   }

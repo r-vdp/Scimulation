@@ -18,7 +18,6 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
    */
   override def size: Int
 
-  // deepcopy nodig voor roundbased simulation
   def deepCopy: Graph[V,E]
 
   implicit def set2Seq[A](set: Set[A]): Seq[A] = set.toSeq

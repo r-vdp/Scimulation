@@ -12,6 +12,7 @@ class UndirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
   override def size = map.size
 
   def contains(vertex: V) = map contains vertex
+
   def contains(edge: E) = edge forall {
     map.get(_) flatMap (es => Some(es contains edge)) getOrElse false
   }

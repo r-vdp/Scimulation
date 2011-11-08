@@ -2,7 +2,6 @@ package example.virus
 
 import scala.collection.mutable.Map
 import core.graph._
-import engine.TurnBasedEngine
 import engine.RoundBasedEngine
 
 object RoundBasedVirusSimulation extends App {

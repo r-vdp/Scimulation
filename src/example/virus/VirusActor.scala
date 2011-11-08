@@ -3,7 +3,7 @@ package example.virus
 import scala.collection.mutable.Map
 
 import engine.Action
-import core.graph.{Vertex}
+import core.graph.Vertex
 
 object Status extends Enumeration {
   type Status = Value

@@ -2,7 +2,6 @@ package example.virus
 
 import scala.collection.mutable.Map
 import core.graph._
-import engine.TurnBasedEngine
 import engine.Event
 import engine.EventBasedEngine
 
@@ -59,11 +58,11 @@ object EventBasedVirusSimulation extends App {
     //println(graph + "\n")
 
     val engine = new EventBasedEngine(graph, 5)
-    
+
     engine.addEvent(new HealEvent(4,second))
-    engine.addEvent(new InfectEvent(1,second)) 
+    engine.addEvent(new InfectEvent(1,second))
     engine.addEvent(new InfectEvent(3,root))
-    
+
 
     engine.run()
   }

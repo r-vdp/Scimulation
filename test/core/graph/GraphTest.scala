@@ -148,10 +148,14 @@ class GraphTest extends FunSuite with BeforeAndAfterEach {
   }
 
   testG("vertex neighbours") { g=>
+    g.addVertices(vertices)
+    g.addEdges(edges)
+
     assert(sameElements(g neighbours v1, v1.neighbours))
     assert(sameElements(g neighbours v2, v2.neighbours))
     assert(sameElements(g neighbours v3, v3.neighbours))
     assert(sameElements(g neighbours v4, v4.neighbours))
+    assert(v1.neighbours(0).isInstanceOf[BaseVertex])
   }
 
   def sameElements[A](first: Seq[A], sec: Seq[A]) =

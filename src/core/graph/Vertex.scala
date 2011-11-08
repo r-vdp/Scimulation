@@ -17,7 +17,7 @@ import scala.collection.mutable.Map
  * Date: 27/10/11
  * Time: 10:32
  */
-trait Vertex[V <: Vertex[V]] { self: V =>
+trait Vertex[V <: Vertex[V]] { _: V =>
 
   lazy val id: String = {new UninitializedError; null}
   lazy val params: Map[String, Any] = {new UninitializedError; null}

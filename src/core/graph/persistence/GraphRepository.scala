@@ -1,7 +1,7 @@
 package core.graph.persistence
 
 import xml.XML
-import core.graph.{BaseVertex, Edge, Vertex, Graph}
+import core.graph.{Edge, Vertex, Graph}
 
 /**
  * Created by Ramses de Norre

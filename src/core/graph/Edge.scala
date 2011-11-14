@@ -1,8 +1,6 @@
 package core.graph
 
 import persistence.EdgeBuilder
-import scala.collection.Seq
-import scala.collection.Iterator
 
 /**
  * Directed edge which connects two vertices and has some weight.
@@ -10,11 +8,14 @@ import scala.collection.Iterator
  * Date: 24/10/11
  * Time: 16:41
  */
-abstract class Edge[V <: Vertex[V]] extends Seq[V] with Ordered[Edge[V]] {
+abstract class Edge[V <: Vertex[V]]
+  extends IndexedSeq[V] with Ordered[Edge[V]] {
 
   val from: V
   val to: V
   val weight: Double
+
+  type This <: Edge[V]
 
   override val length = 2
 
@@ -34,11 +35,9 @@ abstract class Edge[V <: Vertex[V]] extends Seq[V] with Ordered[Edge[V]] {
     case _ => throw new IndexOutOfBoundsException
   }
 
-  override def reverse = construct(to, from, weight)
+  override def reverse: This = construct(to, from, weight)
 
-  protected def construct(from: V, to: V, weight: Double): Edge[V]
-
-  override def iterator = Iterator(from, to)
+  protected def construct(from: V, to: V, weight: Double): This
 
   def compare(that: Edge[V]) = this.weight compare that.weight
 

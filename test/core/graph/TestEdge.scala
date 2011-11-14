@@ -8,6 +8,8 @@ package core.graph
 case class TestEdge(from: BaseVertex, to: BaseVertex, weight: Double = 1)
     extends Edge[BaseVertex] {
 
+  type This = TestEdge
+
   protected def construct(from: BaseVertex, to: BaseVertex, weight: Double) =
     TestEdge(from, to, weight)
 }

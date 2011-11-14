@@ -20,8 +20,6 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
 
   def deepCopy: Graph[V,E]
 
-  implicit def set2Seq[A](set: Set[A]): Seq[A] = set.toSeq
-
   def contains(vertex: V): Boolean
   def contains(edge: E): Boolean
 
@@ -169,4 +167,6 @@ object Graph {
     graph.addEdges(edges)
     graph
   }
+
+  implicit def set2Seq[A](set: Set[A]): Seq[A] = set.toSeq
 }

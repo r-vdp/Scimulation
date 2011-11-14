@@ -135,6 +135,9 @@ object SandBox extends App {
 
 case class BaseEdge(from: BaseVertex, to: BaseVertex, weight: Double = 1)
     extends Edge[BaseVertex] {
+
+  type This = BaseEdge
+
   protected def construct(from: BaseVertex, to: BaseVertex, weight: Double) =
     BaseEdge(from, to, weight)
 }

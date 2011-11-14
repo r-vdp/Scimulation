@@ -1,5 +1,7 @@
 package core.graph
 
+import Graph._
+
 /**
  * A class representing undirected graphs.
  * Created by Ramses de Norre

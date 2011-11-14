@@ -82,6 +82,7 @@ class EdgeTest extends FunSuite with BeforeAndAfterAll {
       val from = v1
       val to = v2
       val weight = 10d
+      type This = Edge[V]
 
       protected def construct(from: V, to: V, weight: Double) = null
     })
@@ -89,6 +90,7 @@ class EdgeTest extends FunSuite with BeforeAndAfterAll {
       val from = v2
       val to = v2
       val weight = 10d
+      type This = Edge[V]
 
       protected def construct(from: V, to: V, weight: Double) = null
     })
@@ -102,6 +104,8 @@ class EdgeTest extends FunSuite with BeforeAndAfterAll {
 
   case class TestEdge2(from: BaseVertex, to: BaseVertex, weight: Double,
                        extra: Int) extends Edge[BaseVertex] {
+    type This = TestEdge2
+
     protected def construct(from: BaseVertex, to: BaseVertex,
                             weight: Double) = null
 

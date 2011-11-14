@@ -1,13 +1,16 @@
 package core.graph.persistence
 
 import org.scalatest.FunSuite
+import org.scalatest.{BeforeAndAfterEach, Tag, FunSuite}
+import org.scalatest.junit.JUnitRunner
+import org.junit.runner.RunWith
 
 /**
  * Created by Ramses de Norre
  * Date: 05/11/11
  * Time: 11:26
  */
-
+@RunWith(classOf[JUnitRunner])
 class XMLTest extends FunSuite {
 
   test("parse XML"){

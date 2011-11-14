@@ -1,13 +1,17 @@
 package core.graph.visualize
 
+import core.graph.Graph
+import core.graph.DirectedGraph
 import core.graph.UndirectedGraph
 import core.graph.BaseVertex
 import core.BaseEdge
 
+
+
 object VisualizerTest extends App {
 
   val graph = new UndirectedGraph[BaseVertex, BaseEdge]
-  val vis = new Visualizer(graph)
+  val vis = new Visualizer[BaseVertex, BaseEdge]
 
   val root = BaseVertex("root")
   val second = BaseVertex("second")
@@ -29,5 +33,5 @@ object VisualizerTest extends App {
 
   graph.addEdges(edges)
 
-  vis.visualize()
+  vis.visualize(graph)
 }

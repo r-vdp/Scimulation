@@ -22,14 +22,38 @@ import example.virus.Status._
 // idem voor roundVirusactor, die dan grotendeels zou wegsmelten
 // hadden errors met overerving
 class VirusActor(inId: String, inMap: Map[String, Any])
-  extends Vertex[VirusActor] with Action[VirusActor] {
+  extends Vertex[VirusActor] with Action[VirusActor] with Color {
 
   override lazy val id = inId
   override lazy val params = inMap
 
+  override def getColor:String = {
+    
+    if (getStatus == Status.I) {
+    	return "#00ff00";
+    } else if (getGender == Gender.Female) {
+      return "#0000ff";
+    }else{
+      return "#ff0000"
+    }
+  }
+  
+  object AllDone extends Exception { }
+
   override def execute() {
     if (getStatus == Status.S) {
-      infect()
+      try{
+	      neighbours.foreach{e=>
+	        if(e.getStatus==Status.I){
+	          infect();
+	          throw AllDone
+	        }
+	      }
+      } catch {
+		  case AllDone =>
+	  }
+
+      //infect()
     } else if (getStatus == Status.I && getGender == Gender.Female) {
       heal()
     }

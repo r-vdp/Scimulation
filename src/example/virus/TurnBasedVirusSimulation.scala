@@ -1,9 +1,10 @@
 package example.virus
 
 import scala.collection.mutable.Map
-
 import core.graph._
 import engine.TurnBasedEngine
+import core.graph.visualize.Visualizer
+import monitor.Publisher
 
 object TurnBasedVirusSimulation extends App {
 
@@ -13,7 +14,7 @@ object TurnBasedVirusSimulation extends App {
     val graph = new UndirectedGraph[VirusActor, VirusEdge[VirusActor]]
 
     var rootMap: Map[String, Any] = Map.empty
-    rootMap += "status" -> Status.S
+    rootMap += "status" -> Status.I
     rootMap += "probability" -> 3
     rootMap += "gender" -> Gender.Male
     val root = VirusActor("root", rootMap)
@@ -55,9 +56,12 @@ object TurnBasedVirusSimulation extends App {
                 VirusEdge(root, fifth) :: Nil
 
     graph.addEdges(edges)
-    //println(graph + "\n")
 
     val engine = new TurnBasedEngine(graph, 5)
+
+    val vis = new Visualizer[VirusActor, VirusEdge[VirusActor]]
+    
+    vis.subscribeTo(engine)
 
     engine.run()
   }

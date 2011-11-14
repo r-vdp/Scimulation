@@ -2,12 +2,16 @@ package core.graph
 
 import traversal.BreadthFirstTraverser
 import org.scalatest.{BeforeAndAfterEach, Tag, FunSuite}
+import org.scalatest.junit.JUnitRunner
+import org.junit.runner.RunWith
 
 /**
  * Created by Ramses de Norre
+
  * Date: 01/11/11
  * Time: 12:56
  */
+@RunWith(classOf[JUnitRunner])
 class GraphTest extends FunSuite with BeforeAndAfterEach {
 
   type G = Graph[BaseVertex, TestEdge]

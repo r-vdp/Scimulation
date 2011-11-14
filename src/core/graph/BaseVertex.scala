@@ -1,6 +1,7 @@
 package core.graph
 
 import scala.collection.mutable.Map
+import example.virus.Color
 
 /**
  * Created by Ramses de Norre
@@ -8,13 +9,15 @@ import scala.collection.mutable.Map
  * Time: 16:41
  */
 class BaseVertex(inId: String, inMap: Map[String, Any] = Map.empty)
-  extends Vertex[BaseVertex] {
+  extends Vertex[BaseVertex] with Color {
 
   override lazy val id = inId
   override lazy val params = inMap
 
   def getName: Option[Any] = params.get("name")
-
+  
+  override def getColor:String = "#ffffff"
+  
   override val toString = "BaseVertex(" + id + ")"
 }
 

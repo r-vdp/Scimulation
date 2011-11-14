@@ -3,6 +3,7 @@ package engine
 import core.graph.{Graph, Edge, Vertex}
 import scala.collection.mutable.PriorityQueue
 import scala.collection.mutable.ArrayBuffer
+import monitor.Publisher
 
 abstract class Event[V <: Vertex[V]](t:Int,node:V)
   extends Action[V] with Ordered[Event[V]]{
@@ -26,12 +27,19 @@ abstract class Engine{
 }
 
 class TurnBasedEngine[V <: Vertex[V] with Action[V], E <: Edge[V]]
-    (graph: Graph[V, E],count:Int) extends Engine{
+    (graph: Graph[V, E],count:Int) extends Engine with Publisher[V,E]{
   override def run() {
+        publish(graph)
+        Thread.sleep(1000,1000)
         for (time <- 0 until count){
           println("The time is: "+time)
           graph.foreach(_.execute())
+          publish(graph)
+          Thread.sleep(1000,1000)
         }
+  }
+  override def publish(g:Graph[V,E]){
+    list.foreach{e=>e.update(g)}
   }
 }
 

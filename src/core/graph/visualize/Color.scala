@@ -1,6 +1,5 @@
-package example.virus
+package core.graph.visualize
 
 trait Color {
-
-  def getColor():String;
+  def color: String
 }

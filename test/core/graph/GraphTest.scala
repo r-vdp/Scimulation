@@ -7,7 +7,6 @@ import org.junit.runner.RunWith
 
 /**
  * Created by Ramses de Norre
-
  * Date: 01/11/11
  * Time: 12:56
  */

@@ -27,8 +27,8 @@ class VirusActor(inId: String, inMap: Map[String, Any])
   override lazy val id = inId
   override lazy val params = inMap
 
-  override def getColor:String = {
-    
+  override def color:String = {
+
     if (getStatus == Status.I) {
     	return "#00ff00";
     } else if (getGender == Gender.Female) {
@@ -37,7 +37,7 @@ class VirusActor(inId: String, inMap: Map[String, Any])
       return "#ff0000"
     }
   }
-  
+
   object AllDone extends Exception { }
 
   override def execute() {

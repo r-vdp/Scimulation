@@ -1,4 +1,4 @@
-package core.graph.visualise
+package core.graph.visualize
 
 import java.util.HashMap
 
@@ -8,12 +8,12 @@ import core.graph.Edge
 import core.graph.Graph
 import core.graph.Vertex
 
-class Visualiser{
+class Visualizer{
 
   val toGraph : UbigraphClient = new UbigraphClient
   
   
-   def visualiseGraph[V <: Vertex[V], E <: Edge[V]](graph: Graph[V, E]) {
+   def visualizeGraph[V <: Vertex[V], E <: Edge[V]](graph: Graph[V, E]) {
        toGraph.clear()
        toGraph.setVertexStyleAttribute(0, "shape", "sphere")
        toGraph.setVertexStyleAttribute(0, "size", "0.5")

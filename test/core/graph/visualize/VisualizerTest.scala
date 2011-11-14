@@ -1,4 +1,4 @@
-package core.graph.visualise
+package core.graph.visualize
 
 import org.scalatest.{BeforeAndAfterEach, Tag, FunSuite}
 import org.scalatest.junit.JUnitRunner
@@ -15,7 +15,7 @@ import core.BaseEdge
 @RunWith(classOf[JUnitRunner])
 class VisualizerTest extends FunSuite{
   
-	val vis = new Visualiser
+	val vis = new Visualizer
 	
 	val graph = new UndirectedGraph[BaseVertex, BaseEdge]
 
@@ -39,7 +39,7 @@ class VisualizerTest extends FunSuite{
 
     graph.addEdges(edges)
    
-    vis.visualiseGraph(graph)
+    vis.visualizeGraph(graph)
 	
 
 

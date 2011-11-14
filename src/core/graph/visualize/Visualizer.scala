@@ -1,4 +1,4 @@
-package core.graph.visualise
+package core.graph.visualize
 
 import scala.collection.mutable.Map
 
@@ -7,9 +7,9 @@ import core.graph.Graph
 import core.graph.Vertex
 import org.ubiety.ubigraph.UbigraphClient
 
-class Visualiser[V <: Vertex[V], E <: Edge[V]](val graph: Graph[V, E]) {
+class Visualizer[V <: Vertex[V], E <: Edge[V]](val graph: Graph[V, E]) {
 
-  def visualise() {
+  def visualize() {
     val ubiClient = init()
     val verticesmap = Map.empty[String, Int]
 

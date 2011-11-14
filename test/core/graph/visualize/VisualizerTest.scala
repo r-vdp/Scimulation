@@ -7,7 +7,7 @@ import core.BaseEdge
 object VisualizerTest extends App {
 
   val graph = new UndirectedGraph[BaseVertex, BaseEdge]
-  val vis = new Visualizer(graph)
+  val vis = new UbiGraphVisualizer(graph)
 
   val root = BaseVertex("root")
   val second = BaseVertex("second")

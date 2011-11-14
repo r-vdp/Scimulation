@@ -7,7 +7,7 @@ import core.graph.Graph
 import core.graph.Vertex
 import org.ubiety.ubigraph.UbigraphClient
 
-class Visualizer[V <: Vertex[V], E <: Edge[V]](val graph: Graph[V, E]) {
+class UbiGraphVisualizer[V <: Vertex[V], E <: Edge[V]](val graph: Graph[V, E]) {
 
   def visualize() {
     val ubiClient = init()

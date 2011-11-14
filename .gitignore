@@ -13,4 +13,5 @@ lib/scalatest-1.6.1/doc
 lib/scalatest-1.6.1/scalatest-1.6.1-tests.jar
 lib/scalatest-1.6.1/src
 *.pdf
+bin/*
 

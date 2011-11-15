@@ -1,7 +1,6 @@
 package example.virus
 
 import scala.collection.mutable.Map
-
 import engine.Action
 import core.graph.Vertex
 
@@ -16,6 +15,7 @@ object Gender extends Enumeration {
 }
 
 import example.virus.Status._
+import core.graph.visualize.Color
 
 // zouden graag with action[] eruit trekken zodat de TurnbasedVirusSimulation
 // gebruiker een nieuw kind maakt die extend virusactor with Action
@@ -27,14 +27,13 @@ class VirusActor(inId: String, inMap: Map[String, Any])
   override lazy val id = inId
   override lazy val params = inMap
 
-  override def color:String = {
-
+  override def color: String = {
     if (getStatus == Status.I) {
-    	return "#00ff00";
+    	"#00ff00";
     } else if (getGender == Gender.Female) {
-      return "#0000ff";
+      "#0000ff";
     }else{
-      return "#ff0000"
+      "#ff0000"
     }
   }
 
@@ -52,7 +51,6 @@ class VirusActor(inId: String, inMap: Map[String, Any])
       } catch {
 		  case AllDone =>
 	  }
-
       //infect()
     } else if (getStatus == Status.I && getGender == Gender.Female) {
       heal()

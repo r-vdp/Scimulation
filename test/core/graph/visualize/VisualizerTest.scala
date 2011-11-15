@@ -1,11 +1,6 @@
 package core.graph.visualize
 
 import core.graph.UndirectedGraph
-import core.graph.BaseVertex
-import core.BaseEdge
-import core.BaseEdge
-import core.BaseEdge
-import core.BaseEdge
 import core.BaseEdge
 import core.graph.BaseVertex
 

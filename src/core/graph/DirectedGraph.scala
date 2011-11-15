@@ -1,7 +1,6 @@
 package core.graph
 
 import Graph._
-import traversal.BreadthFirstTraverser
 
 /**
  * A class representing directed graphs.

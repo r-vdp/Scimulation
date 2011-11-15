@@ -3,7 +3,7 @@ package example.virus
 import scala.collection.mutable.Map
 import core.graph._
 import engine.TurnBasedEngine
-import core.graph.visualize.Visualizer
+import core.graph.visualize.UbiGraphVisualizer
 import monitor.Publisher
 
 object TurnBasedVirusSimulation extends App {
@@ -59,7 +59,7 @@ object TurnBasedVirusSimulation extends App {
 
     val engine = new TurnBasedEngine(graph, 5)
 
-    val vis = new Visualizer[VirusActor, VirusEdge[VirusActor]]
+    val vis = new UbiGraphVisualizer[VirusActor, VirusEdge[VirusActor]]
     
     vis.subscribeTo(engine)
 

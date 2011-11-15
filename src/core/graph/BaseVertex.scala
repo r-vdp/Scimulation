@@ -16,7 +16,7 @@ class BaseVertex(inId: String, inMap: Map[String, Any] = Map.empty)
 
   def getName: Option[Any] = params.get("name")
 
-  override val color: String = "#ffffff"
+  override val getColor: String = "#ffffff"
 
   override val toString = "BaseVertex(" + id + ")"
 }

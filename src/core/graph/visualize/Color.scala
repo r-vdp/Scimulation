@@ -1,5 +1,5 @@
 package core.graph.visualize
 
 trait Color {
-  def color: String
+  def getColor: String
 }

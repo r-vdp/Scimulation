@@ -1,7 +1,6 @@
 package core.graph.persistence
 
 import org.scalatest.FunSuite
-import org.scalatest.{BeforeAndAfterEach, Tag, FunSuite}
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 

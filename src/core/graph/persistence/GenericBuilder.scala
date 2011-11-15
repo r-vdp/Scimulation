@@ -6,8 +6,8 @@ package core.graph.persistence
  * Time: 12:33
  *
  * Taken in large part from
- *   http://www.familie-kneissl.org/Members/martin/blog/reflection-from-scala
- *     -heaven-and-hell
+ *   http://www.familie-kneissl.org/Members/martin/blog/
+ *     reflection-from-scala-heaven-and-hell
  * and modified a bit.
  */
 class GenericBuilder {

@@ -1,6 +1,7 @@
 package core.graph
 
 import Graph._
+import traversal.BreadthFirstTraverser
 
 /**
  * A class representing directed graphs.
@@ -9,6 +10,9 @@ import Graph._
  * Time: 13:43
  */
 class DirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
+
+  this.traverser = new BreadthFirstTraverser(this)
+
   private[this] var map: Map[V, Set[E]] = Map.empty
 
   override def size = map.size

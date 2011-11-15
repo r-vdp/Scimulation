@@ -113,9 +113,10 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
   protected implicit var traverser: GraphTraverser[V, E] =
     new SimpleGraphTraverser(this)
 
-
   def setTraverser(t: GraphTraverser[V, E]) {
-    traverser = t
+    if (traverser.graph == this) {
+      traverser = t
+    }
   }
 
   protected def foreachImpl[U](f: (V) => U)

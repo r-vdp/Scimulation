@@ -9,5 +9,5 @@ import core.graph.{Edge, Graph, Vertex}
  */
 
 abstract class GraphTraverser[V <: Vertex[V], E <: Edge[V]]
-  (protected  val graph: Graph[V, E])
+  (protected[graph] val graph: Graph[V, E])
     extends Traversable[V]

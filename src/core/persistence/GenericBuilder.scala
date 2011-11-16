@@ -1,4 +1,4 @@
-package core.graph.persistence
+package core.persistence
 
 /**
  * Created by Ramses de Norre

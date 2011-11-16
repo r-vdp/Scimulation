@@ -1,7 +1,7 @@
 package core.graph
 
 import scala.collection.mutable.Map
-import visualize.Color
+import core.visualize.Color
 
 /**
  * Created by Ramses de Norre

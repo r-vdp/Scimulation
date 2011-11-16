@@ -3,6 +3,7 @@ package example.virus
 import scala.collection.mutable.Map
 import engine.Action
 import core.graph.Vertex
+import core.visualize.Color
 
 object Status extends Enumeration {
   type Status = Value
@@ -15,7 +16,6 @@ object Gender extends Enumeration {
 }
 
 import example.virus.Status._
-import core.graph.visualize.Color
 
 // zouden graag with action[] eruit trekken zodat de TurnbasedVirusSimulation
 // gebruiker een nieuw kind maakt die extend virusactor with Action

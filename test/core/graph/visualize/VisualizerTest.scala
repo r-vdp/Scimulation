@@ -3,6 +3,7 @@ package core.graph.visualize
 import core.graph.UndirectedGraph
 import core.BaseEdge
 import core.graph.BaseVertex
+import core.visualize.UbiGraphVisualizer
 
 object VisualizerTest extends App {
 

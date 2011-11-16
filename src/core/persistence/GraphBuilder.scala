@@ -1,4 +1,4 @@
-package core.graph.persistence
+package core.persistence
 
 import core.graph.{Graph, Edge, Vertex}
 

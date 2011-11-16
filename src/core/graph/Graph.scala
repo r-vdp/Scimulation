@@ -1,8 +1,8 @@
 package core.graph
 
-import persistence.GraphBuilder
 import traversal.{SimpleGraphTraverser, GraphTraverser}
 import xml.NodeBuffer
+import core.persistence.GraphBuilder
 
 /**
  * Abstract graph class.
@@ -87,9 +87,9 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
    */
   def neighbourEdges(vertex: V): Set[E]
 
-  protected[graph] def vertices: Set[V]
+  def vertices: Set[V]
 
-  protected[graph] def edges: Set[E]
+  def edges: Set[E]
 
   /**
    * Retrieve some vertex that is part of this graph,

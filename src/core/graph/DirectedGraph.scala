@@ -51,9 +51,9 @@ class DirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
 
   def neighbourEdges(vertex: V) = map(vertex)
 
-  protected[graph] def vertices = map.keySet
+  def vertices = map.keySet
 
-  protected[graph] def edges = map.values.flatten.toSet
+  def edges = map.values.flatten.toSet
 
   def someVertex = map.keys.head
 

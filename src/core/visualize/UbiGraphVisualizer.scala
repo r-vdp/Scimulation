@@ -1,4 +1,4 @@
-package core.graph.visualize
+package core.visualize
 
 import scala.collection.mutable.Map
 import core.graph.Edge

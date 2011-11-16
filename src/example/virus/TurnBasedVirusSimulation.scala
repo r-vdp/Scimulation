@@ -3,7 +3,7 @@ package example.virus
 import scala.collection.mutable.Map
 import core.graph._
 import engine.TurnBasedEngine
-import core.graph.visualize.UbiGraphVisualizer
+import core.visualize.UbiGraphVisualizer
 
 object TurnBasedVirusSimulation extends App {
 

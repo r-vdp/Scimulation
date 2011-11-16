@@ -1,8 +1,8 @@
 package core.graph
 
-import persistence.VertexBuilder
 import xml.NodeBuffer
 import scala.collection.mutable.Map
+import core.persistence.VertexBuilder
 
 /**
  * Trait representing abstract vertices in a graph.
@@ -31,11 +31,11 @@ trait Vertex[V <: Vertex[V]] { _: V =>
 
   private[this] var neighbourSet: Set[V] = Set.empty
 
-  def addNeighbour(vertices: V*) {
+  private[graph] def addNeighbour(vertices: V*) {
     neighbourSet ++= vertices
   }
 
-  def removeNeighbour(vertices: V*) {
+  private[graph] def removeNeighbour(vertices: V*) {
     neighbourSet = neighbourSet filterNot (neighbours contains)
   }
 

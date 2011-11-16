@@ -1,6 +1,6 @@
 package core.graph
 
-import persistence.EdgeBuilder
+import core.persistence.EdgeBuilder
 
 /**
  * Directed edge which connects two vertices and has some weight.

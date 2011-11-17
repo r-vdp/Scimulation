@@ -1,33 +1,36 @@
 package core.statistics
 
-import java.util.HashMap
+
+import scala.dbc.result.Tuple
 import core.graph.Edge
 import core.graph.Vertex
+import core.graph.Graph
+import scala.collection.mutable.Map
 
-class StatisticsStore[V <: Vertex[V], E <: Edge[V]] {
-  //Moet hier iets Lazy?
-  val nbofedges = new HashMap[Int, Int]
-  val nbofvertices = new HashMap[Int, Int]
-  val avnbofedgespervertex = new HashMap[Int, Double]
-  val attrbmap = new HashMap[Int, HashMap[Pair[String, Char], List[String]]]
-  lazy val densityofnetwork = new HashMap[Int, Double]
-  val diffattr = new HashMap[Pair[String, Char], HashMap[Int, Int]]
+class StatisticsStore [V <: Vertex[V], E <: Edge[V]] {
 
+/*
+ * Moeilijke structuur, maar heb hem proberen uit te leggen in de mail.   
+ * Ik weet niet beter. 
+ */
+	var nbofedges = Map[Int, Int]()
+    var nbofvertices= Map[Int, Int]()
+	var avnbofedgespervertex = Map [Int, Double]()
+    var attrbmap = Map[Int, Map[Pair[String,Char], List[String]]]()
+	var densityofnetwork = Map[Int, Double]()
+    var diffattr = Map[Pair[String,Char], Map[Int, Int]]()
 
-  def densityOfNetwork(t: Int) = {
-    densityofnetwork.put(t,
-      avnbofedgespervertex.get(t) / (nbofvertices.get(t) - 1))
-  }
+	
 
-  //wat een lelijke code, Lynn !
-  def nbOfVerticesWithSameAttribute(t: Int, attr: String, value: Char) = {
-    val pair = (attr, value)
-    if (!diffattr.containsKey(pair)) {
-      diffattr.put(pair,
-        new HashMap(t, attrbmap.get(t).get(pair).size))
+  def densityOfNetwork(t : Int) = {  
+	densityofnetwork += t -> (avnbofedgespervertex.get(t) getOrElse(0.0)/(nbofvertices.get(t) getOrElse(2) -1))
     }
-    else {
-      diffattr.get(pair).put(t, attrbmap.get(t).get(pair).size)
-    }
-  }
+	
+
+  def nbOfVerticesWithSameAttribute(t: Int, attr:String, value: Char) ={
+	var pair = (attr, value)
+	var localMap = Map[Int,Int]()
+	localMap += t -> attrbmap.get(t).get(pair).size
+    diffattr += pair -> localMap.++(diffattr.getOrElse(pair, Nil))
+}
 }

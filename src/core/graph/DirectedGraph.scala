@@ -66,4 +66,11 @@ class DirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
     graph.addEdges(edges)
     graph
   }
+    override def getVertex(id :String): V={	
+  		vertices.iterator.foreach{ v =>
+  			if(v.id == id)
+  				return v
+    }
+  		throw new Exception;
+  }
 }

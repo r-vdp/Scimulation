@@ -1,4 +1,4 @@
-package example.virus
+package engine
 import core.graph.Edge
 import core.graph.Vertex
 import monitor.Subscriber

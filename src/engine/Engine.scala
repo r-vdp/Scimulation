@@ -82,19 +82,26 @@ class RoundBasedEngine
 }
 
 class EventBasedEngine[V <: Vertex[V], E <: Edge[V]]
-    (graph: Graph[V, E],count:Int) extends Engine {
+    (graph: Graph[V, E],count:Int) extends Engine with Publisher[V,E]  {
 
   var eventList = PriorityQueue.empty[Event[V]]
 
   override def run() {
+            
+   publish(graph)
+   Thread.sleep(1000,1000)
     for (time <- 0 until count) {
       println("The time is: "+time)
       while(!eventList.isEmpty && time == eventList.head.time) {
         eventList.dequeue().execute()
         }
+        publish(graph)
+        Thread.sleep(1000,1000)
     }
   }
-
+  override def publish(g:Graph[V,E]){
+    list.foreach{e=>e.update(g)}
+  }
   def addEvent(event: Event[V]) {
 	  eventList += event
   }

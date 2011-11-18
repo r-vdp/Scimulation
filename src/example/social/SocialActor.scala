@@ -23,40 +23,17 @@ class SocialActor(inId: String, inMap: Map[String, Any])
   override lazy val params = inMap
 
   override def color: String = {
-    if (getGender == Gender.Male.toString()) {
-      "#ff0000"
-    } else{
-      "#ff00ff"
-    } 
+    "#" + (255 - this.neighbours.size*25).toHexString + "ff" + (255 - this.neighbours.size*25).toHexString
   }
 
   object AllDone extends Exception { }
-
-  def getAge = params.get("age") getOrElse "unknown"
 
   def getGender = params.get("gender") getOrElse "unknown"
 
   def getCoolFactor = params.get("coolFactor") getOrElse "unknown"
   
   def getName = params.get("name") getOrElse "unknown"
-  
-
-  def setCoolFactor(level: Int) {
-	params += ("progSkill" -> level)
-  }
-  
-  def befriend(s:SocialActor) {
-	  
-  }
-
-  def unfriend(s:SocialActor) {
-	
-  }
-
-  def updateCool() {
-
-  }
-  
+   
 }
 
 object SocialActor {

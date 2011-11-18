@@ -1,7 +1,5 @@
 package core.graph
 
-import Graph._
-
 /**
  * A class representing directed graphs.
  * Created by Ramses de Norre
@@ -53,7 +51,7 @@ class DirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
 
   def vertices = map.keySet
 
-  def edges = map.values.flatten.toSet
+  def edges = map.values.flatten.toSeq
 
   def someVertex = map.keys.head
 
@@ -65,12 +63,5 @@ class DirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
     graph.addVertices(vertices)
     graph.addEdges(edges)
     graph
-  }
-    override def getVertex(id :String): V={	
-  		vertices.iterator.foreach{ v =>
-  			if(v.id == id)
-  				return v
-    }
-  		throw new Exception;
   }
 }

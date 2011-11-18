@@ -175,15 +175,15 @@
 	      </attr>
 	      <attr>
 	        <name>coolFactor</name>
-	        <value>5</value>
+	        <value>9</value>
 	      </attr>
 	      <attr>
 	        <name>gender</name>
-	        <value>Male</value>
+	        <value>Female</value>
 	      </attr> 
 	      <attr>
 	        <name>name</name>
-	        <value>Dave</value>
+	        <value>Lynn</value>
 	      </attr>       
         </vertex>
         

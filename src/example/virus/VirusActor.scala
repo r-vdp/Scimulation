@@ -57,9 +57,8 @@ class VirusActor(inId: String, inMap: Map[String, Any])
     if (getStatus == Status.I.toString()) {
       "#ff0000"
     } else if (getName == "Dave") {
-      "#ff00ff"
+      "#0000ff"
     } else {
-      println((255 - getProgSkill % 255))
       "#" + (255 - getProgSkill % 255).toHexString + "ff" + (255 - getProgSkill % 255).toHexString
     } 
   }

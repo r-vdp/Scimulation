@@ -2,7 +2,7 @@
         <vertices>
           <vertex>
             <class>example.virus.VirusActor</class>
-            <id>fourth</id>
+            <id>1</id>
             <attr>
              <name>status</name>
              <value>I</value>
@@ -16,11 +16,9 @@
              <value>Male</value>
              </attr>
           </vertex>
-           
-          
           <vertex>
           <class>example.virus.VirusActor</class>
-          <id>root</id>
+          <id>0</id>
              <attr>
              <name>status</name>
              <value>S</value>
@@ -37,7 +35,7 @@
         
         <vertex>
           <class>example.virus.VirusActor</class>
-          <id>fifth</id>
+          <id>5</id>
             <attr>
              <name>status</name>
              <value>NI</value>
@@ -54,7 +52,7 @@
         
         <vertex>
           <class>example.virus.VirusActor</class>
-          <id>second</id>
+          <id>2</id>
              <attr>
              <name>status</name>
              <value>S</value>
@@ -66,57 +64,215 @@
               <attr>
              <name>gender</name>
              <value>Female</value>
-             </attr>>         
+             </attr>      
         </vertex>
         
         <vertex>
           <class>example.virus.VirusActor</class>
-          <id>third</id>
-            <attr>
-             <name>status</name>
-             <value>S</value>
-             </attr>
-              <attr>
-             <name>probability</name>
-             <value>5</value>
-             </attr>
-              <attr>
-             <name>gender</name>
-             <value>Male</value>
-             </attr>>          
+          <id>3</id>
+	      <attr>
+	        <name>status</name>
+	        <value>S</value>
+	      </attr>
+	      <attr>
+	        <name>probability</name>
+	        <value>5</value>
+	      </attr>
+	      <attr>
+	        <name>gender</name>
+	        <value>Male</value>
+	      </attr>       
+        </vertex>
+        
+        <vertex>
+          <class>example.virus.VirusActor</class>
+          <id>4</id>
+	      <attr>
+	        <name>status</name>
+	        <value>S</value>
+	      </attr>
+	      <attr>
+	        <name>probability</name>
+	        <value>5</value>
+	      </attr>
+	      <attr>
+	        <name>gender</name>
+	        <value>Male</value>
+	      </attr>       
+        </vertex>
+        
+        <vertex>
+          <class>example.virus.VirusActor</class>
+          <id>Dave</id>
+	      <attr>
+	        <name>status</name>
+	        <value>S</value>
+	      </attr>
+	      <attr>
+	        <name>probability</name>
+	        <value>5</value>
+	      </attr>
+	      <attr>
+	        <name>gender</name>
+	        <value>Male</value>
+	      </attr> 
+	      <attr>
+	        <name>name</name>
+	        <value>Dave</value>
+	      </attr>       
+        </vertex>
+        
+        <vertex>
+          <class>example.virus.VirusActor</class>
+          <id>6</id>
+	      <attr>
+	        <name>status</name>
+	        <value>S</value>
+	      </attr>
+	      <attr>
+	        <name>probability</name>
+	        <value>5</value>
+	      </attr>
+	      <attr>
+	        <name>gender</name>
+	        <value>Male</value>
+	      </attr>       
+        </vertex>
+        
+        <vertex>
+          <class>example.virus.VirusActor</class>
+          <id>7</id>
+	      <attr>
+	        <name>status</name>
+	        <value>S</value>
+	      </attr>
+	      <attr>
+	        <name>probability</name>
+	        <value>5</value>
+	      </attr>
+	      <attr>
+	        <name>gender</name>
+	        <value>Male</value>
+	      </attr>       
+        </vertex>
+        
+        <vertex>
+          <class>example.virus.VirusActor</class>
+          <id>8</id>
+	      <attr>
+	        <name>status</name>
+	        <value>S</value>
+	      </attr>
+	      <attr>
+	        <name>probability</name>
+	        <value>5</value>
+	      </attr>
+	      <attr>
+	        <name>gender</name>
+	        <value>Female</value>
+	      </attr>       
+        </vertex>
+        
+        <vertex>
+          <class>example.virus.VirusActor</class>
+          <id>9</id>
+	      <attr>
+	        <name>status</name>
+	        <value>S</value>
+	      </attr>
+	      <attr>
+	        <name>probability</name>
+	        <value>5</value>
+	      </attr>
+	      <attr>
+	        <name>gender</name>
+	        <value>Male</value>
+	      </attr>       
         </vertex>
         </vertices>
         
         <edges>
           <edge>
             <class>example.virus.VirusEdge</class>
-            <from>second</from>
-            <to>fourth</to>
+            <from>0</from>
+            <to>1</to>
             <weight>1.0</weight>
-          </edge> <edge>
+          </edge>
+          <edge>
+            <class>example.virus.VirusEdge</class>
+            <from>2</from>
+            <to>1</to>
+            <weight>1.0</weight>
+          </edge>
+          <edge>
+            <class>example.virus.VirusEdge</class>
+            <from>Dave</from>
+            <to>4</to>
+            <weight>1.0</weight>
+          </edge>
+          <edge>
+            <class>example.virus.VirusEdge</class>
+            <from>4</from>
+            <to>5</to>
+            <weight>1.0</weight>
+          </edge>
+          <edge>
+            <class>example.virus.VirusEdge</class>
+            <from>Dave</from>
+            <to>6</to>
+            <weight>1.0</weight>
+          </edge>
+          <edge>
+            <class>example.virus.VirusEdge</class>
+            <from>Dave</from>
+            <to>7</to>
+            <weight>1.0</weight>
+          </edge>
+          <edge>
+            <class>example.virus.VirusEdge</class>
+            <from>7</from>
+            <to>9</to>
+            <weight>1.0</weight>
+          </edge>
+          <edge>
+            <class>example.virus.VirusEdge</class>
+            <from>9</from>
+            <to>8</to>
+            <weight>1.0</weight>
+          </edge>
+          <edge>
           <class>example.virus.VirusEdge</class>
-          <from>second</from>
-          <to>root</to>
+          <from>2</from>
+          <to>0</to>
+          <weight>1.0</weight>
+        </edge>
+        <edge>
+          <class>example.virus.VirusEdge</class>
+          <from>Dave</from>
+          <to>0</to>
+          <weight>1.0</weight>
+        </edge>
+        <edge>
+          <class>example.virus.VirusEdge</class>
+          <from>0</from>
+          <to>Dave</to>
+          <weight>1.0</weight>
+        </edge>
+		<edge>
+          <class>example.virus.VirusEdge</class>
+          <from>Dave</from>
+          <to>3</to>
+          <weight>1.0</weight>
+        </edge>
+		<edge>
+          <class>example.virus.VirusEdge</class>
+          <from>3</from>
+          <to>Dave</to>
           <weight>1.0</weight>
         </edge> <edge>
           <class>example.virus.VirusEdge</class>
-          <from>third</from>
-          <to>second</to>
-          <weight>1.0</weight>
-        </edge> <edge>
-          <class>example.virus.VirusEdge</class>
-          <from>root</from>
-          <to>third</to>
-          <weight>1.0</weight>
-        </edge> <edge>
-          <class>example.virus.VirusEdge</class>
-          <from>root</from>
-          <to>fifth</to>
-          <weight>1.0</weight>
-        </edge> <edge>
-          <class>example.virus.VirusEdge</class>
-          <from>third</from>
-          <to>fourth</to>
+          <from>3</from>
+          <to>4</to>
           <weight>1.0</weight>
         </edge>
         </edges>

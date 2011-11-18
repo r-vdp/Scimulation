@@ -10,16 +10,24 @@ import monitor.Subscriber
 class UbiGraphVisualizer[V <: Vertex[V] with Color, E <: Edge[V]]
   extends Subscriber[V, E] {
 
+	var check : Boolean = false
+	var ubiClient : UbigraphClient = init()
+	var verticesmap = Map.empty[String, Int]
+	
+  
+  
   override def update(graph: Graph[V, E]) {
     visualize(graph);
   }
 
   def visualize(graph: Graph[V, E]) {
-    val ubiClient = init()
-    val verticesmap = Map.empty[String, Int]
-
-    graph foreach addVertex(ubiClient, verticesmap)
-    graph.edges foreach addEdge(ubiClient, verticesmap)
+    if(!check){
+	    graph foreach addVertex(ubiClient, verticesmap)
+	    graph.edges foreach addEdge(ubiClient, verticesmap)
+	    check = true
+    }else{
+      graph foreach updateVertex(ubiClient, verticesmap)
+    }
   }
 
   private[this] def init(): UbigraphClient = {
@@ -35,6 +43,11 @@ class UbiGraphVisualizer[V <: Vertex[V] with Color, E <: Edge[V]]
   (ubiGraph: UbigraphClient, map: Map[String, Int])(v: V) {
     map.put(v.id, ubiGraph.newVertex())
     ubiGraph.setVertexAttribute(map(v.id), "label", v.id)
+    ubiGraph.setVertexAttribute(map(v.id), "color", v.color)
+  }
+  
+  private [this] def updateVertex
+  (ubiGraph: UbigraphClient, map: Map[String, Int])(v: V){
     ubiGraph.setVertexAttribute(map(v.id), "color", v.color)
   }
 

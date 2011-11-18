@@ -88,8 +88,6 @@ class EventBasedEngine[V <: Vertex[V], E <: Edge[V]]
 
   override def run() {
             
-   publish(graph)
-   Thread.sleep(1000,1000)
     for (time <- 0 until count) {
       println("The time is: "+time)
       while(!eventList.isEmpty && time == eventList.head.time) {

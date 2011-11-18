@@ -9,16 +9,13 @@ import scala.collection.mutable.Map
 
 class StatisticsStore [V <: Vertex[V], E <: Edge[V]] {
 
-/*
- * Moeilijke structuur, maar heb hem proberen uit te leggen in de mail.   
- * Ik weet niet beter. 
- */
+
 	var nbofedges = Map[Int, Int]()
     var nbofvertices= Map[Int, Int]()
 	var avnbofedgespervertex = Map [Int, Double]()
-    var attrbmap = Map[Int, Map[Pair[String,Char], List[String]]]()
+    var attrbmap = Map[Int, Map[Pair[String,String], List[String]]]()
 	var densityofnetwork = Map[Int, Double]()
-    var diffattr = Map[Pair[String,Char], Map[Int, Int]]()
+    var diffattr = Map[Pair[String,String], Map[Int, Int]]()
 
 	
 
@@ -27,10 +24,21 @@ class StatisticsStore [V <: Vertex[V], E <: Edge[V]] {
     }
 	
 
-  def nbOfVerticesWithSameAttribute(t: Int, attr:String, value: Char) ={
+  def nbOfVerticesWithSameAttribute(t: Int, attr:String, value: String) ={
+    
 	var pair = (attr, value)
 	var localMap = Map[Int,Int]()
-	localMap += t -> attrbmap.get(t).get(pair).size
-    diffattr += pair -> localMap.++(diffattr.getOrElse(pair, Nil))
+	  for (key <- attrbmap.getOrElse(t, Map.empty).keySet){ 
+		if ((key._1.equals(pair._1))&&(key._2.equals(pair._2)))
+			{
+		  localMap += t -> attrbmap.get(t).get(pair).size
+		  diffattr += pair -> localMap.++(diffattr.getOrElse(pair, Map[Int,Int]()))
+		  }
+		}
 }
+  
+  def getStatOfAttribute(attr:String, value:String): Map[Int,Int]={
+    val pair = (attr,value)
+    diffattr.get(pair) getOrElse(Map.empty)
+  }
 }

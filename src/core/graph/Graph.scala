@@ -45,11 +45,7 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
     }
   }
 
-  def getVertex(id: String): Option[V] =
-    (vertices filter (_.id == id)) match {
-      case Seq() => None
-      case Seq(v) => Some(v)
-    }
+  def getVertex(id: String): Option[V] = vertices find (_.id == id)
 
   def addEdge(edge: E) {
     if (isLegal(edge)) {

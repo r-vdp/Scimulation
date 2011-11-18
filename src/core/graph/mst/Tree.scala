@@ -8,8 +8,10 @@ import scala.collection.{Iterable, Iterator}
  * Time: 16:27
  */
 
+@deprecated("Unused")
 sealed abstract class Tree[+A] extends Iterable[A]
 
+@deprecated("Unused")
 case class Leaf[+A](a: A) extends Tree[A] {
   def iterator = Iterator.single(a)
 }
@@ -18,6 +20,7 @@ case class Leaf[+A](a: A) extends Tree[A] {
  * A Node in a Tree can contain two or more subtrees, the iterator iterates
  * the children in the order in which they are supplied to the constructor.
  */
+@deprecated("Unused")
 case class Node[+A](c1: Tree[A], c2: Tree[A], cs: Tree[A]*) extends Tree[A] {
 
   def iterator = new Iterator[A] {
@@ -42,6 +45,7 @@ case class Node[+A](c1: Tree[A], c2: Tree[A], cs: Tree[A]*) extends Tree[A] {
   }
 }
 
+@deprecated("Unused")
 case object Empty extends Tree[Nothing] {
   def iterator = Iterator.empty
 }

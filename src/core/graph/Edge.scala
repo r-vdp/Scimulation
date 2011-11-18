@@ -4,6 +4,7 @@ import core.persistence.EdgeBuilder
 
 /**
  * Directed edge which connects two vertices and has some weight.
+ *
  * Created by Ramses de Norre
  * Date: 24/10/11
  * Time: 16:41
@@ -15,8 +16,14 @@ abstract class Edge[V <: Vertex[V]]
   val to: V
   val weight: Double
 
+  /**
+   * This Edge's type.
+   */
   type This <: Edge[V]
 
+  /**
+   * Edges are Sequences with exactely two elements.
+   */
   override val length = 2
 
   /**
@@ -34,6 +41,10 @@ abstract class Edge[V <: Vertex[V]]
     case 1 => to
     case _ => throw new IndexOutOfBoundsException
   }
+
+  /**
+   * Factory methods.
+   */
 
   override def reverse: This = construct(to, from, weight)
 
@@ -61,11 +72,11 @@ abstract class Edge[V <: Vertex[V]]
     </edge>
 }
 
-/**
- * An extractor to pattern match on general edges,
- * the loose typing of unapply complies with type erasure.
- */
 object Edge {
+  /**
+   * An extractor to pattern match on general edges,
+   * the loose typing of unapply complies with type erasure.
+   */
   def unapply(edge: Edge[_]): Option[(Any, Any, Double)] =
     Some((edge.from, edge.to, edge.weight))
 

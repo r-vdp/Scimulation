@@ -8,6 +8,7 @@ import scala.collection.mutable.PriorityQueue
  * Date: 28/10/11
  * Time: 16:34
  */
+@deprecated("Unused")
 private class MST[V <: Vertex[V], E <: Edge[V]] {
 
   /**
@@ -54,6 +55,7 @@ private class MST[V <: Vertex[V], E <: Edge[V]] {
   }
 }
 
+@deprecated("Unused")
 object MST {
   def apply[V <: Vertex[V], E <: Edge[V]]
   (graph: UndirectedGraph[V, E]): Iterable[V] =

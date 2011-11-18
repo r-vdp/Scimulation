@@ -6,13 +6,39 @@ import core.graph.Vertex
 import core.visualize.Color
 
 object Status extends Enumeration {
+  
+  
   type Status = Value
-  val S, NI, I, R = Value
+ 
+  val NI = new Value {
+    override def id = 1
+    override def toString = "NI"
+  }
+  
+  val S = new Value{
+    override def id = 2
+    override def toString = "S"
+  }
+  val I = new Value{
+    override def id = 3
+    override def toString = "I"
+  }
+  val R = new Value{
+    override def id = 4
+    override def toString = "R"
+  }
 }
 
 object Gender extends Enumeration {
   type Gender = Value
-  val Male, Female = Value
+    val Male = new Value{
+    override def id = 1
+    override def toString = "Male"
+  }
+    val Female = new Value{
+    override def id = 2
+    override def toString = "Female"
+  }
 }
 
 import example.virus.Status._
@@ -28,7 +54,7 @@ class VirusActor(inId: String, inMap: Map[String, Any])
   override lazy val params = inMap
 
   override def color: String = {
-    if (getStatus == Status.I) {
+    if (getStatus == Status.I.toString()) {
       "#ff0000"
     } else if (getName == "Dave") {
       "#ff00ff"
@@ -54,8 +80,8 @@ class VirusActor(inId: String, inMap: Map[String, Any])
       } catch {
 		  case AllDone =>
 	  }
-      //infect()
-    } else if (getStatus == Status.I && getGender == Gender.Female) {
+      
+    } else if (getStatus == Status.I.toString() && getGender == Gender.Female.toString()) {
       heal()
     }
   }
@@ -80,7 +106,7 @@ class VirusActor(inId: String, inMap: Map[String, Any])
 */  }
 
   def setStatus(newStatus: Status) {
-    params += ("status" -> newStatus)
+    params += ("status" -> newStatus.toString())
   }
   
   def setName(name: String) {

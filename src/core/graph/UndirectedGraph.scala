@@ -1,7 +1,5 @@
 package core.graph
 
-import Graph._
-
 /**
  * A class representing undirected graphs.
  * Created by Ramses de Norre
@@ -54,7 +52,7 @@ class UndirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
 
   def vertices = map.keySet
 
-  def edges = map.values.flatten.toSet
+  def edges = map.values.flatten.toSeq
 
   def someVertex = map.keys.head
 

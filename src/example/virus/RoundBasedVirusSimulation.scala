@@ -13,7 +13,7 @@ object RoundBasedVirusSimulation extends App {
     val graph = new UndirectedGraph[RoundVirusActor, VirusEdge[RoundVirusActor]]
     GraphRepository.loadGraph(graph,"rbsim.xml")
 
-    val engine = new RoundBasedEngine(graph, 32)
+    val engine = new RoundBasedEngine(graph, 34)
 
     val vis = new UbiGraphVisualizer[RoundVirusActor, VirusEdge[RoundVirusActor]]
 

@@ -1,6 +1,5 @@
 package example.virus
 
-import scala.collection.mutable.Map
 import core.graph._
 import engine.Event
 import engine.EventBasedEngine

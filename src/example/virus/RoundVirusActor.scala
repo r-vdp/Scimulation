@@ -19,65 +19,103 @@ class RoundVirusActor(inId: String, inMap: Map[String, Any])
 
   def compare(that: RoundVirusActor) = this.calcPrior compare that.calcPrior
 
+  override lazy val id = inId
+  override lazy val params = inMap
+
   override def color: String = {
     if (getStatus == Status.I.toString()) {
-    	"#00ff00";
-    } else if (getGender == Gender.Female.toString()) {
-      "#0000ff";
-    }else{
       "#ff0000"
-    }
+    } else if (getStatus == Status.S.toString()) {
+      "#ff00ff"
+    } else if (getName == "Dave") {
+      "#0000ff"
+    } else {
+      "#" + (255 - getProgSkill).toHexString + "ff" + (255 - getProgSkill).toHexString
+    } 
   }
 
   object AllDone extends Exception { }
 
   override def execute() {
-    if (getStatus == Status.S.toString()) {
-      try{
-	      neighbours.foreach{e=>
-	        if(e.getStatus==Status.I.toString()){
-	          infect();
-	          throw AllDone
-	        }
-	      }
-      } catch {
-		  case AllDone =>
+    if (getName == "Dave")
+      setProgSkill(255)
+    else if (getStatus == Status.S.toString()) {
+	  neighbours.foreach{
+	    e =>
+	    if(e.getStatus==Status.I.toString())
+	      infectious
 	  }
-      //infect()
-    } else if (getStatus == Status.I.toString() && getGender == Gender.Female.toString()) {
+    }
+    else if (getStatus == Status.NI.toString()) {
+	  neighbours.foreach{
+	    e => {
+	      if(e.getStatus==Status.I.toString()){
+	        sick
+	      }
+	    }
+	  }  
+    }
+    else if (getStatus == Status.I.toString() && getGender == Gender.Female.toString()) {
       heal()
     }
+    if (getStatus == Status.NI.toString()) {
+      neighbours.foreach{
+	    e =>
+	    if(e.getProgSkill > 200)
+	      incProgSkill
+	  }
+    }
   }
-
-  override lazy val id = inId
-  override lazy val params = inMap
 
   def getStatus = params.get("status") getOrElse "unknown"
 
   def getGender = params.get("gender") getOrElse "unknown"
 
   def getProbability = params.get("probability") getOrElse "unknown"
+  
+  def getName = params.get("name") getOrElse "unknown"
+  
+  def getProgSkill: Int = {
+    val skill = params.get("progSkill") getOrElse "0"
+    Integer.parseInt(skill.toString())
+  }
 
   def setStatus(newStatus: Status) {
     params += ("status" -> newStatus.toString())
   }
-
-  def die() {
-    setStatus(Status.R)
+  
+  def setName(name: String) {
+    params += ("name" -> name)
+  }
+  
+  def setProgSkill(level: Int) {
+	params += ("progSkill" -> level)
+  }
+  
+  def sick() {
+    setStatus(Status.S)
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
-            getGender + " just died");
+            getGender + " just got sick");
   }
 
   def heal() {
-    setStatus(Status.S)
+    setStatus(Status.NI)
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
             getGender + " just healed");
   }
 
-  def infect() {
+  def infectious() {
     setStatus(Status.I)
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
-            getGender + " just got infected");
+            getGender + " just became infectious");
+  }
+  
+  def incProgSkill() {
+    val newSkill = getProgSkill + 10
+    if(newSkill < 256)
+      setProgSkill(newSkill)
+    else
+      setProgSkill(255)
   }
 }
 

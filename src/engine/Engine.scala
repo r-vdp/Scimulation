@@ -5,7 +5,7 @@ import scala.collection.mutable.PriorityQueue
 import scala.collection.mutable.ArrayBuffer
 import monitor.Publisher
 
-abstract class Event[V <: Vertex[V]](t:Int,node:V)
+abstract class Event[V <: Vertex[V]](t:Int)
   extends Action[V] with Ordered[Event[V]]{
 	val time = t
 	def compare(t:Event[V])= if (t.time < this.time) -1 else if (this.time == t.time) 0 else 1

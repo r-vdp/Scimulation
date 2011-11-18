@@ -20,9 +20,9 @@ class RoundVirusActor(inId: String, inMap: Map[String, Any])
   def compare(that: RoundVirusActor) = this.calcPrior compare that.calcPrior
 
   override def color: String = {
-    if (getStatus == Status.I) {
+    if (getStatus == Status.I.toString()) {
     	"#00ff00";
-    } else if (getGender == Gender.Female) {
+    } else if (getGender == Gender.Female.toString()) {
       "#0000ff";
     }else{
       "#ff0000"
@@ -32,10 +32,10 @@ class RoundVirusActor(inId: String, inMap: Map[String, Any])
   object AllDone extends Exception { }
 
   override def execute() {
-    if (getStatus == Status.S) {
+    if (getStatus == Status.S.toString()) {
       try{
 	      neighbours.foreach{e=>
-	        if(e.getStatus==Status.I){
+	        if(e.getStatus==Status.I.toString()){
 	          infect();
 	          throw AllDone
 	        }
@@ -44,7 +44,7 @@ class RoundVirusActor(inId: String, inMap: Map[String, Any])
 		  case AllDone =>
 	  }
       //infect()
-    } else if (getStatus == Status.I && getGender == Gender.Female) {
+    } else if (getStatus == Status.I.toString() && getGender == Gender.Female.toString()) {
       heal()
     }
   }
@@ -59,7 +59,7 @@ class RoundVirusActor(inId: String, inMap: Map[String, Any])
   def getProbability = params.get("probability") getOrElse "unknown"
 
   def setStatus(newStatus: Status) {
-    params += ("status" -> newStatus)
+    params += ("status" -> newStatus.toString())
   }
 
   def die() {

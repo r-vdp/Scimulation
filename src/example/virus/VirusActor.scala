@@ -6,13 +6,39 @@ import core.graph.Vertex
 import core.visualize.Color
 
 object Status extends Enumeration {
+  
+  
   type Status = Value
-  val S, NI, I, R = Value
+ 
+  val NI = new Value {
+    override def id = 1
+    override def toString = "NI"
+  }
+  
+  val S = new Value{
+    override def id = 2
+    override def toString = "S"
+  }
+  val I = new Value{
+    override def id = 3
+    override def toString = "I"
+  }
+  val R = new Value{
+    override def id = 4
+    override def toString = "R"
+  }
 }
 
 object Gender extends Enumeration {
   type Gender = Value
-  val Male, Female = Value
+    val Male = new Value{
+    override def id = 1
+    override def toString = "Male"
+  }
+    val Female = new Value{
+    override def id = 2
+    override def toString = "Female"
+  }
 }
 
 import example.virus.Status._
@@ -28,9 +54,9 @@ class VirusActor(inId: String, inMap: Map[String, Any])
   override lazy val params = inMap
 
   override def color: String = {
-    if (getStatus == Status.I) {
+    if (getStatus == Status.I.toString()) {
     	"#00ff00";
-    } else if (getGender == Gender.Female) {
+    } else if (getGender == Gender.Female.toString()) {
       "#0000ff";
     }else{
       "#ff0000"
@@ -40,10 +66,10 @@ class VirusActor(inId: String, inMap: Map[String, Any])
   object AllDone extends Exception { }
 
   override def execute() {
-    if (getStatus == Status.S) {
+    if (getStatus == Status.S.toString()) {
       try{
 	      neighbours.foreach{e=>
-	        if(e.getStatus==Status.I){
+	        if(e.getStatus==Status.I.toString()){
 	          infect();
 	          throw AllDone
 	        }
@@ -51,8 +77,8 @@ class VirusActor(inId: String, inMap: Map[String, Any])
       } catch {
 		  case AllDone =>
 	  }
-      //infect()
-    } else if (getStatus == Status.I && getGender == Gender.Female) {
+      
+    } else if (getStatus == Status.I.toString() && getGender == Gender.Female.toString()) {
       heal()
     }
   }
@@ -64,7 +90,7 @@ class VirusActor(inId: String, inMap: Map[String, Any])
   def getProbability = params.get("probability") getOrElse "unknown"
 
   def setStatus(newStatus: Status) {
-    params += ("status" -> newStatus)
+    params += ("status" -> newStatus.toString())
   }
 
   def die() {

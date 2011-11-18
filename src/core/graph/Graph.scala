@@ -43,6 +43,8 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
     }
   }
 
+   def getVertex(id :String): V
+  
   def addEdge(edge: E) {
     if (isLegal(edge)) {
       addEdgeImpl(edge)

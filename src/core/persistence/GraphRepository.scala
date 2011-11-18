@@ -28,4 +28,13 @@ object GraphRepository {
     vertices foreach {v => map += (v.id -> v)}
     map
   }
+  def loadGraph[V <: Vertex[V], E <: Edge[V]](graph:Graph[V,E],file: String) = {
+    val node = XML.loadFile(file)
+    val vertices = (node \ "vertices" \ "vertex") map Vertex.fromXML[V]
+    val vertexMap: Map[String, V] = getVertexMap[V](vertices)
+    val edges = (node \ "edges" \ "edge") map Edge.fromXML[V, E](vertexMap)
+    graph.addVertices(vertices)
+    graph.addEdges(edges)
+  }
+  
 }

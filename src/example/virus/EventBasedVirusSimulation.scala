@@ -30,11 +30,11 @@ object EventBasedVirusSimulation extends App {
 
 case class InfectEvent(t:Int,v:VirusActor) extends Event[VirusActor](t){
 	  override def execute(){
-	    v.infect()
+	    v.infectious
 	  }
 }
   case class HealEvent(t:Int,v:VirusActor) extends Event[VirusActor](t){
 	  override def execute(){
-	    v.heal()
+	    v.heal
 	  }
 }

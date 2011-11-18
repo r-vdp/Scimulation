@@ -4,7 +4,7 @@ import scala.collection.mutable.Map
 import core.graph._
 import engine.TurnBasedEngine
 import core.visualize.UbiGraphVisualizer
-import persistence.GraphRepository
+import core.persistence.GraphRepository
 import core.statistics.StatisticsManager
 
 
@@ -21,10 +21,14 @@ object TurnBasedVirusSimulation extends App {
     val vis = new UbiGraphVisualizer[VirusActor, VirusEdge[VirusActor]]
     vis.subscribeTo(engine)
     
-    val stat = new StatisticsManager[VirusActor, VirusEdge[VirusActor]]
-    stat.subscribeTo(engine)
+    val snapshots = new SnapshotCreator[VirusActor, VirusEdge[VirusActor]](10,"out")
+    snapshots.subscribeTo(engine)
+    
+//    val stat = new StatisticsManager[VirusActor, VirusEdge[VirusActor]]
+//    stat.subscribeTo(engine)
     
 
     engine.run()
+    GraphRepository.persistGraph(graph,"TBVirusSimoutput.xml")
   }
 }

@@ -67,10 +67,10 @@ class VirusActor(inId: String, inMap: Map[String, Any])
   object AllDone extends Exception { }
 
   override def execute() {
-    if (getStatus == Status.S && getName != "Dave") {
+    if (getStatus == Status.S.toString() && getName != "Dave") {
       try{
 	      neighbours.foreach{e=>
-	        if(e.getStatus==Status.I){
+	        if(e.getStatus==Status.I.toString()){
 	          infect
 	          throw AllDone
 	        } else if(e.getName=="Dave"){

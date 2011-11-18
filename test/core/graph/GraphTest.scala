@@ -99,6 +99,16 @@ class GraphTest extends FunSuite with BeforeAndAfterEach {
     edges foreach {e => assert(g contains e)}
   }
 
+  testG("getVertex") { g =>
+    g.addVertices(vertices)
+
+    assert(g.getVertex("first").get === v1)
+    assert(g.getVertex("second").get === v2)
+    assert(g.getVertex("third").get === v3)
+    assert(g.getVertex("fourth").get === v4)
+    assert(g.getVertex("foo") === None)
+  }
+
   testG("remove vertices") { g =>
     g.addVertices(vertices)
     vertices foreach {v => assert(g contains v)}

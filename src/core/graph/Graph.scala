@@ -13,6 +13,8 @@ import core.persistence.GraphBuilder
 abstract class Graph[V <: Vertex[V], E <: Edge[V]]
   extends Observable with Traversable[V] {
 
+  implicit def set2Seq[A](set: Set[A]): Seq[A] = set.toSeq
+
   /**
    * The number of vertices in this graph
    */
@@ -43,8 +45,12 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
     }
   }
 
-   def getVertex(id :String): V
-  
+  def getVertex(id: String): Option[V] =
+    (vertices filter (_.id == id)) match {
+      case Seq() => None
+      case Seq(v) => Some(v)
+    }
+
   def addEdge(edge: E) {
     if (isLegal(edge)) {
       addEdgeImpl(edge)
@@ -89,9 +95,9 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
    */
   def neighbourEdges(vertex: V): Set[E]
 
-  def vertices: Set[V]
+  def vertices: Seq[V]
 
-  def edges: Set[E]
+  def edges: Seq[E]
 
   /**
    * Retrieve some vertex that is part of this graph,
@@ -170,6 +176,4 @@ object Graph {
     graph.addEdges(edges)
     graph
   }
-
-  implicit def set2Seq[A](set: Set[A]): Seq[A] = set.toSeq
 }

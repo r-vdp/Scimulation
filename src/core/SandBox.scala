@@ -3,12 +3,12 @@ package core
 import graph._
 import graph.mst.{Node, Leaf, Tree}
 import core.persistence.GraphRepository
+
 /**
  * Created by Ramses de Norre
  * Date: 24/10/11
  * Time: 16:41
  */
-
 object SandBox extends App {
 
   /*
@@ -53,23 +53,23 @@ object SandBox extends App {
     //graph foreach println
   }
 
-  def testTree() {
-    val tree: Tree[Int] =
-      Node(
-        Leaf(1), Leaf(2), Leaf(3),
-        Node(
-          Node(
-            Leaf(4), Leaf(5), Leaf(6), Node(Leaf(7), Leaf(8)),
-            Node(
-              Leaf(3),
-              Leaf(2)
-            )
-          ),
-          Leaf(50)
-        )
-      )
-    tree foreach println
-  }
+//  def testTree() {
+//    val tree: Tree[Int] =
+//      Node(
+//        Leaf(1), Leaf(2), Leaf(3),
+//        Node(
+//          Node(
+//            Leaf(4), Leaf(5), Leaf(6), Node(Leaf(7), Leaf(8)),
+//            Node(
+//              Leaf(3),
+//              Leaf(2)
+//            )
+//          ),
+//          Leaf(50)
+//        )
+//      )
+//    tree foreach println
+//  }
 
   def testGraph() {
     val graph = new UndirectedGraph[BaseVertex, BaseEdge]

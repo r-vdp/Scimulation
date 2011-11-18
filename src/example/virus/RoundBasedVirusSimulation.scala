@@ -4,7 +4,7 @@ import engine.RoundBasedEngine
 import core.visualize.UbiGraphVisualizer
 import core.graph.UndirectedGraph
 import core.persistence.GraphRepository
-import engine.SnapshotCreator 
+import engine.SnapshotCreator
 
 object RoundBasedVirusSimulation extends App {
 

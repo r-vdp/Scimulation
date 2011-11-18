@@ -3,6 +3,10 @@ package core.graph.traversal
 import core.graph.{DirectedGraph, Edge, Vertex}
 
 /**
+ * Traverser which iterates the Graph starting from Graph.someVertex and
+ * until all (transitively) neighbouring edges have been considered.
+ * Warning: does not work well for multi-partite graphs!
+ *
  * Created by Ramses de Norre
  * Date: 29/10/11
  * Time: 17:47

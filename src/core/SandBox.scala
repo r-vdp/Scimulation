@@ -126,7 +126,7 @@ object SandBox extends App {
 
   def loadGraph() {
     val loadedGraph =
-      GraphRepository.getGraph("/tmp/graph.xml")
+      GraphRepository.loadGraph("/tmp/graph.xml")
     println("\nloaded:\n" + loadedGraph)
     println("size: " + loadedGraph.size)
   }

@@ -3,6 +3,9 @@ package core.graph.traversal
 import core.graph.{Graph, Edge, Vertex}
 
 /**
+ * Simple traverser that iterates all vertices in no particular order.
+ * Works well with multi-partite graphs as well.
+ *
  * Created by Ramses de Norre
  * Date: 28/10/11
  * Time: 16:07

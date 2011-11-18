@@ -2,6 +2,7 @@ package core.graph
 
 /**
  * A class representing directed graphs.
+ *
  * Created by Ramses de Norre
  * Date: 31/10/11
  * Time: 13:43

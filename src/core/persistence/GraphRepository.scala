@@ -17,12 +17,25 @@ object GraphRepository {
     XML.save(file, graph.toXML, "UTF-8", true, null)
   }
 
-  def getGraph[V <: Vertex[V], E <: Edge[V]](file: String): Graph[V, E] = {
+  def loadGraph[V <: Vertex[V], E <: Edge[V]](file: String): Graph[V, E] = {
+    val node = XML.loadFile(file)
+    val (vertices, edges) = loadElements[V, E](file)
+    Graph.fromXML[V, E]((node \ "class").text, vertices, edges)
+  }
+
+  def loadGraph[V <: Vertex[V], E <: Edge[V]](graph: Graph[V, E],
+                                              file: String) {
+    val (vertices, edges) = loadElements[V, E](file)
+    graph.addVertices(vertices)
+    graph.addEdges(edges)
+  }
+
+  private[this] def loadElements[V <: Vertex[V], E <: Edge[V]](file: String) = {
     val node = XML.loadFile(file)
     val vertices = (node \ "vertices" \ "vertex") map Vertex.fromXML[V]
     val vertexMap: Map[String, V] = getVertexMap[V](vertices)
     val edges = (node \ "edges" \ "edge") map Edge.fromXML[V, E](vertexMap)
-    Graph.fromXML[V, E]((node \ "class").text, vertices, edges)
+    (vertices, edges)
   }
 
   private[this] def getVertexMap[V <: Vertex[V]](vertices: Seq[V]) = {
@@ -30,13 +43,4 @@ object GraphRepository {
     vertices foreach {v => map += (v.id -> v)}
     map
   }
-  def loadGraph[V <: Vertex[V], E <: Edge[V]](graph:Graph[V,E],file: String) = {
-    val node = XML.loadFile(file)
-    val vertices = (node \ "vertices" \ "vertex") map Vertex.fromXML[V]
-    val vertexMap: Map[String, V] = getVertexMap[V](vertices)
-    val edges = (node \ "edges" \ "edge") map Edge.fromXML[V, E](vertexMap)
-    graph.addVertices(vertices)
-    graph.addEdges(edges)
-  }
-
 }

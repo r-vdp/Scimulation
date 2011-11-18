@@ -1,5 +1,5 @@
 package example.social
-import engine.Action
+
 import core.graph.Vertex
 import core.visualize.Color
 import scala.collection.mutable.Map
@@ -31,9 +31,9 @@ class SocialActor(inId: String, inMap: Map[String, Any])
   def getGender = params.get("gender") getOrElse "unknown"
 
   def getCoolFactor = params.get("coolFactor") getOrElse "unknown"
-  
+
   def getName = params.get("name") getOrElse "unknown"
-   
+
 }
 
 object SocialActor {

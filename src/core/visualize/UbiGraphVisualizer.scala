@@ -6,7 +6,6 @@ import core.graph.Graph
 import core.graph.Vertex
 import org.ubiety.ubigraph.UbigraphClient
 import monitor.Subscriber
-import scala.collection.mutable.HashSet
 
 class UbiGraphVisualizer[V <: Vertex[V] with Color, E <: Edge[V]]
   extends Subscriber[V, E] {
@@ -59,7 +58,7 @@ class UbiGraphVisualizer[V <: Vertex[V] with Color, E <: Edge[V]]
   private[this] def addEdge
   (ubiGraph: UbigraphClient, map: Map[String, Int])(e: E) {
     if(!edgesSet.contains(e)){
-    	edgesmap +=(e)->ubiGraph.newEdge(map(e.from.id), map(e.to.id))    	
+    	edgesmap +=(e)->ubiGraph.newEdge(map(e.from.id), map(e.to.id))
     	edgesSet +=e
     }
   }

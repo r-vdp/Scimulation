@@ -1,6 +1,8 @@
 package core.graph
 
 /**
+ * A trait representing objects that will fire events when changed.
+ *
  * Created by Ramses de Norre
  * Date: 27/10/11
  * Time: 10:32

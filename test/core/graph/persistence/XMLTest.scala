@@ -3,6 +3,8 @@ package core.graph.persistence
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
+import core.graph.{TestEdge, BaseVertex, DirectedGraph}
+import core.persistence.GraphRepository
 
 /**
  * Created by Ramses de Norre
@@ -11,6 +13,8 @@ import org.junit.runner.RunWith
  */
 @RunWith(classOf[JUnitRunner])
 class XMLTest extends FunSuite {
+
+  import core.graph.GraphTestUtils._
 
   test("parse XML"){
     val xml =
@@ -25,6 +29,46 @@ class XMLTest extends FunSuite {
     val attr = xml \ "attr"
     assert((attr \ "name").text === "attr1")
     assert((attr \ "value").text === "val1")
+  }
+
+  test("persist") {
+    val graph = new DirectedGraph[BaseVertex, TestEdge]
+
+    val v1 = BaseVertex("first")
+    val v2 = BaseVertex("second")
+    val v3 = BaseVertex("third")
+    val v4 = BaseVertex("fourth")
+    val vertices = v1 :: v2 :: v3 :: v4 :: Nil
+
+    val e1 = TestEdge(v1, v2, 5)
+    val e2 = TestEdge(v1, v3, 2)
+    val e3 = TestEdge(v4, v2, 5)
+    val e4 = TestEdge(v2, v3, 5)
+    val e5 = TestEdge(v2, v4, 5)
+    val edges = e1 :: e2 :: e3 :: e4 :: e5 :: Nil
+
+    graph.addVertices(vertices)
+    graph.addEdges(edges)
+
+    val path = "/tmp/graphTest.xml"
+    GraphRepository.persistGraph(graph, path)
+
+    val loaded = GraphRepository.loadGraph[BaseVertex, TestEdge](path)
+
+    assert(loaded.size === vertices.size)
+    assert(loaded.edges.size === edges.size)
+    assert(vertices forall (loaded contains))
+    assert(edges forall (loaded contains))
+
+    assert(sameElements(loaded neighbours v1, v2 :: v3 :: Nil))
+    assert(sameElements(loaded neighbours v2, v3 :: v4 :: Nil))
+    assert(sameElements(loaded neighbours v3, Nil))
+    assert(sameElements(loaded neighbours v4, v2 :: Nil))
+
+    assert(sameElements(v1.neighbours, loaded neighbours v1))
+    assert(sameElements(v2.neighbours, loaded neighbours v2))
+    assert(sameElements(v3.neighbours, loaded neighbours v3))
+    assert(sameElements(v4.neighbours, loaded neighbours v4))
   }
 
   ignore("parse file"){

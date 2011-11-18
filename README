@@ -1,0 +1,16 @@
+Scimulation, a Scala simulation framework.
+
+The code can be compiled by regular scalac and several runnable examples are
+contained in the src/example directories.
+These examples extend the App trait and can be run as such.
+
+The test suite uses the ScalaTest library, which can be found in the lib folder.
+
+For graphical output, a UbiGraph server has to be running,
+because this server is architecture dependent, we did not include a copy.
+The server can be downloaded from
+    http://ubietylab.net/ubigraph/content/Downloads/
+by choosing the right target architecture.
+
+Furthermore, all libraries under lib should be included on the classpath and
+all the .xml files should be in the working dir of the application.

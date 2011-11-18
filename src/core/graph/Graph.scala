@@ -6,6 +6,7 @@ import core.persistence.GraphBuilder
 
 /**
  * Abstract graph class.
+ *
  * Created by Ramses de Norre
  * Date: 31/10/11
  * Time: 13:11

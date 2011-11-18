@@ -15,7 +15,7 @@ class RoundVirusActor(inId: String, inMap: Map[String, Any])
   extends Vertex[RoundVirusActor] with Multiverse[RoundVirusActor] with
     Action[RoundVirusActor] with Ordered[RoundVirusActor]with Color{
 
-  override def calcPrior = 0
+  override def calcPrior() = 0
 
   def compare(that: RoundVirusActor) = this.calcPrior compare that.calcPrior
 
@@ -31,7 +31,7 @@ class RoundVirusActor(inId: String, inMap: Map[String, Any])
       "#0000ff"
     } else {
       "#" + (255 - getProgSkill).toHexString + "ff" + (255 - getProgSkill).toHexString
-    } 
+    }
   }
 
   object AllDone extends Exception { }
@@ -43,17 +43,17 @@ class RoundVirusActor(inId: String, inMap: Map[String, Any])
 	  neighbours.foreach{
 	    e =>
 	    if(e.getStatus==Status.I.toString())
-	      infectious
+	      infectious()
 	  }
     }
     else if (getStatus == Status.NI.toString()) {
 	  neighbours.foreach{
 	    e => {
 	      if(e.getStatus==Status.I.toString()){
-	        sick
+	        sick()
 	      }
 	    }
-	  }  
+	  }
     }
     else if (getStatus == Status.I.toString() && getGender == Gender.Female.toString()) {
       heal()
@@ -62,7 +62,7 @@ class RoundVirusActor(inId: String, inMap: Map[String, Any])
       neighbours.foreach{
 	    e =>
 	    if(e.getProgSkill > 200)
-	      incProgSkill
+	      incProgSkill()
 	  }
     }
   }
@@ -72,26 +72,26 @@ class RoundVirusActor(inId: String, inMap: Map[String, Any])
   def getGender = params.get("gender") getOrElse "unknown"
 
   def getProbability = params.get("probability") getOrElse "unknown"
-  
+
   def getName = params.get("name") getOrElse "unknown"
-  
+
   def getProgSkill: Int = {
     val skill = params.get("progSkill") getOrElse "0"
-    Integer.parseInt(skill.toString())
+    Integer.parseInt(skill.toString)
   }
 
   def setStatus(newStatus: Status) {
-    params += ("status" -> newStatus.toString())
+    params += ("status" -> newStatus.toString)
   }
-  
+
   def setName(name: String) {
     params += ("name" -> name)
   }
-  
+
   def setProgSkill(level: Int) {
 	params += ("progSkill" -> level)
   }
-  
+
   def sick() {
     setStatus(Status.S)
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
@@ -109,7 +109,7 @@ class RoundVirusActor(inId: String, inMap: Map[String, Any])
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
             getGender + " just became infectious");
   }
-  
+
   def incProgSkill() {
     val newSkill = getProgSkill + 10
     if(newSkill < 256)

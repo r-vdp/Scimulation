@@ -1,18 +1,15 @@
 package example.social
+
 import core.statistics.StatisticsManager
 import core.graph.Edge
 import core.graph.Vertex
-import core.graph.Graph
 
 class SocialStatistics[V <: Vertex[V], E <: Edge[V]]
-  extends StatisticsManager[V, E] { 
+  extends StatisticsManager[V, E] {
 
-  
   override def chosenUpdates(){
-    
-	  if(counter==10){
+	  if(counter == 10){
 	    outPutNrEdges("nrEdgesOn10.csv")
 	  }
   }
-
 }

@@ -6,37 +6,45 @@ import core.graph.Vertex
 import core.visualize.Color
 
 object Status extends Enumeration {
-  
-  
   type Status = Value
- 
+
   val NI = new Value {
     override def id = 1
+
     override def toString = "NI"
   }
-  
-  val S = new Value{
+
+  val S = new Value {
     override def id = 2
+
     override def toString = "S"
   }
-  val I = new Value{
+
+  val I = new Value {
     override def id = 3
+
     override def toString = "I"
   }
-  val R = new Value{
+
+  val R = new Value {
     override def id = 4
+
     override def toString = "R"
   }
 }
 
 object Gender extends Enumeration {
   type Gender = Value
-    val Male = new Value{
+
+  val Male = new Value {
     override def id = 1
+
     override def toString = "Male"
   }
-    val Female = new Value{
+
+  val Female = new Value {
     override def id = 2
+
     override def toString = "Female"
   }
 }
@@ -62,39 +70,43 @@ class VirusActor(inId: String, inMap: Map[String, Any])
       "#0000ff"
     } else {
       "#" + (255 - getProgSkill).toHexString + "ff" + (255 - getProgSkill).toHexString
-    } 
+    }
   }
 
   object AllDone extends Exception { }
 
   override def execute() {
-    if (getName == "Dave")
+    if (getName == "Dave") {
       setProgSkill(255)
+    }
     else if (getStatus == Status.S.toString()) {
-	  neighbours.foreach{
-	    e =>
-	    if(e.getStatus==Status.I.toString())
-	      infectious
-	  }
+      neighbours.foreach {
+        e =>
+          if (e.getStatus == Status.I.toString()) {
+            infectious()
+          }
+      }
     }
     else if (getStatus == Status.NI.toString()) {
-	  neighbours.foreach{
-	    e => {
-	      if(e.getStatus==Status.I.toString()){
-	        sick
-	      }
-	    }
-	  }  
+      neighbours.foreach {
+        e => {
+          if (e.getStatus == Status.I.toString()) {
+            sick()
+          }
+        }
+      }
     }
-    else if (getStatus == Status.I.toString() && getGender == Gender.Female.toString()) {
+    else if (getStatus == Status.I.toString() &&
+             getGender == Gender.Female.toString()) {
       heal()
     }
     if (getStatus == Status.NI.toString()) {
-      neighbours.foreach{
-	    e =>
-	    if(e.getProgSkill > 200)
-	      incProgSkill
-	  }
+      neighbours.foreach {
+        e =>
+          if (e.getProgSkill > 200) {
+            incProgSkill()
+          }
+      }
     }
   }
 
@@ -103,26 +115,26 @@ class VirusActor(inId: String, inMap: Map[String, Any])
   def getGender = params.get("gender") getOrElse "unknown"
 
   def getProbability = params.get("probability") getOrElse "unknown"
-  
+
   def getName = params.get("name") getOrElse "unknown"
-  
+
   def getProgSkill: Int = {
     val skill = params.get("progSkill") getOrElse "0"
-    Integer.parseInt(skill.toString())
+    Integer.parseInt(skill.toString)
   }
 
   def setStatus(newStatus: Status) {
-    params += ("status" -> newStatus.toString())
+    params += ("status" -> newStatus.toString)
   }
-  
+
   def setName(name: String) {
     params += ("name" -> name)
   }
-  
+
   def setProgSkill(level: Int) {
 	params += ("progSkill" -> level)
   }
-  
+
   def sick() {
     setStatus(Status.S)
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
@@ -140,7 +152,7 @@ class VirusActor(inId: String, inMap: Map[String, Any])
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
             getGender + " just became infectious");
   }
-  
+
   def incProgSkill() {
     val newSkill = getProgSkill + 10
     if(newSkill < 256)

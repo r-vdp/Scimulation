@@ -3,6 +3,8 @@ package core.persistence
 import core.graph.{Vertex, Edge}
 
 /**
+ * Builder to construct edges from a string.
+ *
  * Created by Ramses de Norre
  * Date: 03/11/11
  * Time: 22:49

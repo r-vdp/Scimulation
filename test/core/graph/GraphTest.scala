@@ -13,6 +13,8 @@ import org.junit.runner.RunWith
 @RunWith(classOf[JUnitRunner])
 class GraphTest extends FunSuite with BeforeAndAfterEach {
 
+  import GraphTestUtils._
+
   type G = Graph[BaseVertex, TestEdge]
 
   var g1: G = _
@@ -182,14 +184,6 @@ class GraphTest extends FunSuite with BeforeAndAfterEach {
     assert((g neighbours new BaseVertex("foo")) === Seq.empty)
   }
 
-  def sameElements[A](first: Seq[A], sec: Seq[A]) =
-    if ((first.size == sec.size) && (first forall (sec contains))) {
-      true
-    } else {
-      println("first: " + first +"\nsecond: " + sec)
-      false
-    }
-
   implicit def set2Seq[A](set: Set[A]): Seq[A] = set.toSeq
 
   testG("traversable") { g =>
@@ -206,4 +200,16 @@ class GraphTest extends FunSuite with BeforeAndAfterEach {
     val vs = (for (v <- g2) yield v).toSeq
     assert(sameElements(v1 :: v2 :: v3 :: Nil, vs))
   }
+}
+
+object GraphTestUtils {
+  def sameElements[A](first: Seq[A], sec: Seq[A]) =
+    if ((first.size == sec.size) && (first forall (sec contains))) {
+      true
+    } else {
+      println("first: " + first + "\nsecond: " + sec)
+      false
+    }
+
+  implicit def set2Seq[A](set: Set[A]): Seq[A] = set.toSeq
 }

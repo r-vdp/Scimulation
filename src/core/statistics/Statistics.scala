@@ -6,7 +6,6 @@ import core.graph.Vertex
 import scala.collection.mutable.Map
 import scala.collection.mutable.Set
 
-
 class Statistics[V <: Vertex[V], E <: Edge[V]] {
 
   def nbOfEdges(graph: Graph[V, E]): Int = {
@@ -21,7 +20,7 @@ class Statistics[V <: Vertex[V], E <: Edge[V]] {
     sum(graph.vertices map (_.neighbours.size)) / graph.size
   }
 
-  private def sum(xs: Seq[Int]) = (0 /: xs)(_+_)
+  private def sum(xs: Seq[Int]) = (0 /: xs)(_ + _)
 
   /*
   * HashMap van Pair[String,Char], List[String] was het beste wat ik kon verzinnen.
@@ -34,22 +33,24 @@ class Statistics[V <: Vertex[V], E <: Edge[V]] {
   * conclusie vertex 3 en 7 kunnen een (dikke) cluster vormen?
   *
   */
-
   def createAttrMap(graph: Graph[V, E]): Map[Pair[String, String], List[String]] = {
     val localMap = Map[Pair[String, String], List[String]]()
     graph foreach addAttributesToMap(localMap)
     localMap
   }
 
- private def addAttributesToMap(localMap: Map[Pair[String, String],  List[String]])(v: V):
-  Map[Pair[String, String], List[String]] = {
-    var set = Set[Pair[String,String]]()
-    for(key<-v.params.keySet)
-        set.add(new Pair(key,v.params.get(key).toString()))
-        
+  private def addAttributesToMap
+  (localMap: Map[Pair[String, String], List[String]])(v: V)
+  : Map[Pair[String, String], List[String]] = {
+
+    val set = Set.empty[Pair[String, String]]
+    for (key <- v.params.keySet) {
+      set.add(new Pair(key, v.params(key).toString))
+    }
+
     for (pair <- set) {
       localMap += (pair -> (v.id :: (localMap.get(pair) getOrElse List(v.id))))
     }
     localMap
-   }
+  }
 }

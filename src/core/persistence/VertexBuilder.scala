@@ -4,6 +4,8 @@ import core.graph.Vertex
 import scala.collection.mutable.Map
 
 /**
+ * Builder to construct vertices from a string.
+ *
  * Created by Ramses de Norre
  * Date: 03/11/11
  * Time: 21:08

@@ -25,7 +25,6 @@ object TurnBasedVirusSimulation extends App {
 //    val stat = new StatisticsManager[VirusActor, VirusEdge[VirusActor]]
 //    stat.subscribeTo(engine)
 
-
     engine.run()
     GraphRepository.persistGraph(graph,"TBVirusSimoutput.xml")
   }

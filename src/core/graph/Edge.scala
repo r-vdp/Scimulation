@@ -45,9 +45,7 @@ abstract class Edge[V <: Vertex[V]]
   /**
    * Factory methods.
    */
-
   override def reverse: This = construct(to, from, weight)
-
   protected def construct(from: V, to: V, weight: Double): This
 
   def compare(that: Edge[V]) = this.weight compare that.weight

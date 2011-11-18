@@ -78,13 +78,12 @@ object Vertex {
   def unapply(v: Vertex[_]) = Some(v.id)
 
   def fromXML[V <: Vertex[V]](node: xml.Node): V = {
-    val builder = new VertexBuilder
     val vertexClass = (node \ "class").text
     val id = (node \ "id").text
     val attrs = (node \ "attr")
     var params = Map.empty[String, Any]
     attrs foreach {n => params += ((n\"name").text -> (n\"value").text)}
 
-    builder.create[V](vertexClass, id, params)
+    (new VertexBuilder).create[V](vertexClass, id, params)
   }
 }

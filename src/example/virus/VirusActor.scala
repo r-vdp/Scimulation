@@ -55,23 +55,26 @@ class VirusActor(inId: String, inMap: Map[String, Any])
 
   override def color: String = {
     if (getStatus == Status.I.toString()) {
-    	"#00ff00";
-    } else if (getGender == Gender.Female.toString()) {
-      "#0000ff";
-    }else{
       "#ff0000"
-    }
+    } else if (getName == "Dave") {
+      "#ff00ff"
+    } else {
+      println((255 - getProgSkill % 255))
+      "#" + (255 - getProgSkill % 255).toHexString + "ff" + (255 - getProgSkill % 255).toHexString
+    } 
   }
 
   object AllDone extends Exception { }
 
   override def execute() {
-    if (getStatus == Status.S.toString()) {
+    if (getStatus == Status.S.toString() && getName != "Dave") {
       try{
 	      neighbours.foreach{e=>
 	        if(e.getStatus==Status.I.toString()){
-	          infect();
+	          infect
 	          throw AllDone
+	        } else if(e.getName=="Dave"){
+	          incProgSkill
 	        }
 	      }
       } catch {
@@ -88,11 +91,32 @@ class VirusActor(inId: String, inMap: Map[String, Any])
   def getGender = params.get("gender") getOrElse "unknown"
 
   def getProbability = params.get("probability") getOrElse "unknown"
+  
+  def getName = params.get("name") getOrElse "unknown"
+  
+  def getProgSkill: Int = {
+    val skill = params.get("progSkill") getOrElse "0"
+    Integer.parseInt(skill.toString())
+    
+/*    try {
+      Integer.parseInt(params.get("progSkill").toString())
+    } catch {
+      case _ => 0
+    }
+*/  }
 
   def setStatus(newStatus: Status) {
     params += ("status" -> newStatus.toString())
   }
-
+  
+  def setName(name: String) {
+    params += ("name" -> name)
+  }
+  
+  def setProgSkill(level: Int) {
+	params += ("progSkill" -> level)
+  }
+  
   def die() {
     setStatus(Status.R)
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
@@ -109,6 +133,10 @@ class VirusActor(inId: String, inMap: Map[String, Any])
     setStatus(Status.I)
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
             getGender + " just got infected");
+  }
+  
+  def incProgSkill() {
+    setProgSkill(getProgSkill + 10)
   }
 }
 

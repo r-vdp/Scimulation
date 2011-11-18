@@ -16,8 +16,7 @@ object TurnBasedVirusSimulation extends App {
     
     GraphRepository.loadGraph(graph,"tbsim.xml")
 
-    val engine = new TurnBasedEngine(graph, 5)
-
+    val engine = new TurnBasedEngine(graph, 20)
     val vis = new UbiGraphVisualizer[VirusActor, VirusEdge[VirusActor]]
 
     vis.subscribeTo(engine)

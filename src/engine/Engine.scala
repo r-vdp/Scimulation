@@ -45,15 +45,18 @@ class TurnBasedEngine[V <: Vertex[V] with Action[V], E <: Edge[V]]
 
 class RoundBasedEngine
   [V <: Vertex[V] with Multiverse[V] with Action[V], E <: Edge[V]]
-    (graph: Graph[V, E],count:Int) extends Engine{
+    (graph: Graph[V, E],count:Int) extends Engine with Publisher[V,E]{
 
-	var list = new ArrayBuffer[PriorityQueue[V]]
+
 
 	override def run() {
 
 	  val g3 = graph.deepCopy
-
-	  for (_ <- 0 until count){
+        publish(graph)
+        Thread.sleep(1000,1000)
+	  for (time <- 0 until count){
+		  println("The time is: "+time)
+	      var list = new ArrayBuffer[PriorityQueue[V]]
 		  for(_<-0 until graph.size)
 			  list += PriorityQueue.empty[V]
 
@@ -63,17 +66,19 @@ class RoundBasedEngine
 		      for(j<-0 until graph.size){
 		        list.take(j+1).last += g2.take(j+1).last
 		      }
-		  }
+	  }
 
 		  var vertices = new ArrayBuffer[V]
 			   for(g <- list)
 			     vertices += g.head
-
-		// Hoe maken we een nieuwe graph of replacen we ?alle? vertices in een bestaande? idem edges
-
+	      publish(graph)
+          Thread.sleep(1000,1000)
 	  }
 
 	}
+	  override def publish(g:Graph[V,E]){
+    list.foreach{e=>e.update(g)}
+  }
 }
 
 class EventBasedEngine[V <: Vertex[V], E <: Edge[V]]

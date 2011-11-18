@@ -2,7 +2,7 @@ package core
 
 import graph._
 import graph.mst.{Node, Leaf, Tree}
-import graph.persistence.GraphRepository
+import persistence.GraphRepository
 
 /**
  * Created by Ramses de Norre

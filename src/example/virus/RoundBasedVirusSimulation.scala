@@ -3,7 +3,7 @@ package example.virus
 import engine.RoundBasedEngine
 import core.visualize.UbiGraphVisualizer
 import core.graph.UndirectedGraph
-import core.graph.persistence.GraphRepository
+import core.persistence.GraphRepository
 
 object RoundBasedVirusSimulation extends App {
 

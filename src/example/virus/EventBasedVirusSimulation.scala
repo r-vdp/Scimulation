@@ -3,7 +3,7 @@ package example.virus
 import core.graph._
 import engine.Event
 import engine.EventBasedEngine
-import persistence.GraphRepository
+import core.persistence.GraphRepository
 
 object EventBasedVirusSimulation extends App {
 

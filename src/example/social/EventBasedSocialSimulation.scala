@@ -24,7 +24,7 @@ object EventBasedSocialSimulation extends App {
     engine.addEvent(new Friendship(1,graph,graph.getVertex("4").get,graph.getVertex("0").get))
     engine.addEvent(new Friendship(2,graph,graph.getVertex("0").get,graph.getVertex("5").get))
     engine.addEvent(new Friendship(2,graph,graph.getVertex("6").get,graph.getVertex("1").get))
-    engine.addEvent(new Friendship(3,graph,graph.getVertex("4").get,graph.getVertex("0").get))
+    engine.addEvent(new Friendship(3,graph,graph.getVertex("4").get,graph.getVertex("14").get))
     engine.addEvent(new Friendship(3,graph,graph.getVertex("9").get,graph.getVertex("13").get))
     engine.addEvent(new Friendship(3,graph,graph.getVertex("12").get,graph.getVertex("11").get))
     engine.addEvent(new Friendship(3,graph,graph.getVertex("4").get,graph.getVertex("11").get))
@@ -50,7 +50,9 @@ object EventBasedSocialSimulation extends App {
     
     val snapshots = new SnapshotCreator[SocialActor, SocialEdge[SocialActor]](3,"EvSocout")
     snapshots.subscribeTo(engine)
-
+    
+    val stats = new SocialStatistics[SocialActor, SocialEdge[SocialActor]]
+    stats.subscribeTo(engine)
 
     engine.run()
         GraphRepository.persistGraph(graph,"EventSocialOut.xml")

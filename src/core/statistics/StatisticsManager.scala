@@ -6,6 +6,7 @@ import core.graph.Edge
 import core.graph.Vertex
 import scala.collection.mutable.HashMap
 import monitor.Subscriber
+import core.statistics.CSVOutputStatistics
 
 /*
  * De bedoeling is dus dat iedere simulatie hier een implementatie van maakt met zijn eigen update 
@@ -25,6 +26,7 @@ override
   def update(graph: Graph[V, E]){
 	  storeInfoOnNetwork(graph, counter)
 	  chosenUpdates()
+	  counter+=1
 	}
 	
  def chosenUpdates()
@@ -54,7 +56,10 @@ override
    def outPut(attr:String, value:String, filename: String ){
     CSVOutputStatistics.generateCsvFile(store.getStatOfAttribute(attr,value), filename)
   }
-
+  
+   def outPutNrEdges(filename:String){
+     CSVOutputStatistics.generateCsvFile(store.nbofedges,filename)
+   }
 
 
   

@@ -4,7 +4,7 @@ import engine.RoundBasedEngine
 import core.visualize.UbiGraphVisualizer
 import core.graph.UndirectedGraph
 import core.persistence.GraphRepository
-import engine.SnapshotCreator
+import engine.SnapshotCreator 
 
 object RoundBasedVirusSimulation extends App {
 
@@ -21,10 +21,10 @@ object RoundBasedVirusSimulation extends App {
 
     val snapshots = new SnapshotCreator[RoundVirusActor, VirusEdge[RoundVirusActor]](10,"RBout")
     snapshots.subscribeTo(engine)
-    
+
 //    val stat = new StatisticsManager[RoundVirusActor, VirusEdge[RoundVirusActor]]
 //    stat.subscribeTo(engine)
-    
+
 
     engine.run()
     GraphRepository.persistGraph(graph,"RBVirusSimoutput.xml")

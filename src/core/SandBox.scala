@@ -3,7 +3,6 @@ package core
 import graph._
 import graph.mst.{Node, Leaf, Tree}
 import core.persistence.GraphRepository
-
 /**
  * Created by Ramses de Norre
  * Date: 24/10/11

@@ -6,6 +6,7 @@ import core.graph.Edge
 import core.graph.Vertex
 import scala.collection.mutable.HashMap
 import monitor.Subscriber
+import core.statistics.CSVOutputStatistics
 
 /*
  * De bedoeling is dus dat iedere simulatie hier een implementatie van maakt met zijn eigen update 
@@ -14,23 +15,29 @@ import monitor.Subscriber
 
 abstract class StatisticsManager[V <: Vertex[V], E <: Edge[V]]extends Subscriber[V, E] {
   
-	//Is er maar 1 van, is dat een object?
+	var counter :Int = 0
+  
 	val stat = new Statistics[V,E]
-	//1 Per simulatie, is dat een abstracte klasse of een trait?
+
     val store = new StatisticsStore[V,E]
-    //Kan worden ingevuld per simulatie met onderstaande methodes
+
 	
-  override
-  def update(graph: Graph[V, E])
+override
+  def update(graph: Graph[V, E]){
+	  storeInfoOnNetwork(graph, counter)
+	  chosenUpdates()
+	  counter+=1
+	}
+	
+ def chosenUpdates()
     
-	
-	//Zodat de echte graaf niet wordt meegegeven naar Statisticsstore, nieuwe thread aanmaken?
+
   def storeInfoOnNetwork(graph:Graph[V, E],t: Int){
     val graph1 = graph.deepCopy
-    store.nbofedges (t) -> stat.nbOfEdges(graph1)
-    store.nbofvertices (t) -> stat.nbOfEdges(graph1)
-    store.avnbofedgespervertex (t) -> stat.avNbOfEdgesPerVertex(graph1)
-    store.attrbmap (t) -> stat.createAttrMap(graph1)
+    store.nbofedges += t -> stat.nbOfEdges(graph1)
+    store.nbofvertices += t -> stat.nbOfEdges(graph1)
+    store.avnbofedgespervertex += t -> stat.avNbOfEdgesPerVertex(graph1)
+    store.attrbmap += t -> stat.createAttrMap(graph1)
   }
   	
   
@@ -42,10 +49,18 @@ abstract class StatisticsManager[V <: Vertex[V], E <: Edge[V]]extends Subscriber
   
   
   // Bij implementatie voor 1 simulatie invullen attr en value, naar gelang dewelke opgeslagen moeten worden
-  def storeNbOfVerticesWithSameAttribute(t: Int, attr:String, value: Char){
-    store.nbOfVerticesWithSameAttribute(t: Int, attr:String, value: Char)
+  def storeNbOfVerticesWithSameAttribute(t: Int, attr:String, value: String){
+    store.nbOfVerticesWithSameAttribute(t, attr, value)
   }
   
- 
+   def outPut(attr:String, value:String, filename: String ){
+    CSVOutputStatistics.generateCsvFile(store.getStatOfAttribute(attr,value), filename)
+  }
+  
+   def outPutNrEdges(filename:String){
+     CSVOutputStatistics.generateCsvFile(store.nbofedges,filename)
+   }
+
+
   
 }

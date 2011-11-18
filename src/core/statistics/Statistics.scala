@@ -4,6 +4,8 @@ import core.graph.Graph
 import core.graph.Edge
 import core.graph.Vertex
 import scala.collection.mutable.Map
+import scala.collection.mutable.Set
+
 
 class Statistics[V <: Vertex[V], E <: Edge[V]] {
 
@@ -33,19 +35,21 @@ class Statistics[V <: Vertex[V], E <: Edge[V]] {
   *
   */
 
-  def createAttrMap(graph: Graph[V, E]): Map[Pair[String, Char], List[String]] = {
-    val localMap = Map[Pair[String, Char], List[String]]()
+  def createAttrMap(graph: Graph[V, E]): Map[Pair[String, String], List[String]] = {
+    val localMap = Map[Pair[String, String], List[String]]()
     graph foreach addAttributesToMap(localMap)
     localMap
   }
 
-  private def addAttributesToMap(localMap: Map[Pair[String, Char], List[String]])
-                                (v: V):
-  Map[Pair[String, Char], List[String]] = {
-    val zip = v.params.keySet.zip(v.params.values.toString())
-    for (pair <- zip) {
+ private def addAttributesToMap(localMap: Map[Pair[String, String],  List[String]])(v: V):
+  Map[Pair[String, String], List[String]] = {
+    var set = Set[Pair[String,String]]()
+    for(key<-v.params.keySet)
+        set.add(new Pair(key,v.params.get(key).toString()))
+        
+    for (pair <- set) {
       localMap += (pair -> (v.id :: (localMap.get(pair) getOrElse List(v.id))))
     }
     localMap
-  }
+   }
 }

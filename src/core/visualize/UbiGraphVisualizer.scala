@@ -24,6 +24,7 @@ class UbiGraphVisualizer[V <: Vertex[V] with Color, E <: Edge[V]]
 	    graph.edges foreach addEdge(ubiClient, verticesmap)
 	    check = true
     } else {
+      graph.edges foreach addEdge(ubiClient, verticesmap)
       graph foreach updateVertex(ubiClient, verticesmap)
     }
   }

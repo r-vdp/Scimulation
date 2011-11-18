@@ -2,17 +2,9 @@ package core.statistics
 
 import java.io.FileWriter
 import java.io.IOException
+import scala.collection.mutable.Map
 
-
-object CSVOutputStatistics extends App {
-
-  val map : Map[Int, Int] = Map((1, 5), (2, 10), (3, 15), (4, 20), (5 , 25 ))
-  val test:String = "test.csv"
-  generateCsvFile(map, test)
-  
-
-
-
+object CSVOutputStatistics {
 
 
  def generateCsvFile(map: Map[Int, Int], sFileName:String)

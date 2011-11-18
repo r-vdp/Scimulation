@@ -56,32 +56,45 @@ class VirusActor(inId: String, inMap: Map[String, Any])
   override def color: String = {
     if (getStatus == Status.I.toString()) {
       "#ff0000"
+    } else if (getStatus == Status.S.toString()) {
+      "#ff00ff"
     } else if (getName == "Dave") {
       "#0000ff"
     } else {
-      "#" + (255 - getProgSkill % 255).toHexString + "ff" + (255 - getProgSkill % 255).toHexString
+      "#" + (255 - getProgSkill).toHexString + "ff" + (255 - getProgSkill).toHexString
     } 
   }
 
   object AllDone extends Exception { }
 
   override def execute() {
-    if (getStatus == Status.S.toString() && getName != "Dave") {
-      try{
-	      neighbours.foreach{e=>
-	        if(e.getStatus==Status.I.toString()){
-	          infect
-	          throw AllDone
-	        } else if(e.getName=="Dave"){
-	          incProgSkill
-	        }
-	      }
-      } catch {
-		  case AllDone =>
+    if (getName == "Dave")
+      setProgSkill(255)
+    else if (getStatus == Status.S.toString()) {
+	  neighbours.foreach{
+	    e =>
+	    if(e.getStatus==Status.I.toString())
+	      infectious
 	  }
-      
-    } else if (getStatus == Status.I.toString() && getGender == Gender.Female.toString()) {
+    }
+    else if (getStatus == Status.NI.toString()) {
+	  neighbours.foreach{
+	    e => {
+	      if(e.getStatus==Status.I.toString()){
+	        sick
+	      }
+	    }
+	  }  
+    }
+    else if (getStatus == Status.I.toString() && getGender == Gender.Female.toString()) {
       heal()
+    }
+    if (getStatus == Status.NI.toString()) {
+      neighbours.foreach{
+	    e =>
+	    if(e.getProgSkill > 200)
+	      incProgSkill
+	  }
     }
   }
 
@@ -96,13 +109,7 @@ class VirusActor(inId: String, inMap: Map[String, Any])
   def getProgSkill: Int = {
     val skill = params.get("progSkill") getOrElse "0"
     Integer.parseInt(skill.toString())
-    
-/*    try {
-      Integer.parseInt(params.get("progSkill").toString())
-    } catch {
-      case _ => 0
-    }
-*/  }
+  }
 
   def setStatus(newStatus: Status) {
     params += ("status" -> newStatus.toString())
@@ -116,26 +123,30 @@ class VirusActor(inId: String, inMap: Map[String, Any])
 	params += ("progSkill" -> level)
   }
   
-  def die() {
-    setStatus(Status.R)
+  def sick() {
+    setStatus(Status.S)
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
-            getGender + " just died");
+            getGender + " just got sick");
   }
 
   def heal() {
-    setStatus(Status.S)
+    setStatus(Status.NI)
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
             getGender + " just healed");
   }
 
-  def infect() {
+  def infectious() {
     setStatus(Status.I)
     println("Actor: " + id + "  with status " + getStatus + " and gender " +
-            getGender + " just got infected");
+            getGender + " just became infectious");
   }
   
   def incProgSkill() {
-    setProgSkill(getProgSkill + 10)
+    val newSkill = getProgSkill + 10
+    if(newSkill < 256)
+      setProgSkill(newSkill)
+    else
+      setProgSkill(255)
   }
 }
 

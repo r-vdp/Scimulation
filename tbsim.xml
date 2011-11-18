@@ -2,6 +2,87 @@
         <vertices>
           <vertex>
             <class>example.virus.VirusActor</class>
+            <id>0</id>
+            <attr>
+              <name>status</name>
+              <value>NI</value>
+            </attr>
+            <attr>
+              <name>probability</name>
+              <value>6</value>
+            </attr>
+            <attr>
+              <name>gender</name>
+              <value>Female</value>
+            </attr>
+          </vertex> 
+          <vertex>
+            <class>example.virus.VirusActor</class>
+            <id>10</id>
+            <attr>
+              <name>status</name>
+              <value>S</value>
+            </attr>
+            <attr>
+              <name>probability</name>
+              <value>6</value>
+            </attr>
+            <attr>
+              <name>gender</name>
+              <value>Male</value>
+            </attr>
+          </vertex> 
+          <vertex>
+            <class>example.virus.VirusActor</class>
+            <id>11</id>
+            <attr>
+              <name>status</name>
+              <value>S</value>
+            </attr>
+            <attr>
+              <name>probability</name>
+              <value>6</value>
+            </attr>
+            <attr>
+              <name>gender</name>
+              <value>Male</value>
+            </attr>
+          </vertex> 
+          <vertex>
+            <class>example.virus.VirusActor</class>
+            <id>12</id>
+            <attr>
+              <name>status</name>
+              <value>NI</value>
+            </attr>
+            <attr>
+              <name>probability</name>
+              <value>6</value>
+            </attr>
+            <attr>
+              <name>gender</name>
+              <value>Female</value>
+            </attr>
+          </vertex> 
+          <vertex>
+            <class>example.virus.VirusActor</class>
+            <id>13</id>
+            <attr>
+              <name>status</name>
+              <value>S</value>
+            </attr>
+            <attr>
+              <name>probability</name>
+              <value>6</value>
+            </attr>
+            <attr>
+              <name>gender</name>
+              <value>Female</value>
+            </attr>
+          </vertex> 
+        
+          <vertex>
+            <class>example.virus.VirusActor</class>
             <id>1</id>
             <attr>
              <name>status</name>
@@ -13,25 +94,9 @@
              </attr>
               <attr>
              <name>gender</name>
-             <value>Male</value>
-             </attr>
-          </vertex>
-          <vertex>
-          <class>example.virus.VirusActor</class>
-          <id>0</id>
-             <attr>
-             <name>status</name>
-             <value>S</value>
-             </attr>
-              <attr>
-             <name>probability</name>
-             <value>6</value>
-             </attr>
-              <attr>
-             <name>gender</name>
              <value>Female</value>
              </attr>
-        </vertex> 
+          </vertex>
         
         <vertex>
           <class>example.virus.VirusActor</class>
@@ -72,7 +137,7 @@
           <id>3</id>
 	      <attr>
 	        <name>status</name>
-	        <value>S</value>
+	        <value>NI</value>
 	      </attr>
 	      <attr>
 	        <name>probability</name>
@@ -89,7 +154,7 @@
           <id>4</id>
 	      <attr>
 	        <name>status</name>
-	        <value>S</value>
+	        <value>NI</value>
 	      </attr>
 	      <attr>
 	        <name>probability</name>
@@ -106,7 +171,7 @@
           <id>Dave</id>
 	      <attr>
 	        <name>status</name>
-	        <value>S</value>
+	        <value>NI</value>
 	      </attr>
 	      <attr>
 	        <name>probability</name>
@@ -127,7 +192,7 @@
           <id>6</id>
 	      <attr>
 	        <name>status</name>
-	        <value>S</value>
+	        <value>NI</value>
 	      </attr>
 	      <attr>
 	        <name>probability</name>
@@ -144,7 +209,7 @@
           <id>7</id>
 	      <attr>
 	        <name>status</name>
-	        <value>S</value>
+	        <value>NI</value>
 	      </attr>
 	      <attr>
 	        <name>probability</name>
@@ -161,7 +226,7 @@
           <id>8</id>
 	      <attr>
 	        <name>status</name>
-	        <value>S</value>
+	        <value>NI</value>
 	      </attr>
 	      <attr>
 	        <name>probability</name>
@@ -178,7 +243,7 @@
           <id>9</id>
 	      <attr>
 	        <name>status</name>
-	        <value>S</value>
+	        <value>NI</value>
 	      </attr>
 	      <attr>
 	        <name>probability</name>
@@ -212,14 +277,8 @@
           </edge>
           <edge>
             <class>example.virus.VirusEdge</class>
-            <from>4</from>
-            <to>5</to>
-            <weight>1.0</weight>
-          </edge>
-          <edge>
-            <class>example.virus.VirusEdge</class>
-            <from>Dave</from>
-            <to>6</to>
+            <from>5</from>
+            <to>4</to>
             <weight>1.0</weight>
           </edge>
           <edge>
@@ -236,6 +295,12 @@
           </edge>
           <edge>
             <class>example.virus.VirusEdge</class>
+            <from>6</from>
+            <to>3</to>
+            <weight>1.0</weight>
+          </edge>
+          <edge>
+            <class>example.virus.VirusEdge</class>
             <from>9</from>
             <to>8</to>
             <weight>1.0</weight>
@@ -243,12 +308,6 @@
           <edge>
           <class>example.virus.VirusEdge</class>
           <from>2</from>
-          <to>0</to>
-          <weight>1.0</weight>
-        </edge>
-        <edge>
-          <class>example.virus.VirusEdge</class>
-          <from>Dave</from>
           <to>0</to>
           <weight>1.0</weight>
         </edge>
@@ -267,12 +326,27 @@
 		<edge>
           <class>example.virus.VirusEdge</class>
           <from>3</from>
-          <to>Dave</to>
-          <weight>1.0</weight>
-        </edge> <edge>
-          <class>example.virus.VirusEdge</class>
-          <from>3</from>
           <to>4</to>
+          <weight>1.0</weight>
+        </edge><edge>
+          <class>example.virus.VirusEdge</class>
+          <from>1</from>
+          <to>10</to>
+          <weight>1.0</weight>
+        </edge><edge>
+          <class>example.virus.VirusEdge</class>
+          <from>1</from>
+          <to>11</to>
+          <weight>1.0</weight>
+        </edge><edge>
+          <class>example.virus.VirusEdge</class>
+          <from>1</from>
+          <to>12</to>
+          <weight>1.0</weight>
+        </edge><edge>
+          <class>example.virus.VirusEdge</class>
+          <from>12</from>
+          <to>13</to>
           <weight>1.0</weight>
         </edge>
         </edges>

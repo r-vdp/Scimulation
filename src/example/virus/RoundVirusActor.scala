@@ -5,6 +5,7 @@ import example.virus.Status._
 import core.graph.Vertex
 import engine.Action
 import engine.Multiverse
+import core.visualize.Color
 
 // zouden graag with action[] eruit trekken zodat de TurnbasedVirusSimulation
 // gebruiker een nieuw kind maakt die extend virusactor with Action
@@ -12,13 +13,41 @@ import engine.Multiverse
 // hadden errors met overerving
 class RoundVirusActor(inId: String, inMap: Map[String, Any])
   extends Vertex[RoundVirusActor] with Multiverse[RoundVirusActor] with
-    Action[RoundVirusActor] with Ordered[RoundVirusActor]{
+    Action[RoundVirusActor] with Ordered[RoundVirusActor]with Color{
 
   override def calcPrior = 0
 
   def compare(that: RoundVirusActor) = this.calcPrior compare that.calcPrior
 
-  override def execute() {}
+  override def color: String = {
+    if (getStatus == Status.I) {
+    	"#00ff00";
+    } else if (getGender == Gender.Female) {
+      "#0000ff";
+    }else{
+      "#ff0000"
+    }
+  }
+
+  object AllDone extends Exception { }
+
+  override def execute() {
+    if (getStatus == Status.S) {
+      try{
+	      neighbours.foreach{e=>
+	        if(e.getStatus==Status.I){
+	          infect();
+	          throw AllDone
+	        }
+	      }
+      } catch {
+		  case AllDone =>
+	  }
+      //infect()
+    } else if (getStatus == Status.I && getGender == Gender.Female) {
+      heal()
+    }
+  }
 
   override lazy val id = inId
   override lazy val params = inMap

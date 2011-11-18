@@ -3,6 +3,7 @@ package example.virus
 import scala.collection.mutable.Map
 import core.graph._
 import engine.RoundBasedEngine
+import core.visualize.UbiGraphVisualizer
 
 object RoundBasedVirusSimulation extends App {
 
@@ -12,7 +13,7 @@ object RoundBasedVirusSimulation extends App {
     val graph = new UndirectedGraph[RoundVirusActor, VirusEdge[RoundVirusActor]]
 
     var rootMap: Map[String, Any] = Map.empty
-    rootMap += "status" -> Status.S
+    rootMap += "status" -> Status.I
     rootMap += "probability" -> 3
     rootMap += "gender" -> Gender.Male
     val root = RoundVirusActor("root", rootMap)
@@ -54,11 +55,12 @@ object RoundBasedVirusSimulation extends App {
                 VirusEdge(root, fifth) :: Nil
 
     graph.addEdges(edges)
-    //println(graph + "\n")
 
-    //TODO
-    // ?error?
     val engine = new RoundBasedEngine(graph, 5)
+    
+    val vis = new UbiGraphVisualizer[RoundVirusActor, VirusEdge[RoundVirusActor]]
+
+    vis.subscribeTo(engine)    
 
     engine.run()
   }

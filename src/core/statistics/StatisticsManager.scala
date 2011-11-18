@@ -5,7 +5,7 @@ import core.graph.Graph
 import core.graph.Edge
 import core.graph.Vertex
 import scala.collection.mutable.HashMap
-import scala.collection.mutable.Subscriber
+import monitor.Subscriber
 
 /*
  * De bedoeling is dus dat iedere simulatie hier een implementatie van maakt met zijn eigen update 
@@ -20,7 +20,8 @@ abstract class StatisticsManager[V <: Vertex[V], E <: Edge[V]]extends Subscriber
     val store = new StatisticsStore[V,E]
     //Kan worden ingevuld per simulatie met onderstaande methodes
 	
-  def update(graph: Graph[V, E], t:Int)
+  override
+  def update(graph: Graph[V, E])
     
 	
 	//Zodat de echte graaf niet wordt meegegeven naar Statisticsstore, nieuwe thread aanmaken?

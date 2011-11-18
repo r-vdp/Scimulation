@@ -12,6 +12,8 @@ import core.persistence.VertexBuilder
  * The type parameter V should be the subclass type itself,
  * it is needed to be able to reference a subclass type in the methods
  * dealing with neighbours.
+ * We express this using the explicitely typed self-reference,
+ * this construction allows for a recursive type constructor.
  *
  * Created by Ramses de Norre
  * Date: 27/10/11
@@ -19,6 +21,13 @@ import core.persistence.VertexBuilder
  */
 trait Vertex[V <: Vertex[V]] { _: V =>
 
+  /**
+   * Lazy vals to allow for correct initialisation order,
+   * failure to initialise these properly will result in an exception.
+   * These are a work-around for the problem of corrupt initialisation of
+   * abstract vals in traits and avoid the need for early initialisation in
+   * subclasses.
+   */
   lazy val id: String = {new UninitializedError; null}
   lazy val params: Map[String, Any] = {new UninitializedError; null}
 
@@ -62,6 +71,10 @@ trait Vertex[V <: Vertex[V]] { _: V =>
 }
 
 object Vertex {
+  /**
+   * Extractor to allow pattern matching on general vertices.
+   * Be careful with subclasses!
+   */
   def unapply(v: Vertex[_]) = Some(v.id)
 
   def fromXML[V <: Vertex[V]](node: xml.Node): V = {

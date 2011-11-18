@@ -171,6 +171,17 @@ class GraphTest extends FunSuite with BeforeAndAfterEach {
     assert(v1.neighbours(0).isInstanceOf[BaseVertex])
   }
 
+  testG("Vertex neighbours empty") { g =>
+    g.addVertices(vertices)
+
+    assert((g neighbours v1) === Seq.empty)
+    assert((g neighbours v2) === Seq.empty)
+    assert((g neighbours v3) === Seq.empty)
+    assert((g neighbours v4) === Seq.empty)
+
+    assert((g neighbours new BaseVertex("foo")) === Seq.empty)
+  }
+
   def sameElements[A](first: Seq[A], sec: Seq[A]) =
     if ((first.size == sec.size) && (first forall (sec contains))) {
       true

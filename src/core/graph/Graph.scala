@@ -13,7 +13,11 @@ import core.persistence.GraphBuilder
 abstract class Graph[V <: Vertex[V], E <: Edge[V]]
   extends Observable with Traversable[V] {
 
+  /**
+   * Implicit conversions from sets and iterables to seqs
+   */
   implicit def set2Seq[A](set: Set[A]): Seq[A] = set.toSeq
+  implicit def it2Seq[A](it: Iterable[A]): Seq[A] = it.toSeq
 
   /**
    * The number of vertices in this graph
@@ -39,12 +43,19 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
 
   protected def addVertexImpl(vertex: V)
 
+  /**
+   * Add the vertices and check whether the graph has changed in the process.
+   */
   def addVertices(vertices: Seq[V]) {
     if (!(vertices withFilter (!contains(_)) map addVertexImpl).isEmpty) {
       fireChanged()
     }
   }
 
+  /**
+   * Get the vertex with the given id if one is contained in this graph.
+   * The contract of equals() in Vertex specifies that id must be unique.
+   */
   def getVertex(id: String): Option[V] = vertices find (_.id == id)
 
   def addEdge(edge: E) {
@@ -56,6 +67,9 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
 
   protected def addEdgeImpl(edge: E)
 
+  /**
+   * Add the edges and check whether the graph was changed in the process.
+   */
   def addEdges(edges: Seq[E]) {
     if (!((edges withFilter isLegal) map addEdgeImpl).isEmpty) {
       fireChanged()
@@ -84,12 +98,12 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
   /**
    * Retrieve a set of all vertices which are reachable from the given vertex.
    */
-  def neighbours(vertex: V): Set[V]
+  def neighbours(vertex: V): Seq[V]
 
   /**
    * The edges connecting the given vertex to its neighbours.
    */
-  def neighbourEdges(vertex: V): Set[E]
+  def neighbourEdges(vertex: V): Seq[E]
 
   def vertices: Seq[V]
 
@@ -123,6 +137,9 @@ abstract class Graph[V <: Vertex[V], E <: Edge[V]]
     }
   }
 
+  /**
+   * The actual traversal which has the traverser as an implicit parameter.
+   */
   protected def foreachImpl[U](f: (V) => U)
                             (implicit traverser: GraphTraverser[V, E]) {
     traverser foreach f

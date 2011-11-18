@@ -14,6 +14,11 @@ class DirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
 
   def contains(vertex: V) = map contains vertex
 
+  /**
+   * Get the Set of all edges starting on edge.from,
+   * if there is such a set, check whether it contains the edge,
+   * otherwise return false.
+   */
   def contains(edge: E) =
     (map get edge.from) flatMap (es => Some(es contains edge)) getOrElse false
 
@@ -39,19 +44,14 @@ class DirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
     map -= vertex
   }
 
-  def neighbours(vertex: V) = {
-    if (contains(vertex)) {
-      map(vertex) map (_.to)
-    } else {
-      Set.empty
-    }
-  }
+  def neighbours(vertex: V) =
+    ((map get vertex) flatMap {es => Some(es map (_.to))}).flatten[V]
 
-  def neighbourEdges(vertex: V) = map(vertex)
+  def neighbourEdges(vertex: V) = (map get vertex).flatten[E]
 
   def vertices = map.keySet
 
-  def edges = map.values.flatten.toSeq
+  def edges = map.values.flatten[E]
 
   def someVertex = map.keys.head
 

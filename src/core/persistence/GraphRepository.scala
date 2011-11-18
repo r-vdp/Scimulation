@@ -1,9 +1,11 @@
-package core.graph.persistence
+package core.persistence
 
 import xml.XML
 import core.graph.{Edge, Vertex, Graph}
 
 /**
+ * Repository for storing and loading graphs from XML files.
+ *
  * Created by Ramses de Norre
  * Date: 04/11/11
  * Time: 17:26
@@ -36,5 +38,5 @@ object GraphRepository {
     graph.addVertices(vertices)
     graph.addEdges(edges)
   }
-  
+
 }

@@ -1,14 +1,15 @@
 package core.persistence
 
 /**
- * Created by Ramses de Norre
- * Date: 06/11/11
- * Time: 12:33
- *
- * Taken in large part from
+ * Class to create objects by reflection based on a string.
+ *Taken in large part from
  *   http://www.familie-kneissl.org/Members/martin/blog/
  *     reflection-from-scala-heaven-and-hell
  * and modified a bit.
+ *
+ * Created by Ramses de Norre
+ * Date: 06/11/11
+ * Time: 12:33
  */
 class GenericBuilder {
   implicit val classLoader: ClassLoader = classOf[Any].getClassLoader

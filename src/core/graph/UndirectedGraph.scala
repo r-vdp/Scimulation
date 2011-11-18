@@ -2,11 +2,15 @@ package core.graph
 
 /**
  * A class representing undirected graphs.
+ * The graph is made by automatically adding the reverse of each edge that is
+ * added to the graph as well.
+ *
  * Created by Ramses de Norre
  * Date: 27/10/11
  * Time: 10:32
  */
 class UndirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
+
   private[this] var map: Map[V, Set[E]] = Map.empty
 
   override def size = map.size
@@ -38,21 +42,18 @@ class UndirectedGraph[V <: Vertex[V], E <: Edge[V]] extends Graph[V, E] {
   }
 
   /**
-   * Retrieve set of all neighbours
+   * Retrieve set of all neighbours, Option monad madness!
    */
   def neighbours(vertex: V) =
-    if (contains(vertex)) {
-      ((map(vertex) map (_ other vertex))
-        withFilter (_.isDefined)) map (_.get)
-    } else {
-      Set.empty
-    }
+    ((map get vertex) flatMap
+      {es => Some((es map (_ other vertex)).flatten)}
+    ).flatten[V]
 
-  def neighbourEdges(vertex: V) = map(vertex)
+  def neighbourEdges(vertex: V) = (map get vertex).flatten[E]
 
   def vertices = map.keySet
 
-  def edges = map.values.flatten.toSeq
+  def edges = map.values.flatten[E]
 
   def someVertex = map.keys.head
 
